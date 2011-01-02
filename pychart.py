@@ -9,6 +9,12 @@
 ## 
 ## To produce a python module from QTDesigner:
 ##   pyuic4 -o ui_chart.py -x chartWidget.ui
+##   
+## TODO:
+## Chart gets screwed up when it is zoomed out too far.
+## Make time controls into a seperate widget
+## Allow screen resizing that also resizes the chart
+## Extract data from chart class
 ###############################################################################
 
 
@@ -38,6 +44,7 @@ def adjustPrices(data):
   return [[ii[0], ii[1]*multiple, ii[2]*multiple, ii[3]*multiple, ii[4]*multiple, ii[5]] for ii in adjprices]
 
 
+
 # Create a class for our main window
 class Main(QtGui.QWidget):
   def __init__(self):
@@ -65,8 +72,6 @@ class Main(QtGui.QWidget):
     self.currentDay = 1
     self.chartLength = 60
 
-    ## draw the chart
-    
     ## Maximize screen 
     #self.setWindowState(QtCore.Qt.WindowMaximized)
     
@@ -153,16 +158,10 @@ class Main(QtGui.QWidget):
     self.newLine.setLine(epx, epy, self.newLineX, self.newLineY)
 
 
-def main():
-  # Again, this is boilerplate, it's going to be the same on
-  # almost every app you write
+
+if __name__ == "__main__":
   app = QtGui.QApplication(sys.argv)
   window=Main()
   window.show()
 
-  # It's exec_ because exec is a reserved word in Python
   sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    main()
