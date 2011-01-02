@@ -53,15 +53,19 @@ class Data():
     data = [ii.split(',') for ii in dat.split('\n')]
     return [[ii[0], float(ii[1]), float(ii[2]), float(ii[3]), float(ii[4]), int(ii[5])] for ii in data[1:-1]]
 
-  def adjustPrices(self, day, length):
-    d = self.chartData(day, length)
-    minprice = min([ii[3] for ii in d])
-    adjprices = [[ii[0], ii[1]-minprice, ii[2]-minprice, ii[3]-minprice, ii[4]-minprice, ii[5]] for ii in d]
-    maxprice = max([ii[4] for ii in adjprices])
-    multiple = screenHeight/maxprice
-    self.low, self.high = minprice, minprice+maxprice
-    return [[ii[0], ii[1]*multiple, ii[2]*multiple, ii[3]*multiple, ii[4]*multiple, ii[5]] for ii in adjprices]
-
+  def adjustPrices(self, day, length=False):
+    if length: 
+      d = self.chartData(day, length)
+      mini, maxi = min([ii[3] for ii in d]), max([ii[4] for ii in d])
+      self.low, self.high = mini, maxi
+      mul = screenHeight/(maxi-mini)
+      return [[ii[0], (ii[1]-mini)*mul, (ii[2]-mini)*mul, (ii[3]-mini)*mul, (ii[4]-mini)*mul, ii[5]] for ii in d]
+    else:
+      d = day
+      mini, maxi = min(d), max(d)
+      mul = screenHeight/(maxi-mini)
+      return [(ii-mini)*mul for ii in d]
+    
   def currentDay(self, day):
     return self.data[day]
 
@@ -123,37 +127,63 @@ class Main(QtGui.QWidget):
     self.ui.chartLength.setText(str(self.chartLength))
     self.ui.showBalance.setText(str(account.balance))
 
-  def drawChart(self):
+
+  def drawCandlesticks(self, day, length):
+    d = self.data.adjustPrices(day, length)
+    offsetmod = screenWidth/len(d)
+    offset = screenWidth-offsetmod
     
-    d = self.data.adjustPrices(self.currentDay, self.chartLength)
-    p = self.data.chartData(self.currentDay, self.chartLength)
+    for ii, today in enumerate(d):
+      if today[1] > today[4]:
+        b = QtGui.QColor(50,50,50,250)
+      else:
+        b = QtGui.QColor(250,250,250,250)
+
+      self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3], brush=b)
+      b = self.scene.addRect(offset, screenHeight-today[1], offsetmod/2, today[1]-today[4], brush=b)
+      
+      p = self.data.data[day+ii]
+      b.setToolTip(" ".join(["Date:", p[0], "\nOpen:", str(p[1]), 
+                             "\nHigh:", str(p[2]), "\nLow:", str(p[3]), 
+                             "\nClose", str(p[4]), "\nVolume:", str(p[5])]))  # We can use this to display price data
+      offset -= offsetmod
+
+
+  def drawLines(self, day, length):
+    if self.data.high == 0:
+      self.data.high, self.data.low = 28, 25
+    high = self.data.high
+    low = self.data.low
+    
+    # [low, (high-int(low)+1) -> int(high), high]
+    lineList = [low]
+    c = int(low)+1
+    while c < high:
+      lineList.append(c)
+      c += 1
+    lineList.append(high)
+    
+    adjusted = self.data.adjustPrices(lineList)
+    for ii, price in enumerate(adjusted):
+      self.scene.addLine(0, screenHeight-price, screenWidth, screenHeight-price)
+      t = self.scene.addText(str(lineList[ii]))
+      t.setPos(screenWidth-30, screenHeight-price)
+    
+
+  def drawChart(self):
+    self.drawLines(self.currentDay, self.chartLength)
+    self.drawCandlesticks(self.currentDay, self.chartLength)
+    #d = self.data.adjustPrices(self.currentDay, self.chartLength)
+    #p = self.data.chartData(self.currentDay, self.chartLength)
 
     ## BUG:  Lines don't display correctly, neither the labels or line heights
     ##       are correct.  I'm leaving this implementation here because even 
     ##       incorrect lines still give a visual aid to the chart
     ## Draw Horizontal Lines
-    lineHeightRange = range(int(self.data.high) - int(self.data.low))
-    linePriceInts = [ii+int(self.data.low) for ii in lineHeightRange]
-    multiple = screenHeight / (self.data.high - self.data.low)
-    adj = [screenHeight-ii*multiple for ii in lineHeightRange]
-    for ii, price in enumerate(adj):
-      self.scene.addLine(0, price, screenWidth, price)
-      #t = self.scene.addText(str(linePriceInts[ii]))
-      #t.setPos(screenWidth-30, price)
-
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod
-
-    for jj, ii in enumerate(d):
-      if ii[1] > ii[4]:
-        b = QtGui.QColor(50,50,50,250)
-      else:
-        b = QtGui.QColor(250,250,250,250)
-      
-      self.scene.addRect(offset+offsetmod/4, screenHeight-ii[2], 1, ii[2]-ii[3], brush=b)
-      b = self.scene.addRect(offset, screenHeight-ii[1], offsetmod/2, ii[1]-ii[4], brush=b)
-      b.setToolTip(" ".join(["Date:", p[jj][0], "Open:", str(p[jj][1]), "High:", str(p[jj][2]), "Low:", str(p[jj][3]), "Close", str(p[jj][4]), "Volume:", str(p[jj][5])]))  # We can use this to display price data
-      offset -= offsetmod
+    #lineHeightRange = range(int(self.data.high) - int(self.data.low))
+    #linePriceInts = [ii+int(self.data.low) for ii in lineHeightRange]
+    #multiple = screenHeight / (self.data.high - self.data.low)
+    #adj = [screenHeight-ii*multiple for ii in lineHeightRange]
 
   def onZoomIn(self):
     self.scene.clear()
