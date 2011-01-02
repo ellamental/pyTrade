@@ -62,7 +62,6 @@ class Main(QtGui.QWidget):
 
     ## initialize data to be used with the chart
     self.data = googDownload("msft")
-    print len(self.data)
     self.currentDay = 1
     self.chartLength = 60
 
@@ -76,6 +75,8 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.zoomOut, QtCore.SIGNAL("clicked()"), self.onZoomOut)
     self.connect(self.ui.nextDay, QtCore.SIGNAL("clicked()"), self.onNextDay)
     self.connect(self.ui.prevDay, QtCore.SIGNAL("clicked()"), self.onPrevDay)
+    self.connect(self.ui.next30, QtCore.SIGNAL("clicked()"), self.onNext30)
+    self.connect(self.ui.prev30, QtCore.SIGNAL("clicked()"), self.onPrev30)
 
     ## Defaults
     self.drawChart()
@@ -125,6 +126,18 @@ class Main(QtGui.QWidget):
     self.scene.update()
     self.drawChart()
     
+  def onNext30(self):
+    self.currentDay -= 30
+    self.scene.clear()
+    self.scene.update()
+    self.drawChart()
+
+  def onPrev30(self):
+    self.currentDay += 30
+    self.scene.clear()
+    self.scene.update()
+    self.drawChart()
+
   def mousePress(self, event):
     x, y = event.scenePos().x(), event.scenePos().y()
     self.newLineX, self.newLineY = x, y

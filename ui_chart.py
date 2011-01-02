@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Sun Jan  2 05:44:40 2011
+# Created: Sun Jan  2 05:53:34 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,11 +26,17 @@ class Ui_chartWidget(object):
         self.chartLength.setGeometry(QtCore.QRect(20, 910, 71, 19))
         self.chartLength.setObjectName("chartLength")
         self.nextDay = QtGui.QPushButton(chartWidget)
-        self.nextDay.setGeometry(QtCore.QRect(960, 880, 110, 29))
+        self.nextDay.setGeometry(QtCore.QRect(850, 880, 110, 29))
         self.nextDay.setObjectName("nextDay")
         self.prevDay = QtGui.QPushButton(chartWidget)
-        self.prevDay.setGeometry(QtCore.QRect(960, 930, 110, 29))
+        self.prevDay.setGeometry(QtCore.QRect(850, 930, 110, 29))
         self.prevDay.setObjectName("prevDay")
+        self.next30 = QtGui.QPushButton(chartWidget)
+        self.next30.setGeometry(QtCore.QRect(960, 880, 110, 29))
+        self.next30.setObjectName("next30")
+        self.prev30 = QtGui.QPushButton(chartWidget)
+        self.prev30.setGeometry(QtCore.QRect(960, 930, 110, 29))
+        self.prev30.setObjectName("prev30")
 
         self.retranslateUi(chartWidget)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
@@ -42,6 +48,8 @@ class Ui_chartWidget(object):
         self.chartLength.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
         self.prevDay.setText(QtGui.QApplication.translate("chartWidget", "Prev Day", None, QtGui.QApplication.UnicodeUTF8))
+        self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
+        self.prev30.setText(QtGui.QApplication.translate("chartWidget", "Prev 30", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":

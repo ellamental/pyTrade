@@ -65,7 +65,7 @@
   <widget class="QPushButton" name="nextDay">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>850</x>
      <y>880</y>
      <width>110</width>
      <height>29</height>
@@ -78,7 +78,7 @@
   <widget class="QPushButton" name="prevDay">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>850</x>
      <y>930</y>
      <width>110</width>
      <height>29</height>
@@ -86,6 +86,32 @@
    </property>
    <property name="text">
     <string>Prev Day</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="next30">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>880</y>
+     <width>110</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Next 30</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="prev30">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>930</y>
+     <width>110</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Prev 30</string>
    </property>
   </widget>
  </widget>
