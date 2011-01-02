@@ -18,7 +18,7 @@ from PyQt4 import QtCore, QtGui
 from urllib import urlopen
 
 ## import QtDesigner UI module
-from ui_chart import Ui_Form
+from ui_chart import Ui_chartWidget
 
 
 
@@ -44,12 +44,12 @@ class Main(QtGui.QWidget):
     QtGui.QWidget.__init__(self)
 
     # This is always the same
-    self.ui=Ui_Form()
+    self.ui = Ui_chartWidget()
     self.ui.setupUi(self)
 
     ## Create a new Graphics Scene
     self.scene = QtGui.QGraphicsScene()
-    self.scene.setSceneRect(0,0,screenWidth-100,screenHeight-100)
+    self.scene.setSceneRect(0,0,screenWidth,screenHeight)
     
     ## Set the GraphicsView (chart) to view the GraphicsScene above
     self.ui.chart.setScene(self.scene)
@@ -60,7 +60,6 @@ class Main(QtGui.QWidget):
     self.chartLength = 60
 
     ## draw the chart
-    self.drawChart()
     
     ## Maximize screen 
     #self.setWindowState(QtCore.Qt.WindowMaximized)
@@ -68,7 +67,10 @@ class Main(QtGui.QWidget):
     ## Connect buttons
     self.connect(self.ui.zoomIn, QtCore.SIGNAL("clicked()"), self.onZoomIn)
     self.connect(self.ui.zoomOut, QtCore.SIGNAL("clicked()"), self.onZoomOut)
-
+    
+    ## Defaults
+    self.drawChart()
+    self.ui.chartLength.setText(str(self.chartLength))
 
   def drawChart(self):
     
@@ -93,12 +95,14 @@ class Main(QtGui.QWidget):
     self.scene.update()
     self.chartLength -= 10
     self.drawChart()
+    self.ui.chartLength.setText(str(self.chartLength))
     
   def onZoomOut(self):
     self.scene.clear()
     self.scene.update()
     self.chartLength += 10
     self.drawChart()
+    self.ui.chartLength.setText(str(self.chartLength))
 
 
 def main():
