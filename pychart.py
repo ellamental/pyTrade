@@ -14,7 +14,6 @@
 ## Chart gets screwed up when it is zoomed out too far.
 ## Make time controls into a seperate widget
 ## Allow screen resizing that also resizes the chart
-## Extract data from chart class
 ###############################################################################
 
 
@@ -41,21 +40,41 @@ class Account():
     self.balance += self.shares * price
     self.shares = 0
 
+
+class Data():
+  def __init__(self, symbol):
+    self.symbol = symbol
+    self.data = self.googDownload(symbol)
+    self.low, self.high = 0, 0
+
+
+  def googDownload(self, symbol):
+    dat = urlopen("http://www.google.com/finance/historical?q="+symbol+"&startdate=Dec+30%2C+2000&enddate=Dec+31%2C+2010&num=30&output=csv").read()
+    data = [ii.split(',') for ii in dat.split('\n')]
+    return [[ii[0], float(ii[1]), float(ii[2]), float(ii[3]), float(ii[4]), int(ii[5])] for ii in data[1:-1]]
+
+  def adjustPrices(self, day, length):
+    d = self.chartData(day, length)
+    minprice = min([ii[3] for ii in d])
+    adjprices = [[ii[0], ii[1]-minprice, ii[2]-minprice, ii[3]-minprice, ii[4]-minprice, ii[5]] for ii in d]
+    maxprice = max([ii[4] for ii in adjprices])
+    multiple = screenHeight/maxprice
+    self.low, self.high = minprice, minprice+maxprice
+    return [[ii[0], ii[1]*multiple, ii[2]*multiple, ii[3]*multiple, ii[4]*multiple, ii[5]] for ii in adjprices]
+
+  def currentDay(self, day):
+    return self.data[day]
+
+  def chartData(self, day, length):
+    return self.data[day:length+day]
+
+  def loadSymbol(self, symbol):
+    self.data = self.googDownload(symbol)
+    
+
 account = Account()
 screenWidth = 1024
 screenHeight = 860
-
-def googDownload(symbol):
-  dat = urlopen("http://www.google.com/finance/historical?q="+symbol+"&startdate=Dec+30%2C+2000&enddate=Dec+31%2C+2010&num=30&output=csv").read()
-  data = [ii.split(',') for ii in dat.split('\n')]
-  return [[ii[0], float(ii[1]), float(ii[2]), float(ii[3]), float(ii[4]), int(ii[5])] for ii in data[1:-1]]
-
-def adjustPrices(data):
-  minprice = min([ii[3] for ii in data])
-  adjprices = [[ii[0], ii[1]-minprice, ii[2]-minprice, ii[3]-minprice, ii[4]-minprice, ii[5]] for ii in data]
-  maxprice = max([ii[4] for ii in adjprices])
-  multiple = screenHeight/maxprice
-  return [[ii[0], ii[1]*multiple, ii[2]*multiple, ii[3]*multiple, ii[4]*multiple, ii[5]] for ii in adjprices]
 
 
 
@@ -82,7 +101,7 @@ class Main(QtGui.QWidget):
     self.ui.chart.setScene(self.scene)
 
     ## initialize data to be used with the chart
-    self.data = googDownload("msft")
+    self.data = Data("msft")
     self.currentDay = 1
     self.chartLength = 60
 
@@ -106,7 +125,7 @@ class Main(QtGui.QWidget):
 
   def drawChart(self):
     
-    d = adjustPrices(self.data[self.currentDay:self.chartLength+self.currentDay])
+    d = self.data.adjustPrices(self.currentDay, self.chartLength)
 
     offsetmod = screenWidth/len(d)
     offset = screenWidth-offsetmod
@@ -161,11 +180,11 @@ class Main(QtGui.QWidget):
     self.drawChart()
 
   def onBuy(self):
-    account.buy(self.data[self.currentDay][4])
+    account.buy(self.data.currentDay(self.currentDay)[4])
     self.ui.showBalance.setText(str(account.balance))
   
   def onSell(self):
-    account.sell(self.data[self.currentDay][4])
+    account.sell(self.data.currentDay(self.currentDay)[4])
     self.ui.showBalance.setText(str(account.balance))
 
   def mousePress(self, event):
