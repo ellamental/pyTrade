@@ -50,6 +50,12 @@ class Main(QtGui.QWidget):
     ## Create a new Graphics Scene
     self.scene = QtGui.QGraphicsScene()
     self.scene.setSceneRect(0,0,screenWidth,screenHeight)
+    ## New Trendline Variables
+    self.scene.mouseMoveEvent = self.mouseMove
+    self.scene.mousePressEvent = self.mousePress
+    self.newLine = None
+    self.newLineX = 0
+    self.newLineY = 0
     
     ## Set the GraphicsView (chart) to view the GraphicsScene above
     self.ui.chart.setScene(self.scene)
@@ -104,6 +110,19 @@ class Main(QtGui.QWidget):
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
 
+  def mousePress(self, event):
+    x, y = event.scenePos().x(), event.scenePos().y()
+    self.newLineX, self.newLineY = x, y
+    self.newLine = self.scene.addLine(x, y, x, y)
+    pen = QtGui.QPen(QtCore.Qt.CustomDashLine)
+    pen.setWidth(3)
+    pen.setColor(QtGui.QColor(QtCore.Qt.red))
+    self.newLine.setPen(pen)
+
+  def mouseMove(self, event):
+    epx = event.scenePos().x()
+    epy = event.scenePos().y()
+    self.newLine.setLine(epx, epy, self.newLineX, self.newLineY)
 
 def main():
   # Again, this is boilerplate, it's going to be the same on
