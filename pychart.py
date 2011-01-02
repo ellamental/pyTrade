@@ -62,7 +62,8 @@ class Main(QtGui.QWidget):
 
     ## initialize data to be used with the chart
     self.data = googDownload("msft")
-    self.currentDay = 0
+    print len(self.data)
+    self.currentDay = 1
     self.chartLength = 60
 
     ## draw the chart
@@ -73,14 +74,16 @@ class Main(QtGui.QWidget):
     ## Connect buttons
     self.connect(self.ui.zoomIn, QtCore.SIGNAL("clicked()"), self.onZoomIn)
     self.connect(self.ui.zoomOut, QtCore.SIGNAL("clicked()"), self.onZoomOut)
-    
+    self.connect(self.ui.nextDay, QtCore.SIGNAL("clicked()"), self.onNextDay)
+    self.connect(self.ui.prevDay, QtCore.SIGNAL("clicked()"), self.onPrevDay)
+
     ## Defaults
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
 
   def drawChart(self):
     
-    d = adjustPrices(self.data[self.currentDay:self.chartLength])
+    d = adjustPrices(self.data[self.currentDay:self.chartLength+self.currentDay])
 
     offsetmod = screenWidth/len(d)
     offset = screenWidth-offsetmod
@@ -110,6 +113,18 @@ class Main(QtGui.QWidget):
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
 
+  def onNextDay(self):
+    self.currentDay -= 1
+    self.scene.clear()
+    self.scene.update()
+    self.drawChart()
+
+  def onPrevDay(self):
+    self.currentDay += 1
+    self.scene.clear()
+    self.scene.update()
+    self.drawChart()
+    
   def mousePress(self, event):
     x, y = event.scenePos().x(), event.scenePos().y()
     self.newLineX, self.newLineY = x, y
@@ -123,6 +138,7 @@ class Main(QtGui.QWidget):
     epx = event.scenePos().x()
     epy = event.scenePos().y()
     self.newLine.setLine(epx, epy, self.newLineX, self.newLineY)
+
 
 def main():
   # Again, this is boilerplate, it's going to be the same on
