@@ -126,19 +126,33 @@ class Main(QtGui.QWidget):
   def drawChart(self):
     
     d = self.data.adjustPrices(self.currentDay, self.chartLength)
+    p = self.data.chartData(self.currentDay, self.chartLength)
+
+    ## BUG:  Lines don't display correctly, neither the labels or line heights
+    ##       are correct.  I'm leaving this implementation here because even 
+    ##       incorrect lines still give a visual aid to the chart
+    ## Draw Horizontal Lines
+    lineHeightRange = range(int(self.data.high) - int(self.data.low))
+    linePriceInts = [ii+int(self.data.low) for ii in lineHeightRange]
+    multiple = screenHeight / (self.data.high - self.data.low)
+    adj = [screenHeight-ii*multiple for ii in lineHeightRange]
+    for ii, price in enumerate(adj):
+      self.scene.addLine(0, price, screenWidth, price)
+      #t = self.scene.addText(str(linePriceInts[ii]))
+      #t.setPos(screenWidth-30, price)
 
     offsetmod = screenWidth/len(d)
     offset = screenWidth-offsetmod
 
-    for ii in d:
+    for jj, ii in enumerate(d):
       if ii[1] > ii[4]:
         b = QtGui.QColor(50,50,50,250)
       else:
         b = QtGui.QColor(250,250,250,250)
       
       self.scene.addRect(offset+offsetmod/4, screenHeight-ii[2], 1, ii[2]-ii[3], brush=b)
-      self.scene.addRect(offset, screenHeight-ii[1], offsetmod/2, ii[1]-ii[4], brush=b)
-      
+      b = self.scene.addRect(offset, screenHeight-ii[1], offsetmod/2, ii[1]-ii[4], brush=b)
+      b.setToolTip(" ".join(["Date:", p[jj][0], "Open:", str(p[jj][1]), "High:", str(p[jj][2]), "Low:", str(p[jj][3]), "Close", str(p[jj][4]), "Volume:", str(p[jj][5])]))  # We can use this to display price data
       offset -= offsetmod
 
   def onZoomIn(self):
