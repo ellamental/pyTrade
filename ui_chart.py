@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Sun Jan  2 05:53:34 2011
+# Created: Sun Jan  2 06:18:02 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,6 +37,18 @@ class Ui_chartWidget(object):
         self.prev30 = QtGui.QPushButton(chartWidget)
         self.prev30.setGeometry(QtCore.QRect(960, 930, 110, 29))
         self.prev30.setObjectName("prev30")
+        self.sell = QtGui.QPushButton(chartWidget)
+        self.sell.setGeometry(QtCore.QRect(540, 930, 110, 29))
+        self.sell.setObjectName("sell")
+        self.buy = QtGui.QPushButton(chartWidget)
+        self.buy.setGeometry(QtCore.QRect(660, 930, 110, 29))
+        self.buy.setObjectName("buy")
+        self.balanceLabel = QtGui.QLabel(chartWidget)
+        self.balanceLabel.setGeometry(QtCore.QRect(560, 900, 71, 19))
+        self.balanceLabel.setObjectName("balanceLabel")
+        self.showBalance = QtGui.QLabel(chartWidget)
+        self.showBalance.setGeometry(QtCore.QRect(680, 900, 71, 19))
+        self.showBalance.setObjectName("showBalance")
 
         self.retranslateUi(chartWidget)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
@@ -50,6 +62,10 @@ class Ui_chartWidget(object):
         self.prevDay.setText(QtGui.QApplication.translate("chartWidget", "Prev Day", None, QtGui.QApplication.UnicodeUTF8))
         self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
         self.prev30.setText(QtGui.QApplication.translate("chartWidget", "Prev 30", None, QtGui.QApplication.UnicodeUTF8))
+        self.sell.setText(QtGui.QApplication.translate("chartWidget", "Sell", None, QtGui.QApplication.UnicodeUTF8))
+        self.buy.setText(QtGui.QApplication.translate("chartWidget", "Buy", None, QtGui.QApplication.UnicodeUTF8))
+        self.balanceLabel.setText(QtGui.QApplication.translate("chartWidget", "Balance:", None, QtGui.QApplication.UnicodeUTF8))
+        self.showBalance.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":

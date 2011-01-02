@@ -28,6 +28,20 @@ from ui_chart import Ui_chartWidget
 
 
 
+class Account():
+  def __init__(self):
+    self.balance = 10000
+    self.shares = 0
+    
+  def buy(self, price):
+    self.shares = self.balance // price
+    self.balance -= self.shares * price
+
+  def sell(self, price):
+    self.balance += self.shares * price
+    self.shares = 0
+
+account = Account()
 screenWidth = 1024
 screenHeight = 860
 
@@ -82,10 +96,13 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.prevDay, QtCore.SIGNAL("clicked()"), self.onPrevDay)
     self.connect(self.ui.next30, QtCore.SIGNAL("clicked()"), self.onNext30)
     self.connect(self.ui.prev30, QtCore.SIGNAL("clicked()"), self.onPrev30)
+    self.connect(self.ui.buy, QtCore.SIGNAL("clicked()"), self.onBuy)
+    self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
 
     ## Defaults
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
+    self.ui.showBalance.setText(str(account.balance))
 
   def drawChart(self):
     
@@ -143,6 +160,14 @@ class Main(QtGui.QWidget):
     self.scene.update()
     self.drawChart()
 
+  def onBuy(self):
+    account.buy(self.data[self.currentDay][4])
+    self.ui.showBalance.setText(str(account.balance))
+  
+  def onSell(self):
+    account.sell(self.data[self.currentDay][4])
+    self.ui.showBalance.setText(str(account.balance))
+
   def mousePress(self, event):
     x, y = event.scenePos().x(), event.scenePos().y()
     self.newLineX, self.newLineY = x, y
@@ -156,7 +181,6 @@ class Main(QtGui.QWidget):
     epx = event.scenePos().x()
     epy = event.scenePos().y()
     self.newLine.setLine(epx, epy, self.newLineX, self.newLineY)
-
 
 
 if __name__ == "__main__":

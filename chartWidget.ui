@@ -114,6 +114,58 @@
     <string>Prev 30</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="sell">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>930</y>
+     <width>110</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sell</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buy">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>930</y>
+     <width>110</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Buy</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="balanceLabel">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>900</y>
+     <width>71</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Balance:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="showBalance">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>900</y>
+     <width>71</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
