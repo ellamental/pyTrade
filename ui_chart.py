@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Sun Jan  2 06:18:02 2011
+# Created: Sun Jan  2 16:58:17 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -49,6 +49,9 @@ class Ui_chartWidget(object):
         self.showBalance = QtGui.QLabel(chartWidget)
         self.showBalance.setGeometry(QtCore.QRect(680, 900, 71, 19))
         self.showBalance.setObjectName("showBalance")
+        self.sma = QtGui.QPushButton(chartWidget)
+        self.sma.setGeometry(QtCore.QRect(310, 920, 110, 29))
+        self.sma.setObjectName("sma")
 
         self.retranslateUi(chartWidget)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
@@ -66,6 +69,7 @@ class Ui_chartWidget(object):
         self.buy.setText(QtGui.QApplication.translate("chartWidget", "Buy", None, QtGui.QApplication.UnicodeUTF8))
         self.balanceLabel.setText(QtGui.QApplication.translate("chartWidget", "Balance:", None, QtGui.QApplication.UnicodeUTF8))
         self.showBalance.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
+        self.sma.setText(QtGui.QApplication.translate("chartWidget", "sma", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":

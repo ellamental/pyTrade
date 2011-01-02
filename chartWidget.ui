@@ -166,6 +166,19 @@
     <string>TextLabel</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="sma">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>920</y>
+     <width>110</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>sma</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

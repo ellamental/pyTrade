@@ -74,7 +74,13 @@ class Data():
 
   def loadSymbol(self, symbol):
     self.data = self.googDownload(symbol)
-    
+
+  def sma(self, period, day, length):
+    d = self.data[day:day+length+period]
+    a = [sum([ii[4] for ii in d[c:c+period]])/period for c in range(length)]
+    mul = screenHeight/(self.high-self.low)
+    return [(ii-self.low)*mul for ii in a]
+
 
 account = Account()
 screenWidth = 1024
@@ -121,6 +127,7 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.prev30, QtCore.SIGNAL("clicked()"), self.onPrev30)
     self.connect(self.ui.buy, QtCore.SIGNAL("clicked()"), self.onBuy)
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
+    self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
 
     ## Defaults
     self.drawChart()
@@ -143,11 +150,16 @@ class Main(QtGui.QWidget):
       b = self.scene.addRect(offset, screenHeight-today[1], offsetmod/2, today[1]-today[4], brush=b)
       
       p = self.data.data[day+ii]
-      b.setToolTip(" ".join(["Date:", p[0], "\nOpen:", str(p[1]), 
-                             "\nHigh:", str(p[2]), "\nLow:", str(p[3]), 
-                             "\nClose", str(p[4]), "\nVolume:", str(p[5])]))  # We can use this to display price data
+      b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
       offset -= offsetmod
 
+  def drawLine(self, d):
+    """Used for moving averages, bollinger bands, etc"""
+    offsetmod = screenWidth/len(d)
+    offset = screenWidth-offsetmod-offsetmod
+    for ii in range(len(d))[1:]:
+      self.scene.addLine(offset+offsetmod/4, screenHeight-d[ii], offset+offsetmod/4+offsetmod, screenHeight-(d[ii-1]))
+      offset -= offsetmod
 
   def drawLines(self, day, length):
     if self.data.high == 0:
@@ -166,24 +178,12 @@ class Main(QtGui.QWidget):
     adjusted = self.data.adjustPrices(lineList)
     for ii, price in enumerate(adjusted):
       self.scene.addLine(0, screenHeight-price, screenWidth, screenHeight-price)
-      t = self.scene.addText(str(lineList[ii]))
-      t.setPos(screenWidth-30, screenHeight-price)
+      #t = self.scene.addText
     
 
   def drawChart(self):
     self.drawLines(self.currentDay, self.chartLength)
     self.drawCandlesticks(self.currentDay, self.chartLength)
-    #d = self.data.adjustPrices(self.currentDay, self.chartLength)
-    #p = self.data.chartData(self.currentDay, self.chartLength)
-
-    ## BUG:  Lines don't display correctly, neither the labels or line heights
-    ##       are correct.  I'm leaving this implementation here because even 
-    ##       incorrect lines still give a visual aid to the chart
-    ## Draw Horizontal Lines
-    #lineHeightRange = range(int(self.data.high) - int(self.data.low))
-    #linePriceInts = [ii+int(self.data.low) for ii in lineHeightRange]
-    #multiple = screenHeight / (self.data.high - self.data.low)
-    #adj = [screenHeight-ii*multiple for ii in lineHeightRange]
 
   def onZoomIn(self):
     self.scene.clear()
@@ -230,6 +230,9 @@ class Main(QtGui.QWidget):
   def onSell(self):
     account.sell(self.data.currentDay(self.currentDay)[4])
     self.ui.showBalance.setText(str(account.balance))
+
+  def onSMA(self):
+    self.drawLine(self.data.sma(10, self.currentDay, self.chartLength))
 
   def mousePress(self, event):
     x, y = event.scenePos().x(), event.scenePos().y()
