@@ -225,8 +225,9 @@ class Main(QtGui.QWidget):
     
 
   def drawChart(self):
+    self.scene.clear()
+    self.scene.update()
     self.drawLines(self.currentDay, self.chartLength)
-    #self.drawCandlesticks(self.currentDay, self.chartLength)
     self.chartStyle(self.currentDay, self.chartLength)
 
 
@@ -240,29 +241,21 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def onZoomIn(self):
-    self.scene.clear()
-    self.scene.update()
     self.chartLength -= 10
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
     
   def onZoomOut(self):
-    self.scene.clear()
-    self.scene.update()
     self.chartLength += 10
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
 
   def onCandlestick(self):
     self.chartStyle = self.drawCandlesticks
-    self.scene.clear()
-    self.scene.update()
     self.drawChart()
     
   def onOHLC(self):
     self.chartStyle = self.drawOHLC
-    self.scene.clear()
-    self.scene.update()
     self.drawChart()
     
     
@@ -274,26 +267,18 @@ class Main(QtGui.QWidget):
 
   def onNextDay(self):
     self.currentDay -= 1
-    self.scene.clear()
-    self.scene.update()
     self.drawChart()
 
   def onPrevDay(self):
     self.currentDay += 1
-    self.scene.clear()
-    self.scene.update()
     self.drawChart()
     
   def onNext30(self):
     self.currentDay -= 30
-    self.scene.clear()
-    self.scene.update()
     self.drawChart()
 
   def onPrev30(self):
     self.currentDay += 30
-    self.scene.clear()
-    self.scene.update()
     self.drawChart()
 
 
@@ -327,8 +312,6 @@ class Main(QtGui.QWidget):
 
   
   def onLoadSymbol(self):
-    self.scene.clear()
-    self.scene.update()
     self.data = Data(str(self.ui.symbolEntry.text()))
     self.ui.symbolEntry.clear()
     self.drawChart()
