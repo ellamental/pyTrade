@@ -107,7 +107,7 @@ class Time():
 
 time = Time()
 account = Account()
-scenes = []
+chartViews = []
 screenWidth = 1024
 screenHeight = 800
 
@@ -158,6 +158,7 @@ class ChartView(QtGui.QGraphicsView):
     self.chartLength = 60
     
     self.chartStyle = self.drawCandlesticks
+    self.data.setHighLow(time.currentDay, self.chartLength)
     self.drawChart()
     
   def drawOHLC(self, day, length):
@@ -229,7 +230,9 @@ class ChartView(QtGui.QGraphicsView):
 
 
 
-
+###############################################################################
+##  Main
+###############################################################################
 
 
 class Main(QtGui.QWidget):
@@ -241,15 +244,9 @@ class Main(QtGui.QWidget):
     self.ui.setupUi(self)
 
     ## Create a new GraphicsScene and set GraphicsView (chart) to scene
-    scenes.append(ChartView(Scene(), "msft"))
-    self.chartView = scenes[0]
+    chartViews.append(ChartView(Scene(), "msft"))
+    self.chartView = chartViews[0]
     self.ui.chart.setScene(self.chartView.scene)
-
-    ## initialize data to be used with the chart
-    self.data = Data("msft")
-    self.chartLength = 60
-    ## TODO: Change following ugly hack to set the data.high + data.low variables
-    self.data.setHighLow(time.currentDay, self.chartLength)
 
     ## Maximize screen 
     #self.setWindowState(QtCore.Qt.WindowMaximized)
@@ -265,87 +262,19 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
-    self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onLoadSymbol)
+    self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
     self.connect(self.ui.candlestick, QtCore.SIGNAL("clicked()"), self.onCandlestick)
     self.connect(self.ui.ohlc, QtCore.SIGNAL("clicked()"), self.onOHLC)
     self.connect(self.ui.newTab, QtCore.SIGNAL("clicked()"), self.onNewTab)
+    self.connect(self.ui.chartTabs, QtCore.SIGNAL("currentChanged(QWidget *)"), self.onChangeTab)
+    self.connect(self.ui.chartTabs, QtCore.SIGNAL("tabCloseRequested(int)"), self.onCloseTab)
+    
+    self.ui.chartTabs.setTabsClosable(True)
 
     ## Defaults
-    #self.chartStyle = self.drawCandlesticks
-    #self.drawChart()
-    self.ui.chartLength.setText(str(self.chartLength))
+    self.ui.chartLength.setText(str(self.chartView.chartLength))
     self.ui.showBalance.setText(str(account.balance))
 
-
-  def setChart(self):
-    self.chartView = scenes[self.ui.chartTabs.currentIndex()]
-
-  #def drawOHLC(self, day, length):
-    #d = self.data.adjustData(day, length)
-    #offsetmod = screenWidth/len(d)
-    #offset = screenWidth-offsetmod
-    
-    #for ii, today in enumerate(d):
-      #b = self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3])
-      #self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], offsetmod/4, 1)
-      #self.scene.addRect(offset+offsetmod/4, screenHeight-today[1], -(offsetmod/4), 1)
-      
-      #p = self.data.data[day+ii]
-      #b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
-      #offset -= offsetmod
-
-
-  #def drawCandlesticks(self, day, length):
-    #d = self.data.adjustData(day, length)
-    #offsetmod = screenWidth/len(d)
-    #offset = screenWidth-offsetmod
-    
-    #for ii, today in enumerate(d):
-      #if today[1] > today[4]:
-        #b = QtGui.QColor(50,50,50,250)
-      #else:
-        #b = QtGui.QColor(250,250,250,250)
-
-      #self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3], brush=b)
-      #b = self.scene.addRect(offset, screenHeight-today[1], offsetmod/2, today[1]-today[4], brush=b)
-      
-      #p = self.data.data[day+ii]
-      #b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
-      #offset -= offsetmod
-
-  #def drawLine(self, d):
-    #"""Used for moving averages, bollinger bands, etc"""
-    #offsetmod = screenWidth/len(d)
-    #offset = screenWidth-offsetmod-offsetmod
-    #for ii in range(len(d))[1:]:
-      #self.scene.addLine(offset+offsetmod/4, screenHeight-d[ii], offset+offsetmod/4+offsetmod, screenHeight-(d[ii-1]))
-      #offset -= offsetmod
-
-  #def drawHorizontalLines(self, day, length):
-    #self.data.setHighLow(day, length)
-    #high, low = self.data.high, self.data.low
-    
-    ## [low, (high-int(low)+1) -> int(high), high]
-    #lineList = [low]
-    #c = int(low)+1
-    #while c < high:
-      #lineList.append(c)
-      #c += 1
-    #lineList.append(high)
-    
-    #adjusted = self.data.adjustPrices(lineList)
-    #for ii, price in enumerate(adjusted):
-      #self.scene.addLine(0, screenHeight-price, screenWidth, screenHeight-price)
-      ## BUG: If scene.addText() is used drawing trendlines breaks, this is reproducable in a minimal example
-      #t = self.scene.addSimpleText(str(lineList[ii]))
-      #t.setPos(screenWidth-30, screenHeight-price)
-    
-
-  #def drawChart(self):
-    #self.scene.clear()
-    #self.scene.update()
-    #self.drawHorizontalLines(time.currentDay, self.chartLength)
-    #self.chartStyle(time.currentDay, self.chartLength)
 
 
 ###############################################################################
@@ -353,29 +282,44 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
 ###############################################################################
+##  Mulit-Chart View
+###############################################################################
+
+  def onNewTab(self):
+    t = str(self.ui.symbolEntry.text())
+    self.ui.symbolEntry.clear()
+    c = ChartView(Scene(), t)
+    chartViews.append(c)
+    self.ui.chartTabs.addTab(c, t)
+
+  def onCloseTab(self, num):
+    chartViews.pop(num)
+    self.ui.chartTabs.removeTab(num)
+
+  def onChangeTab(self, x):
+    self.chartView = chartViews[self.ui.chartTabs.currentIndex()]
+    self.chartView.drawChart()
+
+###############################################################################
 ##  Chart Controls
 ##  Zoom In/Out, Chart Style (ohlc, candlestick, etc), Normal/Log Scale, etc
 ###############################################################################
 
   def onZoomIn(self):
-    self.setChart()
     self.chartView.chartLength -= 10
     self.chartView.drawChart()
     self.ui.chartLength.setText(str(self.chartView.chartLength))
     
   def onZoomOut(self):
-    self.setChart()
     self.chartView.chartLength += 10
     self.chartView.drawChart()
     self.ui.chartLength.setText(str(self.chartView.chartLength))
 
   def onCandlestick(self):
-    self.setChart()
     self.chartView.chartStyle = self.chartView.drawCandlesticks
     self.chartView.drawChart()
     
   def onOHLC(self):
-    self.setChart()
     self.chartView.chartStyle = self.chartView.drawOHLC
     self.chartView.drawChart()
     
@@ -387,22 +331,18 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def onNextDay(self):
-    self.setChart()
     time.currentDay -= 1
     self.chartView.drawChart()
 
   def onPrevDay(self):
-    self.setChart()
     time.currentDay += 1
     self.chartView.drawChart()
     
   def onNext30(self):
-    self.setChart()
     time.currentDay -= 30
     self.chartView.drawChart()
 
   def onPrev30(self):
-    self.setChart()
     time.currentDay += 30
     self.chartView.drawChart()
 
@@ -413,12 +353,10 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def onBuy(self):
-    self.setChart()
     account.buy(self.chartView.data.currentDay(time.currentDay)[4])
     self.ui.showBalance.setText(str(account.balance))
   
   def onSell(self):
-    self.setChart()
     account.sell(self.chartView.data.currentDay(time.currentDay)[4])
     self.ui.showBalance.setText(str(account.balance))
 
@@ -429,7 +367,6 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def onSMA(self):
-    self.setChart()
     self.chartView.drawLine(self.chartView.data.sma(15, time.currentDay, self.chartView.chartLength))
 
 
@@ -440,24 +377,11 @@ class Main(QtGui.QWidget):
 
   
   def onLoadSymbol(self):
-    self.setChart()
     self.chartView.data = Data(str(self.ui.symbolEntry.text()))
     self.ui.symbolEntry.clear()
     self.chartView.drawChart()
     
 
-###############################################################################
-##  Mulit-Chart View
-###############################################################################
-
-  def onNewTab(self):
-    print "New tab selected"
-    t = str(self.ui.symbolEntry.text())
-    s = Scene()
-    c = ChartView(s, t)
-    scenes.append(c)
-    self.ui.chartTabs.addTab(c, t)
-    print self.ui.chartTabs.currentIndex()
 
 
 
