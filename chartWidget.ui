@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1073</width>
-    <height>963</height>
+    <width>1078</width>
+    <height>974</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,50 +23,138 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="zoomIn">
+  <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>880</y>
-     <width>110</width>
-     <height>29</height>
+     <y>870</y>
+     <width>841</width>
+     <height>101</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Zoom In</string>
+   <property name="currentIndex">
+    <number>1</number>
    </property>
-  </widget>
-  <widget class="QPushButton" name="zoomOut">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>930</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Zoom Out</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="chartLength">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>910</y>
-     <width>71</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
+   <widget class="QWidget" name="chartControls">
+    <attribute name="title">
+     <string>Chart Controls</string>
+    </attribute>
+    <widget class="QPushButton" name="zoomIn">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>30</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Zoom In</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="zoomOut">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Zoom Out</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="sma">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>30</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sma</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="chartLength">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>10</y>
+       <width>71</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="account">
+    <attribute name="title">
+     <string>Account</string>
+    </attribute>
+    <widget class="QPushButton" name="buy">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Buy</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="sell">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Sell</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="showBalance">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>10</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="balanceLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>10</y>
+       <width>71</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Balance:</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QPushButton" name="nextDay">
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>880</y>
+     <y>890</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -75,24 +163,11 @@
     <string>Next Day</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="prevDay">
-   <property name="geometry">
-    <rect>
-     <x>850</x>
-     <y>930</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Prev Day</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="next30">
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>880</y>
+     <y>890</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -105,7 +180,7 @@
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>930</y>
+     <y>940</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -114,69 +189,17 @@
     <string>Prev 30</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="sell">
+  <widget class="QPushButton" name="prevDay">
    <property name="geometry">
     <rect>
-     <x>540</x>
-     <y>930</y>
+     <x>850</x>
+     <y>940</y>
      <width>110</width>
      <height>29</height>
     </rect>
    </property>
    <property name="text">
-    <string>Sell</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="buy">
-   <property name="geometry">
-    <rect>
-     <x>660</x>
-     <y>930</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Buy</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="balanceLabel">
-   <property name="geometry">
-    <rect>
-     <x>560</x>
-     <y>900</y>
-     <width>71</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Balance:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="showBalance">
-   <property name="geometry">
-    <rect>
-     <x>680</x>
-     <y>900</y>
-     <width>71</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="sma">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>920</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>sma</string>
+    <string>Prev Day</string>
    </property>
   </widget>
  </widget>

@@ -14,6 +14,7 @@
 ## Chart gets screwed up when it is zoomed out too far.
 ## Make time controls into a seperate widget
 ## Allow screen resizing that also resizes the chart
+## Add bottom bar for showing volume and other indicators
 ###############################################################################
 
 
@@ -232,7 +233,7 @@ class Main(QtGui.QWidget):
     self.ui.showBalance.setText(str(account.balance))
 
   def onSMA(self):
-    self.drawLine(self.data.sma(10, self.currentDay, self.chartLength))
+    self.drawLine(self.data.sma(15, self.currentDay, self.chartLength))
 
   def mousePress(self, event):
     x, y = event.scenePos().x(), event.scenePos().y()
