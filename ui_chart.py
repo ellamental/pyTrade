@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Mon Jan  3 05:34:26 2011
+# Created: Mon Jan  3 05:49:03 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,17 +28,33 @@ class Ui_chartWidget(object):
         self.zoomOut.setGeometry(QtCore.QRect(30, 80, 110, 29))
         self.zoomOut.setObjectName("zoomOut")
         self.sma = QtGui.QPushButton(self.chartControls)
-        self.sma.setGeometry(QtCore.QRect(380, 10, 110, 29))
+        self.sma.setGeometry(QtCore.QRect(370, 40, 110, 29))
         self.sma.setObjectName("sma")
         self.chartLength = QtGui.QLabel(self.chartControls)
         self.chartLength.setGeometry(QtCore.QRect(50, 50, 71, 19))
         self.chartLength.setObjectName("chartLength")
         self.candlestick = QtGui.QPushButton(self.chartControls)
-        self.candlestick.setGeometry(QtCore.QRect(200, 10, 110, 29))
+        self.candlestick.setGeometry(QtCore.QRect(200, 40, 110, 29))
         self.candlestick.setObjectName("candlestick")
         self.ohlc = QtGui.QPushButton(self.chartControls)
         self.ohlc.setGeometry(QtCore.QRect(200, 80, 110, 29))
         self.ohlc.setObjectName("ohlc")
+        self.line = QtGui.QFrame(self.chartControls)
+        self.line.setGeometry(QtCore.QRect(160, 10, 16, 101))
+        self.line.setFrameShape(QtGui.QFrame.VLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.line_2 = QtGui.QFrame(self.chartControls)
+        self.line_2.setGeometry(QtCore.QRect(330, 10, 16, 101))
+        self.line_2.setFrameShape(QtGui.QFrame.VLine)
+        self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_2.setObjectName("line_2")
+        self.label = QtGui.QLabel(self.chartControls)
+        self.label.setGeometry(QtCore.QRect(210, 10, 91, 19))
+        self.label.setObjectName("label")
+        self.label_2 = QtGui.QLabel(self.chartControls)
+        self.label_2.setGeometry(QtCore.QRect(370, 10, 161, 19))
+        self.label_2.setObjectName("label_2")
         self.tabWidget.addTab(self.chartControls, "")
         self.account = QtGui.QWidget()
         self.account.setObjectName("account")
@@ -92,6 +108,8 @@ class Ui_chartWidget(object):
         self.chartLength.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.candlestick.setText(QtGui.QApplication.translate("chartWidget", "Candlestick", None, QtGui.QApplication.UnicodeUTF8))
         self.ohlc.setText(QtGui.QApplication.translate("chartWidget", "OHLC", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("chartWidget", "Chart Style", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("chartWidget", "Technical Indicators:", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.chartControls), QtGui.QApplication.translate("chartWidget", "Chart Controls", None, QtGui.QApplication.UnicodeUTF8))
         self.buy.setText(QtGui.QApplication.translate("chartWidget", "Buy", None, QtGui.QApplication.UnicodeUTF8))
         self.sell.setText(QtGui.QApplication.translate("chartWidget", "Sell", None, QtGui.QApplication.UnicodeUTF8))
