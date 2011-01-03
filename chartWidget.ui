@@ -33,7 +33,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="chartControls">
     <attribute name="title">
@@ -68,7 +68,7 @@
     <widget class="QPushButton" name="sma">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>380</x>
        <y>10</y>
        <width>110</width>
        <height>29</height>
@@ -89,6 +89,32 @@
      </property>
      <property name="text">
       <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="candlestick">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>10</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Candlestick</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ohlc">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>80</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>OHLC</string>
      </property>
     </widget>
    </widget>

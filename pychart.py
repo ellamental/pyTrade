@@ -134,6 +134,8 @@ class Main(QtGui.QWidget):
     self.data = Data("msft")
     self.currentDay = 1
     self.chartLength = 60
+    ## TODO: Change following ugly hack to set the data.high + data.low variables
+    self.data.adjustPrices(self.currentDay, self.chartLength)
 
     ## Maximize screen 
     #self.setWindowState(QtCore.Qt.WindowMaximized)
@@ -150,11 +152,32 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onLoadSymbol)
-    
+    self.connect(self.ui.candlestick, QtCore.SIGNAL("clicked()"), self.onCandlestick)
+    self.connect(self.ui.ohlc, QtCore.SIGNAL("clicked()"), self.onOHLC)
+
     ## Defaults
+    self.chartStyle = self.drawCandlesticks
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
     self.ui.showBalance.setText(str(account.balance))
+
+
+
+  def drawOHLC(self, day, length):
+    d = self.data.adjustPrices(day, length)
+    offsetmod = screenWidth/len(d)
+    offset = screenWidth-offsetmod
+    
+    for ii, today in enumerate(d):
+
+      self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3])
+      self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], offsetmod/4, 1)
+      self.scene.addRect(offset+offsetmod/4, screenHeight-today[1], -(offsetmod/4), 1)
+      #b = self.scene.addRect(offset, screenHeight-today[1], offsetmod/2, today[1]-today[4], brush=b)
+      
+      #p = self.data.data[day+ii]
+      #b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+      offset -= offsetmod
 
 
   def drawCandlesticks(self, day, length):
@@ -205,8 +228,8 @@ class Main(QtGui.QWidget):
 
   def drawChart(self):
     self.drawLines(self.currentDay, self.chartLength)
-    self.drawCandlesticks(self.currentDay, self.chartLength)
-
+    #self.drawCandlesticks(self.currentDay, self.chartLength)
+    self.chartStyle(self.currentDay, self.chartLength)
 
 
 ###############################################################################
@@ -232,6 +255,19 @@ class Main(QtGui.QWidget):
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
 
+  def onCandlestick(self):
+    self.chartStyle = self.drawCandlesticks
+    self.scene.clear()
+    self.scene.update()
+    self.drawChart()
+    
+  def onOHLC(self):
+    self.chartStyle = self.drawOHLC
+    self.scene.clear()
+    self.scene.update()
+    self.drawChart()
+    
+    
 
 ###############################################################################
 ##  Time Controls

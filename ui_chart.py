@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Mon Jan  3 05:00:26 2011
+# Created: Mon Jan  3 05:34:26 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,11 +28,17 @@ class Ui_chartWidget(object):
         self.zoomOut.setGeometry(QtCore.QRect(30, 80, 110, 29))
         self.zoomOut.setObjectName("zoomOut")
         self.sma = QtGui.QPushButton(self.chartControls)
-        self.sma.setGeometry(QtCore.QRect(170, 10, 110, 29))
+        self.sma.setGeometry(QtCore.QRect(380, 10, 110, 29))
         self.sma.setObjectName("sma")
         self.chartLength = QtGui.QLabel(self.chartControls)
         self.chartLength.setGeometry(QtCore.QRect(50, 50, 71, 19))
         self.chartLength.setObjectName("chartLength")
+        self.candlestick = QtGui.QPushButton(self.chartControls)
+        self.candlestick.setGeometry(QtCore.QRect(200, 10, 110, 29))
+        self.candlestick.setObjectName("candlestick")
+        self.ohlc = QtGui.QPushButton(self.chartControls)
+        self.ohlc.setGeometry(QtCore.QRect(200, 80, 110, 29))
+        self.ohlc.setObjectName("ohlc")
         self.tabWidget.addTab(self.chartControls, "")
         self.account = QtGui.QWidget()
         self.account.setObjectName("account")
@@ -75,7 +81,7 @@ class Ui_chartWidget(object):
         self.prevDay.setObjectName("prevDay")
 
         self.retranslateUi(chartWidget)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
 
     def retranslateUi(self, chartWidget):
@@ -84,6 +90,8 @@ class Ui_chartWidget(object):
         self.zoomOut.setText(QtGui.QApplication.translate("chartWidget", "Zoom Out", None, QtGui.QApplication.UnicodeUTF8))
         self.sma.setText(QtGui.QApplication.translate("chartWidget", "sma", None, QtGui.QApplication.UnicodeUTF8))
         self.chartLength.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
+        self.candlestick.setText(QtGui.QApplication.translate("chartWidget", "Candlestick", None, QtGui.QApplication.UnicodeUTF8))
+        self.ohlc.setText(QtGui.QApplication.translate("chartWidget", "OHLC", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.chartControls), QtGui.QApplication.translate("chartWidget", "Chart Controls", None, QtGui.QApplication.UnicodeUTF8))
         self.buy.setText(QtGui.QApplication.translate("chartWidget", "Buy", None, QtGui.QApplication.UnicodeUTF8))
         self.sell.setText(QtGui.QApplication.translate("chartWidget", "Sell", None, QtGui.QApplication.UnicodeUTF8))
