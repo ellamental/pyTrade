@@ -10,13 +10,12 @@
 ##   pyuic4 -o ui_chart.py -x chartWidget.ui
 ##   
 ## TODO:
-## Chart gets screwed up when it is zoomed out too far.
 ## Allow screen resizing that also resizes the chart
 ## Add bottom bar for showing volume and other indicators
 ## Try:  INDEXDJX:.DJI
 ###############################################################################
 
-
+from __future__ import division
 import os,sys,time
 
 from PyQt4 import QtCore, QtGui
@@ -201,7 +200,7 @@ class ChartView(QtGui.QGraphicsView):
     d = self.data.adjustData(day, length)
     offsetmod = screenWidth/len(d)
     offset = screenWidth-offsetmod
-    
+
     for ii, today in enumerate(d):
       if today[1] > today[4]:
         b = QtGui.QColor(50,50,50,250)
