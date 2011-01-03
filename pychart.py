@@ -169,14 +169,12 @@ class Main(QtGui.QWidget):
     offset = screenWidth-offsetmod
     
     for ii, today in enumerate(d):
-
-      self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3])
+      b = self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3])
       self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], offsetmod/4, 1)
       self.scene.addRect(offset+offsetmod/4, screenHeight-today[1], -(offsetmod/4), 1)
-      #b = self.scene.addRect(offset, screenHeight-today[1], offsetmod/2, today[1]-today[4], brush=b)
       
-      #p = self.data.data[day+ii]
-      #b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+      p = self.data.data[day+ii]
+      b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
       offset -= offsetmod
 
 
