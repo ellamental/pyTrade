@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="chartControls">
     <attribute name="title">
@@ -32,7 +32,7 @@
     <widget class="QPushButton" name="zoomIn">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>290</x>
        <y>10</y>
        <width>110</width>
        <height>29</height>
@@ -45,7 +45,7 @@
     <widget class="QPushButton" name="zoomOut">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>290</x>
        <y>80</y>
        <width>110</width>
        <height>29</height>
@@ -55,23 +55,10 @@
       <string>Zoom Out</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="sma">
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>40</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>sma</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="chartLength">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>310</x>
        <y>50</y>
        <width>71</width>
        <height>19</height>
@@ -84,7 +71,7 @@
     <widget class="QPushButton" name="candlestick">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>460</x>
        <y>40</y>
        <width>110</width>
        <height>29</height>
@@ -97,7 +84,7 @@
     <widget class="QPushButton" name="ohlc">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>460</x>
        <y>80</y>
        <width>110</width>
        <height>29</height>
@@ -110,7 +97,7 @@
     <widget class="Line" name="line">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>420</x>
        <y>10</y>
        <width>16</width>
        <height>101</height>
@@ -123,7 +110,7 @@
     <widget class="Line" name="line_2">
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>590</x>
        <y>10</y>
        <width>16</width>
        <height>101</height>
@@ -136,7 +123,7 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>470</x>
        <y>10</y>
        <width>91</width>
        <height>19</height>
@@ -146,17 +133,53 @@
       <string>Chart Style</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLineEdit" name="symbolEntry">
      <property name="geometry">
       <rect>
-       <x>370</x>
-       <y>10</y>
-       <width>161</width>
-       <height>19</height>
+       <x>20</x>
+       <y>30</y>
+       <width>221</width>
+       <height>29</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadSymbol">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>110</width>
+       <height>29</height>
       </rect>
      </property>
      <property name="text">
-      <string>Technical Indicators:</string>
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="newTab">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>70</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>New Tab</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_4">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>10</y>
+       <width>16</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </widget>
@@ -167,8 +190,8 @@
     <widget class="QPushButton" name="buy">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>60</y>
+       <x>20</x>
+       <y>30</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -180,8 +203,8 @@
     <widget class="QPushButton" name="sell">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>60</y>
+       <x>20</x>
+       <y>70</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -193,9 +216,9 @@
     <widget class="QLabel" name="showBalance">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>30</y>
-       <width>101</width>
+       <x>440</x>
+       <y>40</y>
+       <width>111</width>
        <height>20</height>
       </rect>
      </property>
@@ -203,12 +226,12 @@
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="balanceLabel">
+    <widget class="QLabel" name="label_balance">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>30</y>
-       <width>71</width>
+       <x>310</x>
+       <y>40</y>
+       <width>81</width>
        <height>19</height>
       </rect>
      </property>
@@ -216,58 +239,140 @@
       <string>Balance:</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="tab_3">
-    <attribute name="title">
-     <string>Watchlist</string>
-    </attribute>
-    <widget class="QLineEdit" name="symbolEntry">
+    <widget class="QLineEdit" name="buyShares">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>140</x>
+       <y>30</y>
+       <width>113</width>
+       <height>29</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sellShares">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>70</y>
+       <width>113</width>
+       <height>29</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="Line" name="line_3">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>10</y>
+       <width>16</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_portfolioValue">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
        <y>20</y>
-       <width>221</width>
-       <height>29</height>
+       <width>121</width>
+       <height>19</height>
       </rect>
      </property>
+     <property name="text">
+      <string>Portfolio Value:</string>
+     </property>
     </widget>
-    <widget class="QPushButton" name="loadSymbol">
+    <widget class="QLabel" name="showPortfolioValue">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>440</x>
+       <y>20</y>
+       <width>121</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_portfolio">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
        <y>60</y>
-       <width>110</width>
-       <height>29</height>
+       <width>81</width>
+       <height>19</height>
       </rect>
      </property>
      <property name="text">
-      <string>Load</string>
+      <string>Portfolio:</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="addSymbol">
+    <widget class="QLabel" name="showPortfolio">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>440</x>
        <y>60</y>
-       <width>110</width>
-       <height>29</height>
+       <width>381</width>
+       <height>61</height>
       </rect>
      </property>
      <property name="text">
-      <string>Add</string>
+      <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="newTab">
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>Technical Indicators</string>
+    </attribute>
+    <widget class="QPushButton" name="macd">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>90</y>
+       <x>150</x>
+       <y>30</y>
        <width>110</width>
        <height>29</height>
       </rect>
      </property>
      <property name="text">
-      <string>New Tab</string>
+      <string>macd</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="macdLength">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>70</y>
+       <width>113</width>
+       <height>29</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="sma">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sma</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="smaLength">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>113</width>
+       <height>29</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -276,7 +381,7 @@
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>930</y>
+     <y>940</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -289,7 +394,7 @@
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>930</y>
+     <y>940</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -302,7 +407,7 @@
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>980</y>
+     <y>990</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -315,7 +420,7 @@
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>980</y>
+     <y>990</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -356,6 +461,19 @@
      </layout>
     </widget>
    </widget>
+  </widget>
+  <widget class="QLabel" name="currentDayLabel">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>910</y>
+     <width>101</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
   </widget>
  </widget>
  <resources/>

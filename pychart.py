@@ -11,9 +11,9 @@
 ##   
 ## TODO:
 ## Chart gets screwed up when it is zoomed out too far.
-## Make time controls into a seperate widget
 ## Allow screen resizing that also resizes the chart
 ## Add bottom bar for showing volume and other indicators
+## Try:  INDEXDJX:.DJI
 ###############################################################################
 
 
@@ -35,14 +35,39 @@ class Account():
   def __init__(self):
     self.balance = 10000
     self.shares = 0
-    
-  def buy(self, price):
-    self.shares = self.balance // price
-    self.balance -= self.shares * price
+    self.portfolio = {"msft":100}
 
-  def sell(self, price):
-    self.balance += self.shares * price
-    self.shares = 0
+  def getPrice(self, symbol):
+    d = [ii.data for ii in chartViews if ii.symbol == symbol]
+    if d: 
+      return d[0].data[time.currentDay-1][1]
+    else:
+      d = Data(symbol)
+      return d.currentDay(time.currentDay)[1].data[time.currentDay-1][1]
+  
+  def buy(self, symbol, shares=False):
+    price = self.getPrice(symbol)
+    maxshares = int(self.balance / price)
+    if not shares: shares = maxshares
+    elif int(shares) > maxshares: shares = maxshares
+    else: shares = int(shares)
+    self.balance -= shares*price
+    self.portfolio[symbol] = self.portfolio.get(symbol, 0) + shares
+
+  def sell(self, symbol, shares=False):
+    price = self.getPrice(symbol)
+    if not shares: shares = self.portfolio[symbol]
+    elif int(shares) > self.portfolio[symbol]: shares = self.portfolio[symbol]
+    else: shares = int(shares)
+    self.portfolio[symbol] -= shares
+    self.balance += shares * price
+
+  def portfolioValue(self):
+    v = self.balance
+    for key, item in self.portfolio.items():
+      v += item * self.getPrice(key)
+    return v
+
 
 
 
@@ -105,11 +130,6 @@ class Time():
 
 
 
-time = Time()
-account = Account()
-chartViews = []
-screenWidth = 1024
-screenHeight = 800
 
 
 
@@ -152,6 +172,7 @@ class ChartView(QtGui.QGraphicsView):
   def __init__(self, scene, symbol):
     QtGui.QGraphicsView.__init__(self)
     
+    self.symbol = symbol
     self.scene = scene
     self.setScene(self.scene)
     self.data = Data(symbol)
@@ -261,6 +282,7 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.buy, QtCore.SIGNAL("clicked()"), self.onBuy)
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
+    self.connect(self.ui.macd, QtCore.SIGNAL("clicked()"), self.onMACD)
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
     self.connect(self.ui.candlestick, QtCore.SIGNAL("clicked()"), self.onCandlestick)
@@ -273,7 +295,8 @@ class Main(QtGui.QWidget):
 
     ## Defaults
     self.ui.chartLength.setText(str(self.chartView.chartLength))
-    self.ui.showBalance.setText(str(account.balance))
+    self.updateAccounts()
+    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
 
 
 
@@ -332,18 +355,22 @@ class Main(QtGui.QWidget):
 
   def onNextDay(self):
     time.currentDay -= 1
+    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
 
   def onPrevDay(self):
     time.currentDay += 1
+    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
     
   def onNext30(self):
     time.currentDay -= 30
+    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
 
   def onPrev30(self):
     time.currentDay += 30
+    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
 
 
@@ -352,13 +379,18 @@ class Main(QtGui.QWidget):
 ##  Buy/Sell, Stop/Limit, % Gain/Loss of last trade, % Gain/Loss Total, etc.
 ###############################################################################
 
-  def onBuy(self):
-    account.buy(self.chartView.data.currentDay(time.currentDay)[4])
+  def updateAccounts(self):
     self.ui.showBalance.setText(str(account.balance))
+    self.ui.showPortfolio.setText(str(account.portfolio))
+    self.ui.showPortfolioValue.setText(str(account.portfolioValue()))
+
+  def onBuy(self):
+    account.buy(self.chartView.symbol, self.ui.buyShares.text())
+    self.updateAccounts()
   
   def onSell(self):
-    account.sell(self.chartView.data.currentDay(time.currentDay)[4])
-    self.ui.showBalance.setText(str(account.balance))
+    account.sell(self.chartView.symbol, self.ui.sellShares.text())
+    self.updateAccounts()
 
 
 ###############################################################################
@@ -367,8 +399,17 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def onSMA(self):
-    self.chartView.drawLine(self.chartView.data.sma(15, time.currentDay, self.chartView.chartLength))
+    days = int(self.ui.smaLength.text())
+    self.ui.smaLength.clear()
+    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength))
 
+  def onMACD(self):
+    shortLength = int(self.ui.smaLength.text())
+    longLength = int(self.ui.macdLength.text())
+    self.ui.smaLength.clear()
+    self.ui.macdLength.clear()
+    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength))
+    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength))
 
 ###############################################################################
 ##  Watchlist Controls
@@ -386,6 +427,12 @@ class Main(QtGui.QWidget):
 
 
 if __name__ == "__main__":
+  time = Time()
+  account = Account()
+  chartViews = []
+  screenWidth = 1024
+  screenHeight = 800
+
   app = QtGui.QApplication(sys.argv)
   window=Main()
   window.show()
