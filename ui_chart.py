@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Mon Jan  3 05:49:03 2011
+# Created: Mon Jan  3 08:21:49 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,9 +13,6 @@ class Ui_chartWidget(object):
     def setupUi(self, chartWidget):
         chartWidget.setObjectName("chartWidget")
         chartWidget.resize(1076, 1056)
-        self.chart = QtGui.QGraphicsView(chartWidget)
-        self.chart.setGeometry(QtCore.QRect(0, 0, 1071, 871))
-        self.chart.setObjectName("chart")
         self.tabWidget = QtGui.QTabWidget(chartWidget)
         self.tabWidget.setGeometry(QtCore.QRect(0, 870, 841, 161))
         self.tabWidget.setObjectName("tabWidget")
@@ -82,6 +79,9 @@ class Ui_chartWidget(object):
         self.addSymbol = QtGui.QPushButton(self.tab_3)
         self.addSymbol.setGeometry(QtCore.QRect(120, 60, 110, 29))
         self.addSymbol.setObjectName("addSymbol")
+        self.newTab = QtGui.QPushButton(self.tab_3)
+        self.newTab.setGeometry(QtCore.QRect(60, 90, 110, 29))
+        self.newTab.setObjectName("newTab")
         self.tabWidget.addTab(self.tab_3, "")
         self.nextDay = QtGui.QPushButton(chartWidget)
         self.nextDay.setGeometry(QtCore.QRect(850, 930, 110, 29))
@@ -95,9 +95,24 @@ class Ui_chartWidget(object):
         self.prevDay = QtGui.QPushButton(chartWidget)
         self.prevDay.setGeometry(QtCore.QRect(850, 980, 110, 29))
         self.prevDay.setObjectName("prevDay")
+        self.chartTabs = QtGui.QTabWidget(chartWidget)
+        self.chartTabs.setGeometry(QtCore.QRect(0, 0, 1071, 871))
+        self.chartTabs.setObjectName("chartTabs")
+        self.firstChart = QtGui.QWidget()
+        self.firstChart.setObjectName("firstChart")
+        self.horizontalLayoutWidget = QtGui.QWidget(self.firstChart)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(-10, -10, 1081, 851))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.chart = QtGui.QGraphicsView(self.horizontalLayoutWidget)
+        self.chart.setObjectName("chart")
+        self.horizontalLayout.addWidget(self.chart)
+        self.chartTabs.addTab(self.firstChart, "")
 
         self.retranslateUi(chartWidget)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
+        self.chartTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
 
     def retranslateUi(self, chartWidget):
@@ -118,11 +133,13 @@ class Ui_chartWidget(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.account), QtGui.QApplication.translate("chartWidget", "Account", None, QtGui.QApplication.UnicodeUTF8))
         self.loadSymbol.setText(QtGui.QApplication.translate("chartWidget", "Load", None, QtGui.QApplication.UnicodeUTF8))
         self.addSymbol.setText(QtGui.QApplication.translate("chartWidget", "Add", None, QtGui.QApplication.UnicodeUTF8))
+        self.newTab.setText(QtGui.QApplication.translate("chartWidget", "New Tab", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("chartWidget", "Watchlist", None, QtGui.QApplication.UnicodeUTF8))
         self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
         self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
         self.prev30.setText(QtGui.QApplication.translate("chartWidget", "Prev 30", None, QtGui.QApplication.UnicodeUTF8))
         self.prevDay.setText(QtGui.QApplication.translate("chartWidget", "Prev Day", None, QtGui.QApplication.UnicodeUTF8))
+        self.chartTabs.setTabText(self.chartTabs.indexOf(self.firstChart), QtGui.QApplication.translate("chartWidget", "MSFT", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":
