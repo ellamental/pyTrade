@@ -237,9 +237,9 @@ class Main(QtGui.QWidget):
     adjusted = self.data.adjustPrices(lineList)
     for ii, price in enumerate(adjusted):
       self.scene.addLine(0, screenHeight-price, screenWidth, screenHeight-price)
-      # BUG: For some reason adding these two lines breaks drawing trendlines
-      #t = self.scene.addText(str(lineList[ii]))
-      #t.setPos(screenWidth-30, screenHeight-price)
+      # BUG: If scene.addText() is used drawing trendlines breaks, this is reproducable in a minimal example
+      t = self.scene.addSimpleText(str(lineList[ii]))
+      t.setPos(screenWidth-30, screenHeight-price)
     
 
   def drawChart(self):
