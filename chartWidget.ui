@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1078</width>
-    <height>974</height>
+    <width>1076</width>
+    <height>1056</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,11 +29,11 @@
      <x>0</x>
      <y>870</y>
      <width>841</width>
-     <height>101</height>
+     <height>161</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="chartControls">
     <attribute name="title">
@@ -42,8 +42,8 @@
     <widget class="QPushButton" name="zoomIn">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>30</y>
+       <x>30</x>
+       <y>10</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -55,8 +55,8 @@
     <widget class="QPushButton" name="zoomOut">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>30</y>
+       <x>30</x>
+       <y>80</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -68,8 +68,8 @@
     <widget class="QPushButton" name="sma">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>30</y>
+       <x>170</x>
+       <y>10</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -81,8 +81,8 @@
     <widget class="QLabel" name="chartLength">
      <property name="geometry">
       <rect>
-       <x>70</x>
-       <y>10</y>
+       <x>50</x>
+       <y>50</y>
        <width>71</width>
        <height>19</height>
       </rect>
@@ -99,8 +99,8 @@
     <widget class="QPushButton" name="buy">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>30</y>
+       <x>150</x>
+       <y>60</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -112,8 +112,8 @@
     <widget class="QPushButton" name="sell">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>30</y>
+       <x>30</x>
+       <y>60</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -125,8 +125,8 @@
     <widget class="QLabel" name="showBalance">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>10</y>
+       <x>160</x>
+       <y>30</y>
        <width>101</width>
        <height>20</height>
       </rect>
@@ -138,8 +138,8 @@
     <widget class="QLabel" name="balanceLabel">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>10</y>
+       <x>50</x>
+       <y>30</y>
        <width>71</width>
        <height>19</height>
       </rect>
@@ -149,12 +149,53 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Watchlist</string>
+    </attribute>
+    <widget class="QLineEdit" name="symbolEntry">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>221</width>
+       <height>29</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadSymbol">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="addSymbol">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>60</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QPushButton" name="nextDay">
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>890</y>
+     <y>930</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -167,7 +208,7 @@
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>890</y>
+     <y>930</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -180,7 +221,7 @@
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>940</y>
+     <y>980</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -193,7 +234,7 @@
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>940</y>
+     <y>980</y>
      <width>110</width>
      <height>29</height>
     </rect>

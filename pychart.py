@@ -5,7 +5,6 @@
 ## 
 ## A charting/paper trading program written in Python and Qt
 ## 
-## Currently this is only the chart widget, but more will follow
 ## 
 ## To produce a python module from QTDesigner:
 ##   pyuic4 -o ui_chart.py -x chartWidget.ui
@@ -27,6 +26,10 @@ from urllib import urlopen
 from ui_chart import Ui_chartWidget
 
 
+###############################################################################
+##  Account
+##  Buy/Sell, Stop/Limit, Account Balance, Percentage Gain/Loss, etc.
+###############################################################################
 
 class Account():
   def __init__(self):
@@ -41,6 +44,15 @@ class Account():
     self.balance += self.shares * price
     self.shares = 0
 
+
+
+###############################################################################
+##  Data
+##  Download and Access Data, Adjust Prices for Charting, Technical Indicator 
+##  Calculation
+##  TODO:
+##    Rename some of the methods to make more clear
+###############################################################################
 
 class Data():
   def __init__(self, symbol):
@@ -89,7 +101,14 @@ screenHeight = 860
 
 
 
-# Create a class for our main window
+###############################################################################
+##  Charting
+##  Draw candlesticks, ohlc, horizontal lines, moving average type lines
+##  TODO:
+##    Make into a chart widget instead of main window
+##    Add tabbed charts to allow having > 1 chart open
+###############################################################################
+
 class Main(QtGui.QWidget):
   def __init__(self):
     QtGui.QWidget.__init__(self)
@@ -129,7 +148,9 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.buy, QtCore.SIGNAL("clicked()"), self.onBuy)
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
-
+    self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
+    self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onLoadSymbol)
+    
     ## Defaults
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
@@ -186,6 +207,17 @@ class Main(QtGui.QWidget):
     self.drawLines(self.currentDay, self.chartLength)
     self.drawCandlesticks(self.currentDay, self.chartLength)
 
+
+
+###############################################################################
+## Event Handlers
+###############################################################################
+
+###############################################################################
+##  Chart Controls
+##  Zoom In/Out, Chart Style (ohlc, candlestick, etc), Normal/Log Scale, etc
+###############################################################################
+
   def onZoomIn(self):
     self.scene.clear()
     self.scene.update()
@@ -199,6 +231,12 @@ class Main(QtGui.QWidget):
     self.chartLength += 10
     self.drawChart()
     self.ui.chartLength.setText(str(self.chartLength))
+
+
+###############################################################################
+##  Time Controls
+##  Next/Prev Day
+###############################################################################
 
   def onNextDay(self):
     self.currentDay -= 1
@@ -224,6 +262,12 @@ class Main(QtGui.QWidget):
     self.scene.update()
     self.drawChart()
 
+
+###############################################################################
+##  Account Controls
+##  Buy/Sell, Stop/Limit, % Gain/Loss of last trade, % Gain/Loss Total, etc.
+###############################################################################
+
   def onBuy(self):
     account.buy(self.data.currentDay(self.currentDay)[4])
     self.ui.showBalance.setText(str(account.balance))
@@ -232,8 +276,36 @@ class Main(QtGui.QWidget):
     account.sell(self.data.currentDay(self.currentDay)[4])
     self.ui.showBalance.setText(str(account.balance))
 
+
+###############################################################################
+##  Technical Indicators
+##  Moving Averages, Bollinger Bands, RSI, Volume, etc
+###############################################################################
+
   def onSMA(self):
     self.drawLine(self.data.sma(15, self.currentDay, self.chartLength))
+
+
+###############################################################################
+##  Watchlist Controls
+##  Load Symbol, Add Symbol
+###############################################################################
+
+  
+  def onLoadSymbol(self):
+    self.scene.clear()
+    self.scene.update()
+    self.data = Data(str(self.ui.symbolEntry.text()))
+    self.ui.symbolEntry.clear()
+    self.drawChart()
+    
+
+
+
+###############################################################################
+##  Drawing
+##  Trendlines, Notes, etc
+###############################################################################
 
   def mousePress(self, event):
     x, y = event.scenePos().x(), event.scenePos().y()
@@ -248,6 +320,8 @@ class Main(QtGui.QWidget):
     epx = event.scenePos().x()
     epy = event.scenePos().y()
     self.newLine.setLine(epx, epy, self.newLineX, self.newLineY)
+
+
 
 
 if __name__ == "__main__":
