@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Tue Jan  4 04:06:29 2011
+# Created: Tue Jan  4 04:39:46 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -139,16 +139,16 @@ class Ui_chartWidget(object):
         self.smaLength.setObjectName("smaLength")
         self.tabWidget.addTab(self.tab_4, "")
         self.nextDay = QtGui.QPushButton(chartWidget)
-        self.nextDay.setGeometry(QtCore.QRect(850, 940, 110, 29))
+        self.nextDay.setGeometry(QtCore.QRect(850, 970, 110, 29))
         self.nextDay.setObjectName("nextDay")
         self.next30 = QtGui.QPushButton(chartWidget)
-        self.next30.setGeometry(QtCore.QRect(960, 940, 110, 29))
+        self.next30.setGeometry(QtCore.QRect(960, 970, 110, 29))
         self.next30.setObjectName("next30")
         self.prev30 = QtGui.QPushButton(chartWidget)
-        self.prev30.setGeometry(QtCore.QRect(960, 990, 110, 29))
+        self.prev30.setGeometry(QtCore.QRect(960, 1000, 110, 29))
         self.prev30.setObjectName("prev30")
         self.prevDay = QtGui.QPushButton(chartWidget)
-        self.prevDay.setGeometry(QtCore.QRect(850, 990, 110, 29))
+        self.prevDay.setGeometry(QtCore.QRect(850, 1000, 110, 29))
         self.prevDay.setObjectName("prevDay")
         self.chartTabs = QtGui.QTabWidget(chartWidget)
         self.chartTabs.setGeometry(QtCore.QRect(0, 0, 1071, 871))
@@ -165,8 +165,14 @@ class Ui_chartWidget(object):
         self.horizontalLayout.addWidget(self.chart)
         self.chartTabs.addTab(self.firstChart, "")
         self.currentDayLabel = QtGui.QLabel(chartWidget)
-        self.currentDayLabel.setGeometry(QtCore.QRect(910, 910, 101, 19))
+        self.currentDayLabel.setGeometry(QtCore.QRect(920, 890, 101, 19))
         self.currentDayLabel.setObjectName("currentDayLabel")
+        self.daysLeft = QtGui.QLCDNumber(chartWidget)
+        self.daysLeft.setGeometry(QtCore.QRect(860, 910, 91, 51))
+        self.daysLeft.setObjectName("daysLeft")
+        self.label_daysLeft = QtGui.QLabel(chartWidget)
+        self.label_daysLeft.setGeometry(QtCore.QRect(960, 930, 81, 21))
+        self.label_daysLeft.setObjectName("label_daysLeft")
 
         self.retranslateUi(chartWidget)
         self.tabWidget.setCurrentIndex(0)
@@ -208,6 +214,7 @@ class Ui_chartWidget(object):
         self.prevDay.setText(QtGui.QApplication.translate("chartWidget", "Prev Day", None, QtGui.QApplication.UnicodeUTF8))
         self.chartTabs.setTabText(self.chartTabs.indexOf(self.firstChart), QtGui.QApplication.translate("chartWidget", "MSFT", None, QtGui.QApplication.UnicodeUTF8))
         self.currentDayLabel.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_daysLeft.setText(QtGui.QApplication.translate("chartWidget", "Days Left", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":

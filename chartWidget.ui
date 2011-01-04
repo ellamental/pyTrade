@@ -479,7 +479,7 @@
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>940</y>
+     <y>970</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -492,7 +492,7 @@
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>940</y>
+     <y>970</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -505,7 +505,7 @@
    <property name="geometry">
     <rect>
      <x>960</x>
-     <y>990</y>
+     <y>1000</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -518,7 +518,7 @@
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>990</y>
+     <y>1000</y>
      <width>110</width>
      <height>29</height>
     </rect>
@@ -563,14 +563,37 @@
   <widget class="QLabel" name="currentDayLabel">
    <property name="geometry">
     <rect>
-     <x>910</x>
-     <y>910</y>
+     <x>920</x>
+     <y>890</y>
      <width>101</width>
      <height>19</height>
     </rect>
    </property>
    <property name="text">
     <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLCDNumber" name="daysLeft">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>910</y>
+     <width>91</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_daysLeft">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>930</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Days Left</string>
    </property>
   </widget>
  </widget>

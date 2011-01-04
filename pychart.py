@@ -11,9 +11,16 @@
 ##   
 ## TODO:
 ## 
+## Game
+## - Add game display (days left, total profit/loss, % profit/loss, goals, etc.)
+## - Add goals (eg 2% per month or 20% per year)
+## - Check for end of data when changing days
+## - Prev and Next buttons that don't advance days, just let you view chart.
+## 
 ## Chart
 ## - Allow screen resizing that also resizes the chart
 ## - Add bottom bar for showing volume and other indicators
+## - Add compare, see: http://bigcharts.marketwatch.com/advchart/frames/frames.asp?symb=&time=&freq=
 ## 
 ## Accounts
 ## - Alert user that they have pending orders.
@@ -470,31 +477,35 @@ class Main(QtGui.QWidget):
 ##  Next/Prev Day
 ###############################################################################
 
+  def updateTime(self):
+    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
+    self.ui.daysLeft.display(time.currentDay)
+
   def onNextDay(self):
     time.currentDay -= 1
-    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    self.updateTime()
     account.update()
     self.updateAccounts()
 
   def onPrevDay(self):
     time.currentDay += 1
-    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    self.updateTime()
     account.update()
     self.updateAccounts()
     
   def onNext30(self):
     time.currentDay -= 30
-    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    self.updateTime()
     account.update()
     self.updateAccounts()
 
   def onPrev30(self):
     time.currentDay += 30
-    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    self.updateTime()
     account.update()
     self.updateAccounts()
 
