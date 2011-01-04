@@ -10,9 +10,19 @@
 ##   pyuic4 -o ui_chart.py -x chartWidget.ui
 ##   
 ## TODO:
-## Allow screen resizing that also resizes the chart
-## Add bottom bar for showing volume and other indicators
-## Try:  INDEXDJX:.DJI
+## 
+## Chart
+## - Allow screen resizing that also resizes the chart
+## - Add bottom bar for showing volume and other indicators
+## 
+## Accounts
+## - Alert user that they have pending orders.
+## - Allow user to specify when their order should go through, today's close 
+##   or tomorrow's open or other.
+##
+## Bugs
+## - Try:  INDEXDJX:.DJI
+##   
 ###############################################################################
 
 from __future__ import division
@@ -34,17 +44,27 @@ class Account():
   def __init__(self):
     self.balance = 10000
     self.shares = 0
-    self.portfolio = {"msft":100}
+    self.portfolio = {}
+    self.pendingBuys = {}
+    self.pendingSales = {}
 
-  def getPrice(self, symbol):
+  def getPrice(self, symbol, ohlc=1):
     d = [ii.data for ii in chartViews if ii.symbol == symbol]
     if d: 
-      return d[0].data[time.currentDay-1][1]
+      return d[0].data[time.currentDay][ohlc]
     else:
       d = Data(symbol)
-      return d.currentDay(time.currentDay)[1].data[time.currentDay-1][1]
+      return d.currentDay(time.currentDay)[ohlc].data[time.currentDay][1]
+
+  def buy(self, symbol, shares, stop):
+    if stop: stop = float(stop)
+    self.pendingBuys[symbol] = (shares, stop)
   
-  def buy(self, symbol, shares=False):
+  def sell(self, symbol, shares, stop):
+    if stop: stop = float(stop)
+    self.pendingSales[symbol] = (shares, stop)
+
+  def buyShares(self, symbol, shares):
     price = self.getPrice(symbol)
     maxshares = int(self.balance / price)
     if not shares: shares = maxshares
@@ -52,14 +72,26 @@ class Account():
     else: shares = int(shares)
     self.balance -= shares*price
     self.portfolio[symbol] = self.portfolio.get(symbol, 0) + shares
+    del self.pendingBuys[symbol]
 
-  def sell(self, symbol, shares=False):
+  def sellShares(self, symbol, shares):
     price = self.getPrice(symbol)
     if not shares: shares = self.portfolio[symbol]
     elif int(shares) > self.portfolio[symbol]: shares = self.portfolio[symbol]
     else: shares = int(shares)
     self.portfolio[symbol] -= shares
     self.balance += shares * price
+    del self.pendingSales[symbol]
+  
+  def update(self):
+    for key, value in self.pendingSales.items():
+      p = self.getPrice(key, 3)
+      if p < value[1] or not value[1]:
+        self.sellShares(key, value[0])
+    for key, value in self.pendingBuys.items():
+      p = self.getPrice(key, 2)
+      if p > value[1] or not value[1]:
+        self.buyShares(key, value[1])
 
   def portfolioValue(self):
     v = self.balance
@@ -356,21 +388,29 @@ class Main(QtGui.QWidget):
     time.currentDay -= 1
     self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    account.update()
+    self.updateAccounts()
 
   def onPrevDay(self):
     time.currentDay += 1
     self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    account.update()
+    self.updateAccounts()
     
   def onNext30(self):
     time.currentDay -= 30
     self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    account.update()
+    self.updateAccounts()
 
   def onPrev30(self):
     time.currentDay += 30
     self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
     self.chartView.drawChart()
+    account.update()
+    self.updateAccounts()
 
 
 ###############################################################################
@@ -384,11 +424,11 @@ class Main(QtGui.QWidget):
     self.ui.showPortfolioValue.setText(str(account.portfolioValue()))
 
   def onBuy(self):
-    account.buy(self.chartView.symbol, self.ui.buyShares.text())
+    account.buy(self.chartView.symbol, self.ui.buyShares.text(), self.ui.buyStop.text())
     self.updateAccounts()
   
   def onSell(self):
-    account.sell(self.chartView.symbol, self.ui.sellShares.text())
+    account.sell(self.chartView.symbol, self.ui.sellShares.text(), self.ui.sellStop.text())
     self.updateAccounts()
 
 

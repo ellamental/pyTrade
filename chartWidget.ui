@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="chartControls">
     <attribute name="title">
@@ -191,7 +191,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>30</y>
+       <y>40</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -204,7 +204,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>70</y>
+       <y>80</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -216,7 +216,7 @@
     <widget class="QLabel" name="showBalance">
      <property name="geometry">
       <rect>
-       <x>440</x>
+       <x>550</x>
        <y>40</y>
        <width>111</width>
        <height>20</height>
@@ -229,7 +229,7 @@
     <widget class="QLabel" name="label_balance">
      <property name="geometry">
       <rect>
-       <x>310</x>
+       <x>420</x>
        <y>40</y>
        <width>81</width>
        <height>19</height>
@@ -243,7 +243,7 @@
      <property name="geometry">
       <rect>
        <x>140</x>
-       <y>30</y>
+       <y>40</y>
        <width>113</width>
        <height>29</height>
       </rect>
@@ -253,7 +253,7 @@
      <property name="geometry">
       <rect>
        <x>140</x>
-       <y>70</y>
+       <y>80</y>
        <width>113</width>
        <height>29</height>
       </rect>
@@ -262,7 +262,7 @@
     <widget class="Line" name="line_3">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>390</x>
        <y>10</y>
        <width>16</width>
        <height>111</height>
@@ -275,7 +275,7 @@
     <widget class="QLabel" name="label_portfolioValue">
      <property name="geometry">
       <rect>
-       <x>310</x>
+       <x>420</x>
        <y>20</y>
        <width>121</width>
        <height>19</height>
@@ -288,7 +288,7 @@
     <widget class="QLabel" name="showPortfolioValue">
      <property name="geometry">
       <rect>
-       <x>440</x>
+       <x>550</x>
        <y>20</y>
        <width>121</width>
        <height>19</height>
@@ -301,7 +301,7 @@
     <widget class="QLabel" name="label_portfolio">
      <property name="geometry">
       <rect>
-       <x>310</x>
+       <x>420</x>
        <y>60</y>
        <width>81</width>
        <height>19</height>
@@ -314,14 +314,60 @@
     <widget class="QLabel" name="showPortfolio">
      <property name="geometry">
       <rect>
-       <x>440</x>
+       <x>550</x>
        <y>60</y>
-       <width>381</width>
+       <width>161</width>
        <height>61</height>
       </rect>
      </property>
      <property name="text">
       <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="buyStop">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>40</y>
+       <width>113</width>
+       <height>29</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sellStop">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>80</y>
+       <width>113</width>
+       <height>29</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_shares">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>10</y>
+       <width>71</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Shares</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_stopPrice">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>10</y>
+       <width>81</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop Price</string>
      </property>
     </widget>
    </widget>
