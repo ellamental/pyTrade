@@ -165,20 +165,22 @@ class Data():
 
   def forEachPeriod(self, fun, period, day, length, ohlc=4):
     d = self.data[day:day+length+period]
-    return [fun([ii[ohlc] for ii in d[c:c+period]]) for c in range(length)]
+    return [fun([ii for ii in d[c:c+period]]) for c in range(length)]
 
   def sma(self, period, day, length):
-    return self.forEachPeriod(lambda x: sum(x)/period, period, day, length)
+    return self.forEachPeriod(lambda x: sum([ii[4] for ii in x])/period, period, day, length)
   
   def bollingerBands(self, period, day, length):
     s = self.sma(period, day, length)
-    std = self.forEachPeriod(lambda x: numpy.std(x)*2, period, day, length)
+    std = self.forEachPeriod(lambda x: numpy.std([ii[4] for ii in x])*2, period, day, length)
     stdBig = [a+d for a,d in zip(s, std)]
     stdSmall = [a-d for a,d in zip(s,std)]
     return (stdBig, s, stdSmall)
     
-    
-
+  def donchianChannel(self, period, day, length):
+    h = self.forEachPeriod(lambda x: max([ii[2] for ii in x]), period, day, length)
+    l = self.forEachPeriod(lambda x: min([ii[3] for ii in x]), period, day, length)
+    return (l,h)
 
 
 ###############################################################################
@@ -403,6 +405,7 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
     self.connect(self.ui.macd, QtCore.SIGNAL("clicked()"), self.onMACD)
     self.connect(self.ui.bollingerBands, QtCore.SIGNAL("clicked()"), self.onBollingerBands)
+    self.connect(self.ui.donchianChannel, QtCore.SIGNAL("clicked()"), self.onDonchianChannel)
 
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
@@ -604,8 +607,12 @@ class Main(QtGui.QWidget):
     self.chartView.drawLine(d[1], "blue")
     self.chartView.drawLine(d[2], "green")
    
-
-
+  def onDonchianChannel(self):
+    p = int(self.ui.shortPeriod.text())
+    self.ui.shortPeriod.clear()
+    d = self.chartView.data.donchianChannel(p, time.currentDay, self.chartView.chartLength)
+    self.chartView.drawLine(d[0], "red")
+    self.chartView.drawLine(d[1], "green")
 
 
 if __name__ == "__main__":

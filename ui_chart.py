@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Tue Jan  4 12:25:35 2011
+# Created: Tue Jan  4 12:53:56 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -126,19 +126,19 @@ class Ui_chartWidget(object):
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.macd = QtGui.QPushButton(self.tab_4)
-        self.macd.setGeometry(QtCore.QRect(20, 50, 110, 29))
+        self.macd.setGeometry(QtCore.QRect(20, 30, 110, 29))
         self.macd.setObjectName("macd")
         self.longPeriod = QtGui.QLineEdit(self.tab_4)
         self.longPeriod.setGeometry(QtCore.QRect(300, 60, 113, 29))
         self.longPeriod.setObjectName("longPeriod")
         self.sma = QtGui.QPushButton(self.tab_4)
-        self.sma.setGeometry(QtCore.QRect(20, 20, 110, 29))
+        self.sma.setGeometry(QtCore.QRect(20, 0, 110, 29))
         self.sma.setObjectName("sma")
         self.shortPeriod = QtGui.QLineEdit(self.tab_4)
         self.shortPeriod.setGeometry(QtCore.QRect(300, 20, 113, 29))
         self.shortPeriod.setObjectName("shortPeriod")
         self.bollingerBands = QtGui.QPushButton(self.tab_4)
-        self.bollingerBands.setGeometry(QtCore.QRect(10, 80, 131, 29))
+        self.bollingerBands.setGeometry(QtCore.QRect(10, 60, 131, 29))
         self.bollingerBands.setObjectName("bollingerBands")
         self.label_shortPeriod = QtGui.QLabel(self.tab_4)
         self.label_shortPeriod.setGeometry(QtCore.QRect(190, 18, 111, 31))
@@ -151,6 +151,9 @@ class Ui_chartWidget(object):
         self.line_10.setFrameShape(QtGui.QFrame.VLine)
         self.line_10.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_10.setObjectName("line_10")
+        self.donchianChannel = QtGui.QPushButton(self.tab_4)
+        self.donchianChannel.setGeometry(QtCore.QRect(-1, 90, 151, 29))
+        self.donchianChannel.setObjectName("donchianChannel")
         self.tabWidget.addTab(self.tab_4, "")
         self.nextDay = QtGui.QPushButton(chartWidget)
         self.nextDay.setGeometry(QtCore.QRect(850, 970, 110, 29))
@@ -331,6 +334,7 @@ class Ui_chartWidget(object):
         self.bollingerBands.setText(QtGui.QApplication.translate("chartWidget", "Bollinger Bands", None, QtGui.QApplication.UnicodeUTF8))
         self.label_shortPeriod.setText(QtGui.QApplication.translate("chartWidget", "Short Period:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_longPeriod.setText(QtGui.QApplication.translate("chartWidget", "Long Period:", None, QtGui.QApplication.UnicodeUTF8))
+        self.donchianChannel.setText(QtGui.QApplication.translate("chartWidget", "donchianChannel", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate("chartWidget", "Technical Indicators", None, QtGui.QApplication.UnicodeUTF8))
         self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
         self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
