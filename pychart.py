@@ -485,6 +485,20 @@ class Main(QtGui.QWidget):
     self.chartView.drawChart()
 
 
+###############################################################################
+##  Current Day Display
+##  Date, Open, High, Low, Close
+###############################################################################
+
+  def updateCurrentDayDisplay(self):
+    todayData = self.chartView.data.currentDay(time.currentDay)
+    self.ui.currentDayDate.setText(todayData[0])
+    self.ui.currentDayOpen.setText(str(todayData[1]))
+    self.ui.currentDayHigh.setText(str(todayData[2]))
+    self.ui.currentDayLow.setText(str(todayData[3]))
+    self.ui.currentDayClose.setText(str(todayData[4]))
+    self.ui.currentDayVolume.setText(str(todayData[5]))
+
 
 ###############################################################################
 ##  Time Controls
@@ -492,7 +506,7 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def updateTime(self):
-    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
+    self.updateCurrentDayDisplay()
     self.ui.daysLeft.display(time.currentDay)
 
   def onNextDay(self):
