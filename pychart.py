@@ -22,6 +22,7 @@
 ## - Add bottom bar for showing volume and other indicators
 ## - Add compare, see: http://bigcharts.marketwatch.com/advchart/frames/frames.asp?symb=&time=&freq=
 ## - Add point and figure chart view
+## - Add support for symbol lookup
 ## 
 ## Accounts
 ## - Alert user that they have pending orders.
@@ -104,7 +105,7 @@ class Account():
     for key, value in self.pendingBuys.items():
       p = self.getPrice(key, 2)
       if p > value[1] or not value[1]:
-        self.buyShares(key, value[1])
+        self.buyShares(key, value[0])
 
   def portfolioValue(self):
     v = self.balance
@@ -564,10 +565,16 @@ class Main(QtGui.QWidget):
 
   def onBuy(self):
     account.buy(self.chartView.symbol, self.ui.buyShares.text(), self.ui.buyStop.text())
+    self.ui.buyShares.clear()
+    # TODO: Add code in to view pending orders, this should be cleared
+    #self.ui.buyStop.clear() 
     self.update()
   
   def onSell(self):
     account.sell(self.chartView.symbol, self.ui.sellShares.text(), self.ui.sellStop.text())
+    self.ui.sellShares.clear()
+    # TODO: Add code in to view pending orders, this should be cleared
+    #self.ui.sellStop.clear() 
     self.update()
 
 
@@ -577,21 +584,21 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def onSMA(self):
-    days = int(self.ui.smaLength.text())
-    self.ui.smaLength.clear()
+    days = int(self.ui.shortPeriod.text())
+    self.ui.shortPeriod.clear()
     self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), "green")
 
   def onMACD(self):
-    shortLength = int(self.ui.smaLength.text())
-    longLength = int(self.ui.macdLength.text())
-    self.ui.smaLength.clear()
-    self.ui.macdLength.clear()
+    shortLength = int(self.ui.shortPeriod.text())
+    longLength = int(self.ui.longPeriod.text())
+    self.ui.shortPeriod.clear()
+    self.ui.longPeriod.clear()
     self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength), "red")
     self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength), "blue")
 
   def onBollingerBands(self):
-    l = int(self.ui.smaLength.text())
-    self.ui.smaLength.clear()
+    l = int(self.ui.shortPeriod.text())
+    self.ui.shortPeriod.clear()
     d = self.chartView.data.bollingerBands(l, time.currentDay, self.chartView.chartLength)
     self.chartView.drawLine(d[0], "red")
     self.chartView.drawLine(d[1], "blue")

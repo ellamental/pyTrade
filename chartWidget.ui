@@ -430,8 +430,8 @@
     <widget class="QPushButton" name="macd">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>30</y>
+       <x>20</x>
+       <y>50</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -440,11 +440,11 @@
       <string>macd</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="macdLength">
+    <widget class="QLineEdit" name="longPeriod">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>70</y>
+       <x>300</x>
+       <y>60</y>
        <width>113</width>
        <height>29</height>
       </rect>
@@ -454,7 +454,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>30</y>
+       <y>20</y>
        <width>110</width>
        <height>29</height>
       </rect>
@@ -463,11 +463,11 @@
       <string>sma</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="smaLength">
+    <widget class="QLineEdit" name="shortPeriod">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>70</y>
+       <x>300</x>
+       <y>20</y>
        <width>113</width>
        <height>29</height>
       </rect>
@@ -476,14 +476,53 @@
     <widget class="QPushButton" name="bollingerBands">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>30</y>
+       <x>10</x>
+       <y>80</y>
        <width>131</width>
        <height>29</height>
       </rect>
      </property>
      <property name="text">
       <string>Bollinger Bands</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_shortPeriod">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>18</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Short Period:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_longPeriod">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>58</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Long Period:</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_10">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>10</y>
+       <width>20</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </widget>
