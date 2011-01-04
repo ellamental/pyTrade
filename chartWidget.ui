@@ -443,7 +443,7 @@
     <widget class="QLineEdit" name="longPeriod">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>510</x>
        <y>60</y>
        <width>113</width>
        <height>29</height>
@@ -466,7 +466,7 @@
     <widget class="QLineEdit" name="shortPeriod">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>510</x>
        <y>20</y>
        <width>113</width>
        <height>29</height>
@@ -489,7 +489,7 @@
     <widget class="QLabel" name="label_shortPeriod">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>400</x>
        <y>18</y>
        <width>111</width>
        <height>31</height>
@@ -502,7 +502,7 @@
     <widget class="QLabel" name="label_longPeriod">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>400</x>
        <y>58</y>
        <width>111</width>
        <height>31</height>
@@ -515,7 +515,7 @@
     <widget class="Line" name="line_10">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>370</x>
        <y>10</y>
        <width>20</width>
        <height>101</height>
@@ -536,6 +536,67 @@
      </property>
      <property name="text">
       <string>donchianChannel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="wma">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>0</y>
+       <width>110</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>wma</string>
+     </property>
+    </widget>
+    <widget class="KColorButton" name="shortPeriodColor">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>20</y>
+       <width>58</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="color">
+      <color>
+       <red>255</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="defaultColor">
+      <color>
+       <red>0</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+    </widget>
+    <widget class="KColorButton" name="longPeriodColor">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>60</y>
+       <width>58</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="color">
+      <color>
+       <red>0</red>
+       <green>0</green>
+       <blue>255</blue>
+      </color>
+     </property>
+     <property name="defaultColor">
+      <color>
+       <red>255</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
      </property>
     </widget>
    </widget>
@@ -906,6 +967,13 @@
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KColorButton</class>
+   <extends>QPushButton</extends>
+   <header>kcolorbutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

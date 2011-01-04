@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Tue Jan  4 12:53:56 2011
+# Created: Tue Jan  4 14:53:28 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -129,31 +129,44 @@ class Ui_chartWidget(object):
         self.macd.setGeometry(QtCore.QRect(20, 30, 110, 29))
         self.macd.setObjectName("macd")
         self.longPeriod = QtGui.QLineEdit(self.tab_4)
-        self.longPeriod.setGeometry(QtCore.QRect(300, 60, 113, 29))
+        self.longPeriod.setGeometry(QtCore.QRect(510, 60, 113, 29))
         self.longPeriod.setObjectName("longPeriod")
         self.sma = QtGui.QPushButton(self.tab_4)
         self.sma.setGeometry(QtCore.QRect(20, 0, 110, 29))
         self.sma.setObjectName("sma")
         self.shortPeriod = QtGui.QLineEdit(self.tab_4)
-        self.shortPeriod.setGeometry(QtCore.QRect(300, 20, 113, 29))
+        self.shortPeriod.setGeometry(QtCore.QRect(510, 20, 113, 29))
         self.shortPeriod.setObjectName("shortPeriod")
         self.bollingerBands = QtGui.QPushButton(self.tab_4)
         self.bollingerBands.setGeometry(QtCore.QRect(10, 60, 131, 29))
         self.bollingerBands.setObjectName("bollingerBands")
         self.label_shortPeriod = QtGui.QLabel(self.tab_4)
-        self.label_shortPeriod.setGeometry(QtCore.QRect(190, 18, 111, 31))
+        self.label_shortPeriod.setGeometry(QtCore.QRect(400, 18, 111, 31))
         self.label_shortPeriod.setObjectName("label_shortPeriod")
         self.label_longPeriod = QtGui.QLabel(self.tab_4)
-        self.label_longPeriod.setGeometry(QtCore.QRect(190, 58, 111, 31))
+        self.label_longPeriod.setGeometry(QtCore.QRect(400, 58, 111, 31))
         self.label_longPeriod.setObjectName("label_longPeriod")
         self.line_10 = QtGui.QFrame(self.tab_4)
-        self.line_10.setGeometry(QtCore.QRect(160, 10, 20, 101))
+        self.line_10.setGeometry(QtCore.QRect(370, 10, 20, 101))
         self.line_10.setFrameShape(QtGui.QFrame.VLine)
         self.line_10.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_10.setObjectName("line_10")
         self.donchianChannel = QtGui.QPushButton(self.tab_4)
         self.donchianChannel.setGeometry(QtCore.QRect(-1, 90, 151, 29))
         self.donchianChannel.setObjectName("donchianChannel")
+        self.wma = QtGui.QPushButton(self.tab_4)
+        self.wma.setGeometry(QtCore.QRect(170, 0, 110, 29))
+        self.wma.setObjectName("wma")
+        self.shortPeriodColor = KColorButton(self.tab_4)
+        self.shortPeriodColor.setGeometry(QtCore.QRect(630, 20, 58, 27))
+        self.shortPeriodColor.setColor(QtGui.QColor(255, 0, 0))
+        self.shortPeriodColor.setDefaultColor(QtGui.QColor(0, 0, 0))
+        self.shortPeriodColor.setObjectName("shortPeriodColor")
+        self.longPeriodColor = KColorButton(self.tab_4)
+        self.longPeriodColor.setGeometry(QtCore.QRect(630, 60, 58, 27))
+        self.longPeriodColor.setColor(QtGui.QColor(0, 0, 255))
+        self.longPeriodColor.setDefaultColor(QtGui.QColor(255, 0, 0))
+        self.longPeriodColor.setObjectName("longPeriodColor")
         self.tabWidget.addTab(self.tab_4, "")
         self.nextDay = QtGui.QPushButton(chartWidget)
         self.nextDay.setGeometry(QtCore.QRect(850, 970, 110, 29))
@@ -335,6 +348,7 @@ class Ui_chartWidget(object):
         self.label_shortPeriod.setText(QtGui.QApplication.translate("chartWidget", "Short Period:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_longPeriod.setText(QtGui.QApplication.translate("chartWidget", "Long Period:", None, QtGui.QApplication.UnicodeUTF8))
         self.donchianChannel.setText(QtGui.QApplication.translate("chartWidget", "donchianChannel", None, QtGui.QApplication.UnicodeUTF8))
+        self.wma.setText(QtGui.QApplication.translate("chartWidget", "wma", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate("chartWidget", "Technical Indicators", None, QtGui.QApplication.UnicodeUTF8))
         self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
         self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
@@ -355,6 +369,7 @@ class Ui_chartWidget(object):
         self.label_Volume.setText(QtGui.QApplication.translate("chartWidget", "Volume:", None, QtGui.QApplication.UnicodeUTF8))
         self.currentDayVolume.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
 
+from PyKDE4.kdeui import KColorButton
 
 if __name__ == "__main__":
     import sys

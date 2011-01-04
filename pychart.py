@@ -38,7 +38,7 @@
 ###############################################################################
 
 from __future__ import division
-import os,sys,time
+import sys
 
 from PyQt4 import QtCore, QtGui
 from urllib import urlopen
@@ -47,6 +47,7 @@ from urllib import urlopen
 from ui_chart import Ui_chartWidget
 
 import numpy
+import math
 
 
 ###############################################################################
@@ -170,6 +171,10 @@ class Data():
   def sma(self, period, day, length):
     return self.forEachPeriod(lambda x: sum([ii[4] for ii in x])/period, period, day, length)
   
+  def wma(self, period, day, length):
+    return self.forEachPeriod(lambda x: numpy.average([d[4] for d in x], weights=range(period,0,-1)), period, day, length)
+  
+  # TODO: Add ability to set custom standard deviation multiple
   def bollingerBands(self, period, day, length):
     s = self.sma(period, day, length)
     std = self.forEachPeriod(lambda x: numpy.std([ii[4] for ii in x])*2, period, day, length)
@@ -406,6 +411,8 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.macd, QtCore.SIGNAL("clicked()"), self.onMACD)
     self.connect(self.ui.bollingerBands, QtCore.SIGNAL("clicked()"), self.onBollingerBands)
     self.connect(self.ui.donchianChannel, QtCore.SIGNAL("clicked()"), self.onDonchianChannel)
+    self.connect(self.ui.wma, QtCore.SIGNAL("clicked()"), self.onWMA)
+
 
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
@@ -587,32 +594,37 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def onSMA(self):
-    days = int(self.ui.shortPeriod.text())
+    days = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), "green")
+    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
+
+  def onWMA(self):
+    days = int(self.ui.shortPeriod.text() or 10)
+    self.ui.shortPeriod.clear()
+    self.chartView.drawLine(self.chartView.data.wma(days, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
 
   def onMACD(self):
-    shortLength = int(self.ui.shortPeriod.text())
-    longLength = int(self.ui.longPeriod.text())
+    shortLength = int(self.ui.shortPeriod.text() or 10)
+    longLength = int(self.ui.longPeriod.text() or 20)
     self.ui.shortPeriod.clear()
     self.ui.longPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength), "red")
-    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength), "blue")
+    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
+    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength), self.ui.longPeriodColor.color())
 
   def onBollingerBands(self):
-    l = int(self.ui.shortPeriod.text())
+    l = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
     d = self.chartView.data.bollingerBands(l, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], "red")
+    self.chartView.drawLine(d[0], self.ui.shortPeriodColor.color())
     self.chartView.drawLine(d[1], "blue")
-    self.chartView.drawLine(d[2], "green")
+    self.chartView.drawLine(d[2], self.ui.longPeriodColor.color())
    
   def onDonchianChannel(self):
-    p = int(self.ui.shortPeriod.text())
+    p = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
     d = self.chartView.data.donchianChannel(p, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], "red")
-    self.chartView.drawLine(d[1], "green")
+    self.chartView.drawLine(d[0], self.ui.shortPeriodColor.color())
+    self.chartView.drawLine(d[1], self.ui.longPeriodColor.color())
 
 
 if __name__ == "__main__":
