@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Mon Jan  3 16:35:55 2011
+# Created: Tue Jan  4 04:06:29 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,10 +28,10 @@ class Ui_chartWidget(object):
         self.chartLength.setGeometry(QtCore.QRect(310, 50, 71, 19))
         self.chartLength.setObjectName("chartLength")
         self.candlestick = QtGui.QPushButton(self.chartControls)
-        self.candlestick.setGeometry(QtCore.QRect(460, 40, 110, 29))
+        self.candlestick.setGeometry(QtCore.QRect(460, 20, 110, 29))
         self.candlestick.setObjectName("candlestick")
         self.ohlc = QtGui.QPushButton(self.chartControls)
-        self.ohlc.setGeometry(QtCore.QRect(460, 80, 110, 29))
+        self.ohlc.setGeometry(QtCore.QRect(460, 50, 110, 29))
         self.ohlc.setObjectName("ohlc")
         self.line = QtGui.QFrame(self.chartControls)
         self.line.setGeometry(QtCore.QRect(420, 10, 16, 101))
@@ -39,12 +39,12 @@ class Ui_chartWidget(object):
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName("line")
         self.line_2 = QtGui.QFrame(self.chartControls)
-        self.line_2.setGeometry(QtCore.QRect(590, 10, 16, 101))
+        self.line_2.setGeometry(QtCore.QRect(700, 10, 16, 101))
         self.line_2.setFrameShape(QtGui.QFrame.VLine)
         self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_2.setObjectName("line_2")
         self.label = QtGui.QLabel(self.chartControls)
-        self.label.setGeometry(QtCore.QRect(470, 10, 91, 19))
+        self.label.setGeometry(QtCore.QRect(520, 0, 91, 19))
         self.label.setObjectName("label")
         self.symbolEntry = QtGui.QLineEdit(self.chartControls)
         self.symbolEntry.setGeometry(QtCore.QRect(20, 30, 221, 29))
@@ -60,6 +60,18 @@ class Ui_chartWidget(object):
         self.line_4.setFrameShape(QtGui.QFrame.VLine)
         self.line_4.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_4.setObjectName("line_4")
+        self.hlc = QtGui.QPushButton(self.chartControls)
+        self.hlc.setGeometry(QtCore.QRect(460, 80, 110, 29))
+        self.hlc.setObjectName("hlc")
+        self.bar = QtGui.QPushButton(self.chartControls)
+        self.bar.setGeometry(QtCore.QRect(570, 20, 110, 29))
+        self.bar.setObjectName("bar")
+        self.dot = QtGui.QPushButton(self.chartControls)
+        self.dot.setGeometry(QtCore.QRect(570, 50, 110, 29))
+        self.dot.setObjectName("dot")
+        self.close = QtGui.QPushButton(self.chartControls)
+        self.close.setGeometry(QtCore.QRect(570, 80, 110, 29))
+        self.close.setObjectName("close")
         self.tabWidget.addTab(self.chartControls, "")
         self.account = QtGui.QWidget()
         self.account.setObjectName("account")
@@ -157,7 +169,7 @@ class Ui_chartWidget(object):
         self.currentDayLabel.setObjectName("currentDayLabel")
 
         self.retranslateUi(chartWidget)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.chartTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
 
@@ -171,6 +183,10 @@ class Ui_chartWidget(object):
         self.label.setText(QtGui.QApplication.translate("chartWidget", "Chart Style", None, QtGui.QApplication.UnicodeUTF8))
         self.loadSymbol.setText(QtGui.QApplication.translate("chartWidget", "Load", None, QtGui.QApplication.UnicodeUTF8))
         self.newTab.setText(QtGui.QApplication.translate("chartWidget", "New Tab", None, QtGui.QApplication.UnicodeUTF8))
+        self.hlc.setText(QtGui.QApplication.translate("chartWidget", "HLC", None, QtGui.QApplication.UnicodeUTF8))
+        self.bar.setText(QtGui.QApplication.translate("chartWidget", "Bar", None, QtGui.QApplication.UnicodeUTF8))
+        self.dot.setText(QtGui.QApplication.translate("chartWidget", "Dot", None, QtGui.QApplication.UnicodeUTF8))
+        self.close.setText(QtGui.QApplication.translate("chartWidget", "Close", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.chartControls), QtGui.QApplication.translate("chartWidget", "Chart Controls", None, QtGui.QApplication.UnicodeUTF8))
         self.buy.setText(QtGui.QApplication.translate("chartWidget", "Buy", None, QtGui.QApplication.UnicodeUTF8))
         self.sell.setText(QtGui.QApplication.translate("chartWidget", "Sell", None, QtGui.QApplication.UnicodeUTF8))

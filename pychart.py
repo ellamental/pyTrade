@@ -19,6 +19,9 @@
 ## - Alert user that they have pending orders.
 ## - Allow user to specify when their order should go through, today's close 
 ##   or tomorrow's open or other.
+## - Add purchase price to portfolio.  Also if stock is already held, make 
+##   purchase price average of the two purchases.  Ex: if I own 100 shares of 
+##   msft @ 50 and buy 100 more @ 60, the portfolio should say 200 shares @ 55
 ##
 ## Bugs
 ## - Try:  INDEXDJX:.DJI
@@ -145,11 +148,16 @@ class Data():
   def loadSymbol(self, symbol):
     self.data = self.googDownload(symbol)
 
+  def adjustDataList(self, d):
+    mul = screenHeight / (self.high - self.low)
+    return [(ii-self.low)*mul for ii in d]
+
   def sma(self, period, day, length):
     d = self.data[day:day+length+period]
     a = [sum([ii[4] for ii in d[c:c+period]])/period for c in range(length)]
-    mul = screenHeight/(self.high-self.low)
-    return [(ii-self.low)*mul for ii in a]
+    return a
+#    mul = screenHeight/(self.high-self.low)
+#    return [(ii-self.low)*mul for ii in a]
 
 ###############################################################################
 ##  Time
@@ -227,6 +235,61 @@ class ChartView(QtGui.QGraphicsView):
       b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
       offset -= offsetmod
 
+  def drawHLC(self, day, length):
+    d = self.data.adjustData(day, length)
+    offsetmod = screenWidth/len(d)
+    offset = screenWidth-offsetmod
+    
+    for ii, today in enumerate(d):
+      b = self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3])
+      self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], offsetmod/4, 1)
+      
+      p = self.data.data[day+ii]
+      b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+      offset -= offsetmod
+
+  def drawBar(self, day, length):
+    d = self.data.adjustData(day, length)
+    offsetmod = screenWidth/len(d)
+    offset = screenWidth-offsetmod
+    b = QtGui.QColor(50,50,50,250)
+    
+    for ii, today in enumerate(d):
+      body = self.scene.addRect(offset+offsetmod, screenHeight-today[2], offsetmod/2, screenHeight+100, brush=b)
+      
+      p = self.data.data[day+ii]
+      body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+      offset -= offsetmod
+
+  def drawDot(self, day, length):
+    d = self.data.adjustData(day, length)
+    offsetmod = screenWidth/len(d)
+    offset = screenWidth-offsetmod
+    b = QtGui.QColor(50,50,50,250)
+    
+    for ii, today in enumerate(d):
+      body = self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], 2, 2, brush=b)
+      
+      p = self.data.data[day+ii]
+      body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+      offset -= offsetmod
+
+  def drawClose(self, day, length):
+    d = self.data.adjustData(day, length)
+    offsetmod = screenWidth/len(d)
+    offset = screenWidth-offsetmod
+    b = QtGui.QColor(50,50,50,250)
+    
+    for ii, today in enumerate(d):
+      body = self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], 2, 2, brush=b)
+      
+      p = self.data.data[day+ii]
+      body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+      offset -= offsetmod
+
+  def drawClose(self, day, length):
+    d = self.data.chartData(day, length)
+    self.drawLine([ii[4] for ii in d])
 
   def drawCandlesticks(self, day, length):
     d = self.data.adjustData(day, length)
@@ -248,6 +311,7 @@ class ChartView(QtGui.QGraphicsView):
 
   def drawLine(self, d):
     """Used for moving averages, bollinger bands, etc"""
+    d = self.data.adjustDataList(d)
     offsetmod = screenWidth/len(d)
     offset = screenWidth-offsetmod-offsetmod
     for ii in range(len(d))[1:]:
@@ -316,8 +380,14 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.macd, QtCore.SIGNAL("clicked()"), self.onMACD)
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
+    
     self.connect(self.ui.candlestick, QtCore.SIGNAL("clicked()"), self.onCandlestick)
     self.connect(self.ui.ohlc, QtCore.SIGNAL("clicked()"), self.onOHLC)
+    self.connect(self.ui.hlc, QtCore.SIGNAL("clicked()"), self.onHLC)
+    self.connect(self.ui.bar, QtCore.SIGNAL("clicked()"), self.onBar)
+    self.connect(self.ui.dot, QtCore.SIGNAL("clicked()"), self.onDot)
+    self.connect(self.ui.close, QtCore.SIGNAL("clicked()"), self.onClose)
+
     self.connect(self.ui.newTab, QtCore.SIGNAL("clicked()"), self.onNewTab)
     self.connect(self.ui.chartTabs, QtCore.SIGNAL("currentChanged(QWidget *)"), self.onChangeTab)
     self.connect(self.ui.chartTabs, QtCore.SIGNAL("tabCloseRequested(int)"), self.onCloseTab)
@@ -377,7 +447,23 @@ class Main(QtGui.QWidget):
     self.chartView.chartStyle = self.chartView.drawOHLC
     self.chartView.drawChart()
     
-    
+  def onHLC(self):
+    self.chartView.chartStyle = self.chartView.drawHLC
+    self.chartView.drawChart()
+
+  def onBar(self):
+    self.chartView.chartStyle = self.chartView.drawBar
+    self.chartView.drawChart()
+
+  def onDot(self):
+    self.chartView.chartStyle = self.chartView.drawDot
+    self.chartView.drawChart()
+
+  def onClose(self):
+    self.chartView.chartStyle = self.chartView.drawClose
+    self.chartView.drawChart()
+
+
 
 ###############################################################################
 ##  Time Controls
