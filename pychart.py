@@ -21,6 +21,7 @@
 ## - Allow screen resizing that also resizes the chart
 ## - Add bottom bar for showing volume and other indicators
 ## - Add compare, see: http://bigcharts.marketwatch.com/advchart/frames/frames.asp?symb=&time=&freq=
+## - Add point and figure chart view
 ## 
 ## Accounts
 ## - Alert user that they have pending orders.
@@ -43,6 +44,8 @@ from urllib import urlopen
 
 ## import QtDesigner UI module
 from ui_chart import Ui_chartWidget
+
+import numpy
 
 
 ###############################################################################
@@ -159,12 +162,23 @@ class Data():
     mul = screenHeight / (self.high - self.low)
     return [(ii-self.low)*mul for ii in d]
 
-  def sma(self, period, day, length):
+  def forEachPeriod(self, fun, period, day, length, ohlc=4):
     d = self.data[day:day+length+period]
-    a = [sum([ii[4] for ii in d[c:c+period]])/period for c in range(length)]
-    return a
-#    mul = screenHeight/(self.high-self.low)
-#    return [(ii-self.low)*mul for ii in a]
+    return [fun([ii[ohlc] for ii in d[c:c+period]]) for c in range(length)]
+
+  def sma(self, period, day, length):
+    return self.forEachPeriod(lambda x: sum(x)/period, period, day, length)
+  
+  def bollingerBands(self, period, day, length):
+    s = self.sma(period, day, length)
+    std = self.forEachPeriod(lambda x: numpy.std(x)*2, period, day, length)
+    stdBig = [a+d for a,d in zip(s, std)]
+    stdSmall = [a-d for a,d in zip(s,std)]
+    return (stdBig, s, stdSmall)
+    
+    
+
+
 
 ###############################################################################
 ##  Time
@@ -305,9 +319,9 @@ class ChartView(QtGui.QGraphicsView):
 
     for ii, today in enumerate(d):
       if today[1] > today[4]:
-        b = QtGui.QColor(50,50,50,250)
+        b = QtGui.QColor("black")
       else:
-        b = QtGui.QColor(250,250,250,250)
+        b = QtGui.QColor("white")
 
       self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3], brush=b)
       b = self.scene.addRect(offset, screenHeight-today[1], offsetmod/2, today[1]-today[4], brush=b)
@@ -316,13 +330,14 @@ class ChartView(QtGui.QGraphicsView):
       b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
       offset -= offsetmod
 
-  def drawLine(self, d):
+  def drawLine(self, d, color="black"):
     """Used for moving averages, bollinger bands, etc"""
+    p = QtGui.QPen(QtGui.QColor(color), 2, QtCore.Qt.SolidLine)
     d = self.data.adjustDataList(d)
     offsetmod = screenWidth/len(d)
     offset = screenWidth-offsetmod-offsetmod
     for ii in range(len(d))[1:]:
-      self.scene.addLine(offset+offsetmod/4, screenHeight-d[ii], offset+offsetmod/4+offsetmod, screenHeight-(d[ii-1]))
+      self.scene.addLine(offset+offsetmod/4, screenHeight-d[ii], offset+offsetmod/4+offsetmod, screenHeight-(d[ii-1]), p)
       offset -= offsetmod
 
   def drawHorizontalLines(self, day, length):
@@ -383,8 +398,11 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.prev30, QtCore.SIGNAL("clicked()"), self.onPrev30)
     self.connect(self.ui.buy, QtCore.SIGNAL("clicked()"), self.onBuy)
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
+    
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
     self.connect(self.ui.macd, QtCore.SIGNAL("clicked()"), self.onMACD)
+    self.connect(self.ui.bollingerBands, QtCore.SIGNAL("clicked()"), self.onBollingerBands)
+
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
     
@@ -435,6 +453,7 @@ class Main(QtGui.QWidget):
   def onChangeTab(self, x):
     self.chartView = chartViews[self.ui.chartTabs.currentIndex()]
     self.chartView.drawChart()
+    self.update()
     
   def onLoadSymbol(self):
     self.chartView.data = Data(str(self.ui.symbolEntry.text()))
@@ -560,17 +579,23 @@ class Main(QtGui.QWidget):
   def onSMA(self):
     days = int(self.ui.smaLength.text())
     self.ui.smaLength.clear()
-    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength))
+    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), "green")
 
   def onMACD(self):
     shortLength = int(self.ui.smaLength.text())
     longLength = int(self.ui.macdLength.text())
     self.ui.smaLength.clear()
     self.ui.macdLength.clear()
-    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength))
-    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength))
+    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength), "red")
+    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength), "blue")
 
-  
+  def onBollingerBands(self):
+    l = int(self.ui.smaLength.text())
+    self.ui.smaLength.clear()
+    d = self.chartView.data.bollingerBands(l, time.currentDay, self.chartView.chartLength)
+    self.chartView.drawLine(d[0], "red")
+    self.chartView.drawLine(d[1], "blue")
+    self.chartView.drawLine(d[2], "green")
    
 
 

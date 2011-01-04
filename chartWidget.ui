@@ -473,6 +473,19 @@
       </rect>
      </property>
     </widget>
+    <widget class="QPushButton" name="bollingerBands">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>30</y>
+       <width>131</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bollinger Bands</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButton" name="nextDay">

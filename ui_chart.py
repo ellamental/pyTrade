@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Tue Jan  4 06:12:30 2011
+# Created: Tue Jan  4 08:12:16 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -137,6 +137,9 @@ class Ui_chartWidget(object):
         self.smaLength = QtGui.QLineEdit(self.tab_4)
         self.smaLength.setGeometry(QtCore.QRect(20, 70, 113, 29))
         self.smaLength.setObjectName("smaLength")
+        self.bollingerBands = QtGui.QPushButton(self.tab_4)
+        self.bollingerBands.setGeometry(QtCore.QRect(270, 30, 131, 29))
+        self.bollingerBands.setObjectName("bollingerBands")
         self.tabWidget.addTab(self.tab_4, "")
         self.nextDay = QtGui.QPushButton(chartWidget)
         self.nextDay.setGeometry(QtCore.QRect(850, 970, 110, 29))
@@ -314,6 +317,7 @@ class Ui_chartWidget(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.account), QtGui.QApplication.translate("chartWidget", "Account", None, QtGui.QApplication.UnicodeUTF8))
         self.macd.setText(QtGui.QApplication.translate("chartWidget", "macd", None, QtGui.QApplication.UnicodeUTF8))
         self.sma.setText(QtGui.QApplication.translate("chartWidget", "sma", None, QtGui.QApplication.UnicodeUTF8))
+        self.bollingerBands.setText(QtGui.QApplication.translate("chartWidget", "Bollinger Bands", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate("chartWidget", "Technical Indicators", None, QtGui.QApplication.UnicodeUTF8))
         self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
         self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
