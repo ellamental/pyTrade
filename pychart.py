@@ -75,7 +75,7 @@ class Account():
     self.pendingSales[symbol] = (shares, stop)
 
   def buyShares(self, symbol, shares):
-    price = self.getPrice(symbol)
+    price = self.getPrice(symbol, 4)
     maxshares = int(self.balance / price)
     if not shares: shares = maxshares
     elif int(shares) > maxshares: shares = maxshares
@@ -85,7 +85,7 @@ class Account():
     del self.pendingBuys[symbol]
 
   def sellShares(self, symbol, shares):
-    price = self.getPrice(symbol)
+    price = self.getPrice(symbol, 4)
     if not shares: shares = self.portfolio[symbol]
     elif int(shares) > self.portfolio[symbol]: shares = self.portfolio[symbol]
     else: shares = int(shares)
@@ -106,7 +106,7 @@ class Account():
   def portfolioValue(self):
     v = self.balance
     for key, item in self.portfolio.items():
-      v += item * self.getPrice(key)
+      v += item * self.getPrice(key, 4)
     return v
 
 
@@ -402,9 +402,9 @@ class Main(QtGui.QWidget):
     self.ui.chartTabs.setTabsClosable(True)
 
     ## Defaults
-    self.ui.chartLength.setText(str(self.chartView.chartLength))
-    self.updateAccounts()
-    self.ui.currentDayLabel.setText(self.chartView.data.currentDay(time.currentDay)[0])
+    self.update()
+    
+    
 
 
 
@@ -412,8 +412,13 @@ class Main(QtGui.QWidget):
 ## Event Handlers
 ###############################################################################
 
+  def update(self):
+      self.updateAccounts()
+      self.updateTime()
+      self.updateChartControls()
+
 ###############################################################################
-##  Mulit-Chart View
+##  Mulit-Chart View and Symbol Loading
 ###############################################################################
 
   def onNewTab(self):
@@ -430,21 +435,30 @@ class Main(QtGui.QWidget):
   def onChangeTab(self, x):
     self.chartView = chartViews[self.ui.chartTabs.currentIndex()]
     self.chartView.drawChart()
+    
+  def onLoadSymbol(self):
+    self.chartView.data = Data(str(self.ui.symbolEntry.text()))
+    self.ui.symbolEntry.clear()
+    self.chartView.drawChart()
+ 
 
 ###############################################################################
 ##  Chart Controls
 ##  Zoom In/Out, Chart Style (ohlc, candlestick, etc), Normal/Log Scale, etc
 ###############################################################################
+  
+  def updateChartControls(self):
+      self.ui.chartLength.setText(str(self.chartView.chartLength))
 
   def onZoomIn(self):
     self.chartView.chartLength -= 10
     self.chartView.drawChart()
-    self.ui.chartLength.setText(str(self.chartView.chartLength))
+    self.update()
     
   def onZoomOut(self):
     self.chartView.chartLength += 10
     self.chartView.drawChart()
-    self.ui.chartLength.setText(str(self.chartView.chartLength))
+    self.update()
 
   def onCandlestick(self):
     self.chartView.chartStyle = self.chartView.drawCandlesticks
@@ -484,30 +498,24 @@ class Main(QtGui.QWidget):
   def onNextDay(self):
     time.currentDay -= 1
     self.chartView.drawChart()
-    self.updateTime()
-    account.update()
-    self.updateAccounts()
+    self.update()
 
   def onPrevDay(self):
     time.currentDay += 1
     self.chartView.drawChart()
-    self.updateTime()
-    account.update()
-    self.updateAccounts()
+    self.update()
     
   def onNext30(self):
-    time.currentDay -= 30
+    for ii in range(30):
+      time.currentDay -=1
+      self.update()
     self.chartView.drawChart()
-    self.updateTime()
-    account.update()
-    self.updateAccounts()
 
   def onPrev30(self):
-    time.currentDay += 30
+    for ii in range(30):
+      time.currentDay +=1
+      self.update()
     self.chartView.drawChart()
-    self.updateTime()
-    account.update()
-    self.updateAccounts()
 
 
 ###############################################################################
@@ -516,17 +524,18 @@ class Main(QtGui.QWidget):
 ###############################################################################
 
   def updateAccounts(self):
+    account.update()
     self.ui.showBalance.setText(str(account.balance))
     self.ui.showPortfolio.setText(str(account.portfolio))
     self.ui.showPortfolioValue.setText(str(account.portfolioValue()))
 
   def onBuy(self):
     account.buy(self.chartView.symbol, self.ui.buyShares.text(), self.ui.buyStop.text())
-    self.updateAccounts()
+    self.update()
   
   def onSell(self):
     account.sell(self.chartView.symbol, self.ui.sellShares.text(), self.ui.sellStop.text())
-    self.updateAccounts()
+    self.update()
 
 
 ###############################################################################
@@ -547,17 +556,8 @@ class Main(QtGui.QWidget):
     self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength))
     self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength))
 
-###############################################################################
-##  Watchlist Controls
-##  Load Symbol, Add Symbol
-###############################################################################
-
   
-  def onLoadSymbol(self):
-    self.chartView.data = Data(str(self.ui.symbolEntry.text()))
-    self.ui.symbolEntry.clear()
-    self.chartView.drawChart()
-    
+   
 
 
 
