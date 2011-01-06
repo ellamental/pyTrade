@@ -308,7 +308,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="chartControls">
          <attribute name="title">
@@ -553,8 +553,8 @@
          <widget class="QLabel" name="showBalance">
           <property name="geometry">
            <rect>
-            <x>550</x>
-            <y>40</y>
+            <x>540</x>
+            <y>30</y>
             <width>111</width>
             <height>20</height>
            </rect>
@@ -566,8 +566,8 @@
          <widget class="QLabel" name="label_balance">
           <property name="geometry">
            <rect>
-            <x>420</x>
-            <y>40</y>
+            <x>410</x>
+            <y>30</y>
             <width>81</width>
             <height>19</height>
            </rect>
@@ -612,8 +612,8 @@
          <widget class="QLabel" name="label_portfolioValue">
           <property name="geometry">
            <rect>
-            <x>420</x>
-            <y>20</y>
+            <x>410</x>
+            <y>10</y>
             <width>121</width>
             <height>19</height>
            </rect>
@@ -625,8 +625,8 @@
          <widget class="QLabel" name="showPortfolioValue">
           <property name="geometry">
            <rect>
-            <x>550</x>
-            <y>20</y>
+            <x>540</x>
+            <y>10</y>
             <width>121</width>
             <height>19</height>
            </rect>
@@ -638,10 +638,10 @@
          <widget class="QLabel" name="label_portfolio">
           <property name="geometry">
            <rect>
-            <x>420</x>
-            <y>60</y>
+            <x>410</x>
+            <y>90</y>
             <width>81</width>
-            <height>19</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="text">
@@ -651,10 +651,10 @@
          <widget class="QLabel" name="showPortfolio">
           <property name="geometry">
            <rect>
-            <x>550</x>
-            <y>60</y>
-            <width>161</width>
-            <height>61</height>
+            <x>540</x>
+            <y>90</y>
+            <width>281</width>
+            <height>31</height>
            </rect>
           </property>
           <property name="text">
@@ -705,6 +705,58 @@
           </property>
           <property name="text">
            <string>Stop Price</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_profit">
+          <property name="geometry">
+           <rect>
+            <x>410</x>
+            <y>50</y>
+            <width>111</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Profit/Loss:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_profitPercent">
+          <property name="geometry">
+           <rect>
+            <x>410</x>
+            <y>70</y>
+            <width>121</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Profit/Loss %:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="showProfit">
+          <property name="geometry">
+           <rect>
+            <x>540</x>
+            <y>50</y>
+            <width>111</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="showProfitPercent">
+          <property name="geometry">
+           <rect>
+            <x>540</x>
+            <y>70</y>
+            <width>111</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
           </property>
          </widget>
         </widget>

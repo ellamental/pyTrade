@@ -33,6 +33,8 @@
 ##
 ## BUG:
 ## - Try:  INDEXDJX:.DJI
+## - Start program and close first tab.  Or at any time close all tabs.
+## - Buy stock in MSFT, then sell it, then open GE, then close MSFT tab.
 ##   
 ###############################################################################
 
@@ -57,6 +59,7 @@ import math
 
 class Account():
   def __init__(self):
+    self.initialBalance = 10000
     self.balance = 10000
     self.shares = 0
     self.portfolio = {}
@@ -114,6 +117,11 @@ class Account():
       v += item * self.getPrice(key, 4)
     return v
 
+  def portfolioProfit(self):
+    value = self.portfolioValue()
+    dollars = value - self.initialBalance
+    percentage = int(((value/self.initialBalance) - 1)*100)
+    return (dollars, percentage)
 
 
 ###############################################################################
@@ -597,6 +605,12 @@ class Main(QtGui.QWidget):
     self.ui.showBalance.setText(str(account.balance))
     self.ui.showPortfolio.setText(str(account.portfolio))
     self.ui.showPortfolioValue.setText(str(account.portfolioValue()))
+    p = account.portfolioProfit()
+    c = "green" if p[0] >= 0 else "red"
+    self.ui.showProfit.setText(str(p[0]))
+    self.ui.showProfitPercent.setText(str(p[1])+"%")
+    self.ui.showProfit.setStyleSheet("QLabel { color : " + c + ";}")
+    self.ui.showProfitPercent.setStyleSheet("QLabel { color : " + c + ";}")
 
   def onBuy(self):
     account.buy(self.chartView.symbol, self.ui.buyShares.text(), self.ui.buyStop.text())

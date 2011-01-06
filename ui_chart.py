@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Thu Jan  6 06:08:31 2011
+# Created: Thu Jan  6 07:12:38 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -205,10 +205,10 @@ class Ui_chartWidget(object):
         self.sell.setGeometry(QtCore.QRect(20, 80, 110, 29))
         self.sell.setObjectName("sell")
         self.showBalance = QtGui.QLabel(self.account)
-        self.showBalance.setGeometry(QtCore.QRect(550, 40, 111, 20))
+        self.showBalance.setGeometry(QtCore.QRect(540, 30, 111, 20))
         self.showBalance.setObjectName("showBalance")
         self.label_balance = QtGui.QLabel(self.account)
-        self.label_balance.setGeometry(QtCore.QRect(420, 40, 81, 19))
+        self.label_balance.setGeometry(QtCore.QRect(410, 30, 81, 19))
         self.label_balance.setObjectName("label_balance")
         self.buyShares = QtGui.QLineEdit(self.account)
         self.buyShares.setGeometry(QtCore.QRect(140, 40, 113, 29))
@@ -222,16 +222,16 @@ class Ui_chartWidget(object):
         self.line_3.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
         self.label_portfolioValue = QtGui.QLabel(self.account)
-        self.label_portfolioValue.setGeometry(QtCore.QRect(420, 20, 121, 19))
+        self.label_portfolioValue.setGeometry(QtCore.QRect(410, 10, 121, 19))
         self.label_portfolioValue.setObjectName("label_portfolioValue")
         self.showPortfolioValue = QtGui.QLabel(self.account)
-        self.showPortfolioValue.setGeometry(QtCore.QRect(550, 20, 121, 19))
+        self.showPortfolioValue.setGeometry(QtCore.QRect(540, 10, 121, 19))
         self.showPortfolioValue.setObjectName("showPortfolioValue")
         self.label_portfolio = QtGui.QLabel(self.account)
-        self.label_portfolio.setGeometry(QtCore.QRect(420, 60, 81, 19))
+        self.label_portfolio.setGeometry(QtCore.QRect(410, 90, 81, 31))
         self.label_portfolio.setObjectName("label_portfolio")
         self.showPortfolio = QtGui.QLabel(self.account)
-        self.showPortfolio.setGeometry(QtCore.QRect(550, 60, 161, 61))
+        self.showPortfolio.setGeometry(QtCore.QRect(540, 90, 281, 31))
         self.showPortfolio.setObjectName("showPortfolio")
         self.buyStop = QtGui.QLineEdit(self.account)
         self.buyStop.setGeometry(QtCore.QRect(260, 40, 113, 29))
@@ -245,6 +245,18 @@ class Ui_chartWidget(object):
         self.label_stopPrice = QtGui.QLabel(self.account)
         self.label_stopPrice.setGeometry(QtCore.QRect(280, 10, 81, 19))
         self.label_stopPrice.setObjectName("label_stopPrice")
+        self.label_profit = QtGui.QLabel(self.account)
+        self.label_profit.setGeometry(QtCore.QRect(410, 50, 111, 19))
+        self.label_profit.setObjectName("label_profit")
+        self.label_profitPercent = QtGui.QLabel(self.account)
+        self.label_profitPercent.setGeometry(QtCore.QRect(410, 70, 121, 19))
+        self.label_profitPercent.setObjectName("label_profitPercent")
+        self.showProfit = QtGui.QLabel(self.account)
+        self.showProfit.setGeometry(QtCore.QRect(540, 50, 111, 20))
+        self.showProfit.setObjectName("showProfit")
+        self.showProfitPercent = QtGui.QLabel(self.account)
+        self.showProfitPercent.setGeometry(QtCore.QRect(540, 70, 111, 20))
+        self.showProfitPercent.setObjectName("showProfitPercent")
         self.tabWidget.addTab(self.account, "")
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName("tab_4")
@@ -322,7 +334,7 @@ class Ui_chartWidget(object):
 
         self.retranslateUi(chartWidget)
         self.chartTabs.setCurrentIndex(-1)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
 
     def retranslateUi(self, chartWidget):
@@ -362,6 +374,10 @@ class Ui_chartWidget(object):
         self.showPortfolio.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.label_shares.setText(QtGui.QApplication.translate("chartWidget", "Shares", None, QtGui.QApplication.UnicodeUTF8))
         self.label_stopPrice.setText(QtGui.QApplication.translate("chartWidget", "Stop Price", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_profit.setText(QtGui.QApplication.translate("chartWidget", "Profit/Loss:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_profitPercent.setText(QtGui.QApplication.translate("chartWidget", "Profit/Loss %:", None, QtGui.QApplication.UnicodeUTF8))
+        self.showProfit.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
+        self.showProfitPercent.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.account), QtGui.QApplication.translate("chartWidget", "Account", None, QtGui.QApplication.UnicodeUTF8))
         self.macd.setText(QtGui.QApplication.translate("chartWidget", "macd", None, QtGui.QApplication.UnicodeUTF8))
         self.sma.setText(QtGui.QApplication.translate("chartWidget", "sma", None, QtGui.QApplication.UnicodeUTF8))
