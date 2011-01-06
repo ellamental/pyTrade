@@ -17,23 +17,8 @@
    <item>
     <widget class="QTabWidget" name="chartTabs">
      <property name="currentIndex">
-      <number>0</number>
+      <number>-1</number>
      </property>
-     <widget class="QWidget" name="firstChart">
-      <attribute name="title">
-       <string>MSFT</string>
-      </attribute>
-      <widget class="QGraphicsView" name="chart">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>40</y>
-         <width>531</width>
-         <height>381</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
     </widget>
    </item>
    <item>
@@ -323,7 +308,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="chartControls">
          <attribute name="title">

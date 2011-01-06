@@ -268,13 +268,9 @@ class ChartView(QtGui.QGraphicsView):
     self.drawChart()
     
   def resizeEvent(self, event):
-    #print dir(event.size())
-    w, h = event.size().width(), event.size().height()
-    screen.width, screen.height = w, h
-    self.scene.setSceneRect(0,0,w,h)
+    screen.width, screen.height = event.size().width(), event.size().height()
+    self.scene.setSceneRect(0,0,screen.width,screen.height)
     self.drawChart()
-    print screen.width, screen.height
-    print w, h
     
   def drawOHLC(self, day, length):
     d = self.data.adjustData(day, length)
@@ -418,10 +414,10 @@ class Main(QtGui.QWidget):
     ## Create a new GraphicsScene and set GraphicsView (chart) to scene
     chartViews.append(ChartView(Scene(), "msft"))
     self.chartView = chartViews[0]
-    self.ui.chart.setScene(self.chartView.scene)
+    self.ui.chartTabs.addTab(self.chartView, "msft")
 
     ## Maximize screen 
-    #self.setWindowState(QtCore.Qt.WindowMaximized)
+    self.setWindowState(QtCore.Qt.WindowMaximized)
     
     ## Connect buttons
     self.connect(self.ui.zoomIn, QtCore.SIGNAL("clicked()"), self.onZoomIn)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'chartWidgetTest.ui'
+# Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Thu Jan  6 05:39:44 2011
+# Created: Thu Jan  6 06:08:31 2011
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,12 +17,6 @@ class Ui_chartWidget(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.chartTabs = QtGui.QTabWidget(chartWidget)
         self.chartTabs.setObjectName("chartTabs")
-        self.firstChart = QtGui.QWidget()
-        self.firstChart.setObjectName("firstChart")
-        self.chart = QtGui.QGraphicsView(self.firstChart)
-        self.chart.setGeometry(QtCore.QRect(0, 0, 1071, 821))
-        self.chart.setObjectName("chart")
-        self.chartTabs.addTab(self.firstChart, "")
         self.verticalLayout.addWidget(self.chartTabs)
         self.currentDayPrices = QtGui.QFrame(chartWidget)
         self.currentDayPrices.setMinimumSize(QtCore.QSize(0, 30))
@@ -327,13 +321,12 @@ class Ui_chartWidget(object):
         self.verticalLayout.addWidget(self.frame)
 
         self.retranslateUi(chartWidget)
-        self.chartTabs.setCurrentIndex(0)
+        self.chartTabs.setCurrentIndex(-1)
         self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
 
     def retranslateUi(self, chartWidget):
         chartWidget.setWindowTitle(QtGui.QApplication.translate("chartWidget", "Trender", None, QtGui.QApplication.UnicodeUTF8))
-        self.chartTabs.setTabText(self.chartTabs.indexOf(self.firstChart), QtGui.QApplication.translate("chartWidget", "MSFT", None, QtGui.QApplication.UnicodeUTF8))
         self.label_Date.setText(QtGui.QApplication.translate("chartWidget", "Date:", None, QtGui.QApplication.UnicodeUTF8))
         self.currentDayDate.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.label_Open.setText(QtGui.QApplication.translate("chartWidget", "Open:", None, QtGui.QApplication.UnicodeUTF8))
