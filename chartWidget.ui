@@ -11,961 +11,1005 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Trender</string>
   </property>
-  <widget class="QTabWidget" name="tabWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>880</y>
-     <width>841</width>
-     <height>161</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>2</number>
-   </property>
-   <widget class="QWidget" name="chartControls">
-    <attribute name="title">
-     <string>Chart Controls</string>
-    </attribute>
-    <widget class="QPushButton" name="zoomIn">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>10</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="chartTabs">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="text">
-      <string>Zoom In</string>
-     </property>
+     <widget class="QWidget" name="firstChart">
+      <attribute name="title">
+       <string>MSFT</string>
+      </attribute>
+      <widget class="QGraphicsView" name="chart">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>40</y>
+         <width>531</width>
+         <height>381</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
     </widget>
-    <widget class="QPushButton" name="zoomOut">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>80</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
+   </item>
+   <item>
+    <widget class="QFrame" name="currentDayPrices">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
      </property>
-     <property name="text">
-      <string>Zoom Out</string>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QWidget" name="horizontalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1071</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_Date">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Date:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="currentDayDate">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="line_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_Open">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Open:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="currentDayOpen">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="line_6">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_High">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>High:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="currentDayHigh">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="line_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_Low">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Low:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="currentDayLow">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="line_8">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_Close">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Close:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="currentDayClose">
+         <property name="font">
+          <font>
+           <underline>true</underline>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="line_9">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_Volume">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="text">
+          <string>Volume:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="currentDayVolume">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
-    <widget class="QLabel" name="chartLength">
-     <property name="geometry">
-      <rect>
-       <x>310</x>
-       <y>50</y>
-       <width>71</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="candlestick">
-     <property name="geometry">
-      <rect>
-       <x>460</x>
-       <y>20</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Candlestick</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="ohlc">
-     <property name="geometry">
-      <rect>
-       <x>460</x>
-       <y>50</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>OHLC</string>
-     </property>
-    </widget>
-    <widget class="Line" name="line">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>10</y>
-       <width>16</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="Line" name="line_2">
-     <property name="geometry">
-      <rect>
-       <x>700</x>
-       <y>10</y>
-       <width>16</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>0</y>
-       <width>91</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Chart Style</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="symbolEntry">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>221</width>
-       <height>29</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="loadSymbol">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Load</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="newTab">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>70</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>New Tab</string>
-     </property>
-    </widget>
-    <widget class="Line" name="line_4">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>10</y>
-       <width>16</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="hlc">
-     <property name="geometry">
-      <rect>
-       <x>460</x>
-       <y>80</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>HLC</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="bar">
-     <property name="geometry">
-      <rect>
-       <x>570</x>
-       <y>20</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Bar</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="dot">
-     <property name="geometry">
-      <rect>
-       <x>570</x>
-       <y>50</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Dot</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="close">
-     <property name="geometry">
-      <rect>
-       <x>570</x>
-       <y>80</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Close</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="account">
-    <attribute name="title">
-     <string>Account</string>
-    </attribute>
-    <widget class="QPushButton" name="buy">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>40</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Buy</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="sell">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>80</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Sell</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="showBalance">
-     <property name="geometry">
-      <rect>
-       <x>550</x>
-       <y>40</y>
-       <width>111</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_balance">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>40</y>
-       <width>81</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Balance:</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="buyShares">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>40</y>
-       <width>113</width>
-       <height>29</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="sellShares">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>80</y>
-       <width>113</width>
-       <height>29</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="Line" name="line_3">
-     <property name="geometry">
-      <rect>
-       <x>390</x>
-       <y>10</y>
-       <width>16</width>
-       <height>111</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_portfolioValue">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>20</y>
-       <width>121</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Portfolio Value:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="showPortfolioValue">
-     <property name="geometry">
-      <rect>
-       <x>550</x>
-       <y>20</y>
-       <width>121</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_portfolio">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>60</y>
-       <width>81</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Portfolio:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="showPortfolio">
-     <property name="geometry">
-      <rect>
-       <x>550</x>
-       <y>60</y>
-       <width>161</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="buyStop">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>40</y>
-       <width>113</width>
-       <height>29</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="sellStop">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>80</y>
-       <width>113</width>
-       <height>29</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_shares">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>10</y>
-       <width>71</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Shares</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_stopPrice">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>10</y>
-       <width>81</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Stop Price</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab_4">
-    <attribute name="title">
-     <string>Technical Indicators</string>
-    </attribute>
-    <widget class="QPushButton" name="macd">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>macd</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="longPeriod">
-     <property name="geometry">
-      <rect>
-       <x>510</x>
-       <y>60</y>
-       <width>113</width>
-       <height>29</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="sma">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>0</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>sma</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="shortPeriod">
-     <property name="geometry">
-      <rect>
-       <x>510</x>
-       <y>20</y>
-       <width>113</width>
-       <height>29</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="bollingerBands">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>131</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Bollinger Bands</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_shortPeriod">
-     <property name="geometry">
-      <rect>
-       <x>400</x>
-       <y>18</y>
-       <width>111</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Short Period:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_longPeriod">
-     <property name="geometry">
-      <rect>
-       <x>400</x>
-       <y>58</y>
-       <width>111</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Long Period:</string>
-     </property>
-    </widget>
-    <widget class="Line" name="line_10">
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>10</y>
-       <width>20</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="donchianChannel">
-     <property name="geometry">
-      <rect>
-       <x>-1</x>
-       <y>90</y>
-       <width>151</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>donchianChannel</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="wma">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>0</y>
-       <width>110</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>wma</string>
-     </property>
-    </widget>
-    <widget class="KColorButton" name="shortPeriodColor">
-     <property name="geometry">
-      <rect>
-       <x>630</x>
-       <y>20</y>
-       <width>58</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="color">
-      <color>
-       <red>255</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="defaultColor">
-      <color>
-       <red>0</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-    </widget>
-    <widget class="KColorButton" name="longPeriodColor">
-     <property name="geometry">
-      <rect>
-       <x>630</x>
-       <y>60</y>
-       <width>58</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="color">
-      <color>
-       <red>0</red>
-       <green>0</green>
-       <blue>255</blue>
-      </color>
-     </property>
-     <property name="defaultColor">
-      <color>
-       <red>255</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-    </widget>
-   </widget>
-  </widget>
-  <widget class="QPushButton" name="nextDay">
-   <property name="geometry">
-    <rect>
-     <x>850</x>
-     <y>970</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Next Day</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="next30">
-   <property name="geometry">
-    <rect>
-     <x>960</x>
-     <y>970</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Next 30</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="prev30">
-   <property name="geometry">
-    <rect>
-     <x>960</x>
-     <y>1000</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Prev 30</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="prevDay">
-   <property name="geometry">
-    <rect>
-     <x>850</x>
-     <y>1000</y>
-     <width>110</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Prev Day</string>
-   </property>
-  </widget>
-  <widget class="QTabWidget" name="chartTabs">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1071</width>
-     <height>851</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="firstChart">
-    <attribute name="title">
-     <string>MSFT</string>
-    </attribute>
-    <widget class="QWidget" name="horizontalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>-10</x>
-       <y>-10</y>
-       <width>1081</width>
-       <height>851</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>170</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>170</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QGraphicsView" name="chart"/>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>160</height>
+         </size>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="chartControls">
+         <attribute name="title">
+          <string>Chart Controls</string>
+         </attribute>
+         <widget class="QPushButton" name="zoomIn">
+          <property name="geometry">
+           <rect>
+            <x>290</x>
+            <y>10</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Zoom In</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="zoomOut">
+          <property name="geometry">
+           <rect>
+            <x>290</x>
+            <y>80</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Zoom Out</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="chartLength">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>50</y>
+            <width>71</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="candlestick">
+          <property name="geometry">
+           <rect>
+            <x>460</x>
+            <y>20</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Candlestick</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="ohlc">
+          <property name="geometry">
+           <rect>
+            <x>460</x>
+            <y>50</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>OHLC</string>
+          </property>
+         </widget>
+         <widget class="Line" name="line">
+          <property name="geometry">
+           <rect>
+            <x>420</x>
+            <y>10</y>
+            <width>16</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+         <widget class="Line" name="line_2">
+          <property name="geometry">
+           <rect>
+            <x>700</x>
+            <y>10</y>
+            <width>16</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label">
+          <property name="geometry">
+           <rect>
+            <x>520</x>
+            <y>0</y>
+            <width>91</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Chart Style</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="symbolEntry">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>221</width>
+            <height>29</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="loadSymbol">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>70</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Load</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="newTab">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>70</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>New Tab</string>
+          </property>
+         </widget>
+         <widget class="Line" name="line_4">
+          <property name="geometry">
+           <rect>
+            <x>250</x>
+            <y>10</y>
+            <width>16</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="hlc">
+          <property name="geometry">
+           <rect>
+            <x>460</x>
+            <y>80</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>HLC</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="bar">
+          <property name="geometry">
+           <rect>
+            <x>570</x>
+            <y>20</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Bar</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="dot">
+          <property name="geometry">
+           <rect>
+            <x>570</x>
+            <y>50</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Dot</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="close">
+          <property name="geometry">
+           <rect>
+            <x>570</x>
+            <y>80</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Close</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="account">
+         <attribute name="title">
+          <string>Account</string>
+         </attribute>
+         <widget class="QPushButton" name="buy">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>40</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Buy</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="sell">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>80</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Sell</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="showBalance">
+          <property name="geometry">
+           <rect>
+            <x>550</x>
+            <y>40</y>
+            <width>111</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_balance">
+          <property name="geometry">
+           <rect>
+            <x>420</x>
+            <y>40</y>
+            <width>81</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Balance:</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="buyShares">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>40</y>
+            <width>113</width>
+            <height>29</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="sellShares">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>80</y>
+            <width>113</width>
+            <height>29</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="Line" name="line_3">
+          <property name="geometry">
+           <rect>
+            <x>390</x>
+            <y>10</y>
+            <width>16</width>
+            <height>111</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_portfolioValue">
+          <property name="geometry">
+           <rect>
+            <x>420</x>
+            <y>20</y>
+            <width>121</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Portfolio Value:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="showPortfolioValue">
+          <property name="geometry">
+           <rect>
+            <x>550</x>
+            <y>20</y>
+            <width>121</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_portfolio">
+          <property name="geometry">
+           <rect>
+            <x>420</x>
+            <y>60</y>
+            <width>81</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Portfolio:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="showPortfolio">
+          <property name="geometry">
+           <rect>
+            <x>550</x>
+            <y>60</y>
+            <width>161</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="buyStop">
+          <property name="geometry">
+           <rect>
+            <x>260</x>
+            <y>40</y>
+            <width>113</width>
+            <height>29</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="sellStop">
+          <property name="geometry">
+           <rect>
+            <x>260</x>
+            <y>80</y>
+            <width>113</width>
+            <height>29</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_shares">
+          <property name="geometry">
+           <rect>
+            <x>170</x>
+            <y>10</y>
+            <width>71</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Shares</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_stopPrice">
+          <property name="geometry">
+           <rect>
+            <x>280</x>
+            <y>10</y>
+            <width>81</width>
+            <height>19</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Stop Price</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Technical Indicators</string>
+         </attribute>
+         <widget class="QPushButton" name="macd">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>macd</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="longPeriod">
+          <property name="geometry">
+           <rect>
+            <x>510</x>
+            <y>60</y>
+            <width>113</width>
+            <height>29</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="sma">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>0</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>sma</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="shortPeriod">
+          <property name="geometry">
+           <rect>
+            <x>510</x>
+            <y>20</y>
+            <width>113</width>
+            <height>29</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="bollingerBands">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>60</y>
+            <width>131</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Bollinger Bands</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_shortPeriod">
+          <property name="geometry">
+           <rect>
+            <x>400</x>
+            <y>18</y>
+            <width>111</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Short Period:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_longPeriod">
+          <property name="geometry">
+           <rect>
+            <x>400</x>
+            <y>58</y>
+            <width>111</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Long Period:</string>
+          </property>
+         </widget>
+         <widget class="Line" name="line_10">
+          <property name="geometry">
+           <rect>
+            <x>370</x>
+            <y>10</y>
+            <width>20</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="donchianChannel">
+          <property name="geometry">
+           <rect>
+            <x>-1</x>
+            <y>90</y>
+            <width>151</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>donchianChannel</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="wma">
+          <property name="geometry">
+           <rect>
+            <x>170</x>
+            <y>0</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>wma</string>
+          </property>
+         </widget>
+         <widget class="KColorButton" name="shortPeriodColor">
+          <property name="geometry">
+           <rect>
+            <x>630</x>
+            <y>20</y>
+            <width>58</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="defaultColor">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+         </widget>
+         <widget class="KColorButton" name="longPeriodColor">
+          <property name="geometry">
+           <rect>
+            <x>630</x>
+            <y>60</y>
+            <width>58</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="defaultColor">
+           <color>
+            <red>255</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="ema">
+          <property name="geometry">
+           <rect>
+            <x>170</x>
+            <y>30</y>
+            <width>110</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>ema</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>220</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>160</height>
+         </size>
+        </property>
+        <widget class="QLabel" name="label_daysLeft">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>30</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Days Left</string>
+         </property>
+        </widget>
+        <widget class="QLCDNumber" name="daysLeft">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>91</width>
+           <height>51</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="prevDay">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>100</y>
+           <width>110</width>
+           <height>29</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Prev Day</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="prev30">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>100</y>
+           <width>110</width>
+           <height>29</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Prev 30</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="next30">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>70</y>
+           <width>110</width>
+           <height>29</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Next 30</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="nextDay">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>70</y>
+           <width>110</width>
+           <height>29</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Next Day</string>
+         </property>
+        </widget>
+       </widget>
       </item>
      </layout>
     </widget>
-   </widget>
-  </widget>
-  <widget class="QLCDNumber" name="daysLeft">
-   <property name="geometry">
-    <rect>
-     <x>860</x>
-     <y>910</y>
-     <width>91</width>
-     <height>51</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_daysLeft">
-   <property name="geometry">
-    <rect>
-     <x>960</x>
-     <y>930</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Days Left</string>
-   </property>
-  </widget>
-  <widget class="QFrame" name="frame">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>850</y>
-     <width>1071</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1071</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="label_Date">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Date:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="currentDayDate">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="Line" name="line_5">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_Open">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Open:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="currentDayOpen">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="Line" name="line_6">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_High">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>High:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="currentDayHigh">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="Line" name="line_7">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_Low">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Low:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="currentDayLow">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="Line" name="line_8">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_Close">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Close:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="currentDayClose">
-       <property name="font">
-        <font>
-         <underline>true</underline>
-        </font>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="Line" name="line_9">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_Volume">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-         <underline>false</underline>
-        </font>
-       </property>
-       <property name="text">
-        <string>Volume:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="currentDayVolume">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

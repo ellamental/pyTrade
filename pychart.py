@@ -50,6 +50,7 @@ import numpy
 import math
 
 
+
 ###############################################################################
 ##  Account
 ##  Buy/Sell, Stop/Limit, Account Balance, Percentage Gain/Loss, etc.
@@ -144,11 +145,11 @@ class Data():
     self.setHighLow(day, length)
     d = self.chartData(day, length)
     hi,lo = self.high, self.low
-    mul = screenHeight/(hi-lo)
+    mul = screen.height/(hi-lo)
     return [[ii[0], (ii[1]-lo)*mul, (ii[2]-lo)*mul, (ii[3]-lo)*mul, (ii[4]-lo)*mul, ii[5]] for ii in d]
 
   def adjustPrices(self, prices):
-    mul = screenHeight/(self.high-self.low)
+    mul = screen.height/(self.high-self.low)
     return [(price-self.low)*mul for price in prices]
 
   def currentDay(self, day):
@@ -161,7 +162,7 @@ class Data():
     self.data = self.googDownload(symbol)
 
   def adjustDataList(self, d):
-    mul = screenHeight / (self.high - self.low)
+    mul = screen.height / (self.high - self.low)
     return [(ii-self.low)*mul for ii in d]
 
   def forEachPeriod(self, fun, period, day, length, ohlc=4):
@@ -173,7 +174,19 @@ class Data():
   
   def wma(self, period, day, length):
     return self.forEachPeriod(lambda x: numpy.average([d[4] for d in x], weights=range(period,0,-1)), period, day, length)
-  
+
+  def ema(self, period, day, length):
+    d = [ii[4] for ii in self.data[day:day+length+period]]
+    return self.doEMA(d, period)
+
+  # TODO: Broke! FIX SOON! Other indicators are based on this!!!
+  def doEMA(self, d, period):
+    ema = [sum(d[:period])/period]
+    multiplier = 2 / (1 + period)
+    for day in d[period+1:]:
+      ema.append(((day - ema[-1]) * multiplier) + ema[-1])
+    return ema
+    
   # TODO: Add ability to set custom standard deviation multiple
   def bollingerBands(self, period, day, length):
     s = self.sma(period, day, length)
@@ -198,7 +211,11 @@ class Time():
 
 
 
-
+class Screen():
+  def __init__(self):
+    self.width = 1024
+    self.height = 860
+    
 
 
 ###############################################################################
@@ -213,7 +230,7 @@ class Scene(QtGui.QGraphicsScene):
   def __init__(self):
     QtGui.QGraphicsScene.__init__(self)
     
-    self.setSceneRect(0, 0, screenWidth, screenHeight)
+    self.setSceneRect(0, 0, screen.width, screen.height)
     self.newLine = None
     self.newLineX = 0
     self.newLineY = 0
@@ -250,15 +267,24 @@ class ChartView(QtGui.QGraphicsView):
     self.data.setHighLow(time.currentDay, self.chartLength)
     self.drawChart()
     
+  def resizeEvent(self, event):
+    #print dir(event.size())
+    w, h = event.size().width(), event.size().height()
+    screen.width, screen.height = w, h
+    self.scene.setSceneRect(0,0,w,h)
+    self.drawChart()
+    print screen.width, screen.height
+    print w, h
+    
   def drawOHLC(self, day, length):
     d = self.data.adjustData(day, length)
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
     
     for ii, today in enumerate(d):
-      b = self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3])
-      self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], offsetmod/4, 1)
-      self.scene.addRect(offset+offsetmod/4, screenHeight-today[1], -(offsetmod/4), 1)
+      b = self.scene.addRect(offset+offsetmod/4, screen.height-today[2], 1, today[2]-today[3])
+      self.scene.addRect(offset+offsetmod/4, screen.height-today[4], offsetmod/4, 1)
+      self.scene.addRect(offset+offsetmod/4, screen.height-today[1], -(offsetmod/4), 1)
       
       p = self.data.data[day+ii]
       b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
@@ -266,12 +292,12 @@ class ChartView(QtGui.QGraphicsView):
 
   def drawHLC(self, day, length):
     d = self.data.adjustData(day, length)
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
     
     for ii, today in enumerate(d):
-      b = self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3])
-      self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], offsetmod/4, 1)
+      b = self.scene.addRect(offset+offsetmod/4, screen.height-today[2], 1, today[2]-today[3])
+      self.scene.addRect(offset+offsetmod/4, screen.height-today[4], offsetmod/4, 1)
       
       p = self.data.data[day+ii]
       b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
@@ -279,12 +305,12 @@ class ChartView(QtGui.QGraphicsView):
 
   def drawBar(self, day, length):
     d = self.data.adjustData(day, length)
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
     b = QtGui.QColor(50,50,50,250)
     
     for ii, today in enumerate(d):
-      body = self.scene.addRect(offset+offsetmod, screenHeight-today[2], offsetmod/2, screenHeight+100, brush=b)
+      body = self.scene.addRect(offset+offsetmod, screen.height-today[2], offsetmod/2, screen.height+100, brush=b)
       
       p = self.data.data[day+ii]
       body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
@@ -292,12 +318,12 @@ class ChartView(QtGui.QGraphicsView):
 
   def drawDot(self, day, length):
     d = self.data.adjustData(day, length)
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
     b = QtGui.QColor(50,50,50,250)
     
     for ii, today in enumerate(d):
-      body = self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], 2, 2, brush=b)
+      body = self.scene.addRect(offset+offsetmod/4, screen.height-today[4], 2, 2, brush=b)
       
       p = self.data.data[day+ii]
       body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
@@ -305,12 +331,12 @@ class ChartView(QtGui.QGraphicsView):
 
   def drawClose(self, day, length):
     d = self.data.adjustData(day, length)
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
     b = QtGui.QColor(50,50,50,250)
     
     for ii, today in enumerate(d):
-      body = self.scene.addRect(offset+offsetmod/4, screenHeight-today[4], 2, 2, brush=b)
+      body = self.scene.addRect(offset+offsetmod/4, screen.height-today[4], 2, 2, brush=b)
       
       p = self.data.data[day+ii]
       body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
@@ -322,8 +348,8 @@ class ChartView(QtGui.QGraphicsView):
 
   def drawCandlesticks(self, day, length):
     d = self.data.adjustData(day, length)
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
 
     for ii, today in enumerate(d):
       if today[1] > today[4]:
@@ -331,8 +357,8 @@ class ChartView(QtGui.QGraphicsView):
       else:
         b = QtGui.QColor("white")
 
-      self.scene.addRect(offset+offsetmod/4, screenHeight-today[2], 1, today[2]-today[3], brush=b)
-      b = self.scene.addRect(offset, screenHeight-today[1], offsetmod/2, today[1]-today[4], brush=b)
+      self.scene.addRect(offset+offsetmod/4, screen.height-today[2], 1, today[2]-today[3], brush=b)
+      b = self.scene.addRect(offset, screen.height-today[1], offsetmod/2, today[1]-today[4], brush=b)
       
       p = self.data.data[day+ii]
       b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
@@ -342,10 +368,10 @@ class ChartView(QtGui.QGraphicsView):
     """Used for moving averages, bollinger bands, etc"""
     p = QtGui.QPen(QtGui.QColor(color), 2, QtCore.Qt.SolidLine)
     d = self.data.adjustDataList(d)
-    offsetmod = screenWidth/len(d)
-    offset = screenWidth-offsetmod-offsetmod
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod-offsetmod
     for ii in range(len(d))[1:]:
-      self.scene.addLine(offset+offsetmod/4, screenHeight-d[ii], offset+offsetmod/4+offsetmod, screenHeight-(d[ii-1]), p)
+      self.scene.addLine(offset+offsetmod/4, screen.height-d[ii], offset+offsetmod/4+offsetmod, screen.height-(d[ii-1]), p)
       offset -= offsetmod
 
   def drawHorizontalLines(self, day, length):
@@ -362,10 +388,10 @@ class ChartView(QtGui.QGraphicsView):
     
     adjusted = self.data.adjustPrices(lineList)
     for ii, price in enumerate(adjusted):
-      self.scene.addLine(0, screenHeight-price, screenWidth, screenHeight-price)
+      self.scene.addLine(0, screen.height-price, screen.width, screen.height-price)
       # BUG: If scene.addText() is used drawing trendlines breaks, this is reproducable in a minimal example
       t = self.scene.addSimpleText(str(lineList[ii]))
-      t.setPos(screenWidth-30, screenHeight-price)
+      t.setPos(screen.width-30, screen.height-price)
     
 
   def drawChart(self):
@@ -408,10 +434,11 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
     
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
+    self.connect(self.ui.ema, QtCore.SIGNAL("clicked()"), self.onEMA)
+    self.connect(self.ui.wma, QtCore.SIGNAL("clicked()"), self.onWMA)
     self.connect(self.ui.macd, QtCore.SIGNAL("clicked()"), self.onMACD)
     self.connect(self.ui.bollingerBands, QtCore.SIGNAL("clicked()"), self.onBollingerBands)
     self.connect(self.ui.donchianChannel, QtCore.SIGNAL("clicked()"), self.onDonchianChannel)
-    self.connect(self.ui.wma, QtCore.SIGNAL("clicked()"), self.onWMA)
 
 
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
@@ -598,6 +625,11 @@ class Main(QtGui.QWidget):
     self.ui.shortPeriod.clear()
     self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
 
+  def onEMA(self):
+    days = int(self.ui.shortPeriod.text() or 10)
+    self.ui.shortPeriod.clear()
+    self.chartView.drawLine(self.chartView.data.ema(days, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
+
   def onWMA(self):
     days = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
@@ -631,8 +663,7 @@ if __name__ == "__main__":
   time = Time()
   account = Account()
   chartViews = []
-  screenWidth = 1024
-  screenHeight = 800
+  screen = Screen()
 
   app = QtGui.QApplication(sys.argv)
   window=Main()
