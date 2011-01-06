@@ -18,11 +18,11 @@
 ## - Prev and Next buttons that don't advance days, just let you view chart.
 ## 
 ## Chart
-## - Allow screen resizing that also resizes the chart
 ## - Add bottom bar for showing volume and other indicators
 ## - Add compare, see: http://bigcharts.marketwatch.com/advchart/frames/frames.asp?symb=&time=&freq=
 ## - Add point and figure chart view
 ## - Add support for symbol lookup
+## - Allow persistent indicators and trendlines
 ## 
 ## Accounts
 ## - Alert user that they have pending orders.
@@ -32,7 +32,7 @@
 ##   purchase price average of the two purchases.  Ex: if I own 100 shares of 
 ##   msft @ 50 and buy 100 more @ 60, the portfolio should say 200 shares @ 55
 ##
-## Bugs
+## BUG:
 ## - Try:  INDEXDJX:.DJI
 ##   
 ###############################################################################
@@ -114,7 +114,6 @@ class Account():
     for key, item in self.portfolio.items():
       v += item * self.getPrice(key, 4)
     return v
-
 
 
 
@@ -201,6 +200,7 @@ class Data():
     return (l,h)
 
 
+
 ###############################################################################
 ##  Time
 ###############################################################################
@@ -211,6 +211,10 @@ class Time():
 
 
 
+###############################################################################
+##  Screen
+###############################################################################
+
 class Screen():
   def __init__(self):
     self.width = 1024
@@ -219,11 +223,8 @@ class Screen():
 
 
 ###############################################################################
-##  Charting
+##  Charting  (QGraphicsScene and QGraphicsView)
 ##  Draw candlesticks, ohlc, horizontal lines, moving average type lines
-##  TODO:
-##    Make into a chart widget instead of main window
-##    Add tabbed charts to allow having > 1 chart open
 ###############################################################################
 
 class Scene(QtGui.QGraphicsScene):
@@ -416,9 +417,6 @@ class Main(QtGui.QWidget):
     self.chartView = chartViews[0]
     self.ui.chartTabs.addTab(self.chartView, "msft")
 
-    ## Maximize screen 
-    self.setWindowState(QtCore.Qt.WindowMaximized)
-    
     ## Connect buttons
     self.connect(self.ui.zoomIn, QtCore.SIGNAL("clicked()"), self.onZoomIn)
     self.connect(self.ui.zoomOut, QtCore.SIGNAL("clicked()"), self.onZoomOut)
@@ -429,6 +427,7 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.buy, QtCore.SIGNAL("clicked()"), self.onBuy)
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
     
+    ## Indicators
     self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
     self.connect(self.ui.ema, QtCore.SIGNAL("clicked()"), self.onEMA)
     self.connect(self.ui.wma, QtCore.SIGNAL("clicked()"), self.onWMA)
@@ -436,10 +435,7 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.bollingerBands, QtCore.SIGNAL("clicked()"), self.onBollingerBands)
     self.connect(self.ui.donchianChannel, QtCore.SIGNAL("clicked()"), self.onDonchianChannel)
 
-
-    self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
-    self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
-    
+    ## Chart Styles
     self.connect(self.ui.candlestick, QtCore.SIGNAL("clicked()"), self.onCandlestick)
     self.connect(self.ui.ohlc, QtCore.SIGNAL("clicked()"), self.onOHLC)
     self.connect(self.ui.hlc, QtCore.SIGNAL("clicked()"), self.onHLC)
@@ -447,31 +443,36 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.dot, QtCore.SIGNAL("clicked()"), self.onDot)
     self.connect(self.ui.close, QtCore.SIGNAL("clicked()"), self.onClose)
 
+    ## Chart and Tab Controls
+    self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
+    self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
     self.connect(self.ui.newTab, QtCore.SIGNAL("clicked()"), self.onNewTab)
     self.connect(self.ui.chartTabs, QtCore.SIGNAL("currentChanged(QWidget *)"), self.onChangeTab)
     self.connect(self.ui.chartTabs, QtCore.SIGNAL("tabCloseRequested(int)"), self.onCloseTab)
     
-    self.ui.chartTabs.setTabsClosable(True)
-
+    ## Maximize screen 
+    #self.setWindowState(QtCore.Qt.WindowMaximized)
+    
     ## Defaults
+    self.ui.chartTabs.setTabsClosable(True)
     self.update()
     
     
 
 
 
-###############################################################################
-## Event Handlers
-###############################################################################
+  #############################################################################
+  ## Event Handlers
+  #############################################################################
 
   def update(self):
       self.updateAccounts()
       self.updateTime()
       self.updateChartControls()
 
-###############################################################################
-##  Mulit-Chart View and Symbol Loading
-###############################################################################
+  #############################################################################
+  ##  Mulit-Chart View and Symbol Loading
+  #############################################################################
 
   def onNewTab(self):
     t = str(self.ui.symbolEntry.text())
@@ -495,10 +496,10 @@ class Main(QtGui.QWidget):
     self.chartView.drawChart()
  
 
-###############################################################################
-##  Chart Controls
-##  Zoom In/Out, Chart Style (ohlc, candlestick, etc), Normal/Log Scale, etc
-###############################################################################
+  #############################################################################
+  ##  Chart Controls
+  ##  Zoom In/Out, Chart Style (ohlc, candlestick, etc), Normal/Log Scale, etc
+  #############################################################################
   
   def updateChartControls(self):
       self.ui.chartLength.setText(str(self.chartView.chartLength))
@@ -538,10 +539,10 @@ class Main(QtGui.QWidget):
     self.chartView.drawChart()
 
 
-###############################################################################
-##  Current Day Display
-##  Date, Open, High, Low, Close
-###############################################################################
+  #############################################################################
+  ##  Current Day Display
+  ##  Date, Open, High, Low, Close
+  #############################################################################
 
   def updateCurrentDayDisplay(self):
     todayData = self.chartView.data.currentDay(time.currentDay)
@@ -553,10 +554,10 @@ class Main(QtGui.QWidget):
     self.ui.currentDayVolume.setText(str(todayData[5]))
 
 
-###############################################################################
-##  Time Controls
-##  Next/Prev Day
-###############################################################################
+  #############################################################################
+  ##  Time Controls
+  ##  Next/Prev Day
+  #############################################################################
 
   def updateTime(self):
     self.updateCurrentDayDisplay()
@@ -585,10 +586,10 @@ class Main(QtGui.QWidget):
     self.chartView.drawChart()
 
 
-###############################################################################
-##  Account Controls
-##  Buy/Sell, Stop/Limit, % Gain/Loss of last trade, % Gain/Loss Total, etc.
-###############################################################################
+  #############################################################################
+  ##  Account Controls
+  ##  Buy/Sell, Stop/Limit, % Gain/Loss of last trade, % Gain/Loss Total, etc.
+  #############################################################################
 
   def updateAccounts(self):
     account.update()
@@ -611,10 +612,12 @@ class Main(QtGui.QWidget):
     self.update()
 
 
-###############################################################################
-##  Technical Indicators
-##  Moving Averages, Bollinger Bands, RSI, Volume, etc
-###############################################################################
+  #############################################################################
+  ##  Technical Indicators
+  ##  Moving Averages, Bollinger Bands, RSI, Volume, etc
+  ##  TODO:
+  ##    Add "your stop loss" indicator that plots the stop loss price
+  #############################################################################
 
   def onSMA(self):
     days = int(self.ui.shortPeriod.text() or 10)
@@ -658,8 +661,8 @@ class Main(QtGui.QWidget):
 if __name__ == "__main__":
   time = Time()
   account = Account()
-  chartViews = []
   screen = Screen()
+  chartViews = []
 
   app = QtGui.QApplication(sys.argv)
   window=Main()
