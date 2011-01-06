@@ -14,8 +14,12 @@
 ###############################################################################
 
 
+## On Chart Indicators
+#############################
+
 Accumulation Distribution
 AD = ((Close - Open) / (High - Low)) * Volume
+
 
 Bollinger Bands
 SMA = simple moving average
@@ -23,11 +27,50 @@ high = SMA + standard_deviation(period)*2
 middle = SMA
 low = SMA - standard_deviation(period)*2
 
+
 Donchian Channel
 high = max(period_highs)
 low = min(period_lows)
 
+
 Simple Moving Average
 SMA = sum(period)/period
+
+
+Adaptive Moving Average
+
+
+Darvas Box
+
+
+Elastic Volume Weighted Moving Average
+
+
+Indicator Weighted Average
+
+
+Zig Zag Indicator
+
+
+
+
+
+
+## Off Chart Indicators
+############################
+
+RSI
+
+
+Accumulation/Distribution
+
+
+Balance of Power
+(CL - OP) / (HI - LO) 
+
+
+
+
+
 
 
