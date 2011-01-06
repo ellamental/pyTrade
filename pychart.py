@@ -14,7 +14,6 @@
 ## Game
 ## - Add game display (days left, total profit/loss, % profit/loss, goals, etc.)
 ## - Add goals (eg 2% per month or 20% per year)
-## - Check for end of data when changing days
 ## - Prev and Next buttons that don't advance days, just let you view chart.
 ## 
 ## Chart
@@ -564,9 +563,10 @@ class Main(QtGui.QWidget):
     self.ui.daysLeft.display(time.currentDay)
 
   def onNextDay(self):
-    time.currentDay -= 1
-    self.chartView.drawChart()
-    self.update()
+    if time.currentDay > 0:
+      time.currentDay -= 1
+      self.chartView.drawChart()
+      self.update()
 
   def onPrevDay(self):
     time.currentDay += 1
@@ -575,8 +575,9 @@ class Main(QtGui.QWidget):
     
   def onNext30(self):
     for ii in range(30):
-      time.currentDay -=1
-      self.update()
+      if time.currentDay > 0:
+        time.currentDay -=1
+        self.update()
     self.chartView.drawChart()
 
   def onPrev30(self):
