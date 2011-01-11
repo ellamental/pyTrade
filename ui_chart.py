@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Mon Jan 10 19:22:38 2011
+# Created: Tue Jan 11 09:06:43 2011
 #      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_chartWidget(object):
     def setupUi(self, chartWidget):
         chartWidget.setObjectName("chartWidget")
-        chartWidget.resize(982, 1056)
+        chartWidget.resize(905, 948)
         self.verticalLayout = QtGui.QVBoxLayout(chartWidget)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -156,12 +156,12 @@ class Ui_chartWidget(object):
         self.verticalLayout_2.addWidget(self.symbolEntry)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.loadSymbol = QtGui.QPushButton(self.chartControls)
-        self.loadSymbol.setObjectName("loadSymbol")
-        self.horizontalLayout.addWidget(self.loadSymbol)
         self.newTab = QtGui.QPushButton(self.chartControls)
         self.newTab.setObjectName("newTab")
         self.horizontalLayout.addWidget(self.newTab)
+        self.loadSymbol = QtGui.QPushButton(self.chartControls)
+        self.loadSymbol.setObjectName("loadSymbol")
+        self.horizontalLayout.addWidget(self.loadSymbol)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         spacerItem6 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem6)
@@ -174,15 +174,20 @@ class Ui_chartWidget(object):
         self.verticalLayout_3 = QtGui.QVBoxLayout()
         self.verticalLayout_3.setSpacing(2)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+        spacerItem7 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_3.addItem(spacerItem7)
         self.zoomIn = QtGui.QPushButton(self.chartControls)
         self.zoomIn.setObjectName("zoomIn")
         self.verticalLayout_3.addWidget(self.zoomIn)
         self.chartLength = QtGui.QLabel(self.chartControls)
+        self.chartLength.setAlignment(QtCore.Qt.AlignCenter)
         self.chartLength.setObjectName("chartLength")
         self.verticalLayout_3.addWidget(self.chartLength)
         self.zoomOut = QtGui.QPushButton(self.chartControls)
         self.zoomOut.setObjectName("zoomOut")
         self.verticalLayout_3.addWidget(self.zoomOut)
+        spacerItem8 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_3.addItem(spacerItem8)
         self.horizontalLayout_4.addLayout(self.verticalLayout_3)
         self.line = QtGui.QFrame(self.chartControls)
         self.line.setFrameShape(QtGui.QFrame.VLine)
@@ -353,30 +358,30 @@ class Ui_chartWidget(object):
         self.gridLayout_4.setMargin(2)
         self.gridLayout_4.setSpacing(2)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.daysLeft = QtGui.QLCDNumber(self.frame1)
-        self.daysLeft.setObjectName("daysLeft")
-        self.gridLayout_4.addWidget(self.daysLeft, 0, 0, 1, 1)
         self.label_daysLeft = QtGui.QLabel(self.frame1)
         self.label_daysLeft.setObjectName("label_daysLeft")
         self.gridLayout_4.addWidget(self.label_daysLeft, 0, 1, 1, 1)
-        self.nextDay = QtGui.QPushButton(self.frame1)
-        self.nextDay.setObjectName("nextDay")
-        self.gridLayout_4.addWidget(self.nextDay, 1, 0, 1, 1)
-        self.next30 = QtGui.QPushButton(self.frame1)
-        self.next30.setObjectName("next30")
-        self.gridLayout_4.addWidget(self.next30, 1, 1, 1, 1)
+        self.daysLeft = QtGui.QLCDNumber(self.frame1)
+        self.daysLeft.setObjectName("daysLeft")
+        self.gridLayout_4.addWidget(self.daysLeft, 0, 0, 1, 1)
         self.prevDay = QtGui.QPushButton(self.frame1)
         self.prevDay.setObjectName("prevDay")
         self.gridLayout_4.addWidget(self.prevDay, 2, 0, 1, 1)
         self.prev30 = QtGui.QPushButton(self.frame1)
         self.prev30.setObjectName("prev30")
         self.gridLayout_4.addWidget(self.prev30, 2, 1, 1, 1)
+        self.next30 = QtGui.QPushButton(self.frame1)
+        self.next30.setObjectName("next30")
+        self.gridLayout_4.addWidget(self.next30, 1, 1, 1, 1)
+        self.nextDay = QtGui.QPushButton(self.frame1)
+        self.nextDay.setObjectName("nextDay")
+        self.gridLayout_4.addWidget(self.nextDay, 1, 0, 1, 1)
         self.horizontalLayout_3.addWidget(self.frame1)
         self.verticalLayout.addWidget(self.frame)
 
         self.retranslateUi(chartWidget)
         self.chartTabs.setCurrentIndex(-1)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
 
     def retranslateUi(self, chartWidget):
@@ -393,8 +398,8 @@ class Ui_chartWidget(object):
         self.currentDayClose.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.label_Volume.setText(QtGui.QApplication.translate("chartWidget", "Volume:", None, QtGui.QApplication.UnicodeUTF8))
         self.currentDayVolume.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
-        self.loadSymbol.setText(QtGui.QApplication.translate("chartWidget", "Load", None, QtGui.QApplication.UnicodeUTF8))
         self.newTab.setText(QtGui.QApplication.translate("chartWidget", "New Tab", None, QtGui.QApplication.UnicodeUTF8))
+        self.loadSymbol.setText(QtGui.QApplication.translate("chartWidget", "Load", None, QtGui.QApplication.UnicodeUTF8))
         self.zoomIn.setText(QtGui.QApplication.translate("chartWidget", "Zoom In", None, QtGui.QApplication.UnicodeUTF8))
         self.chartLength.setText(QtGui.QApplication.translate("chartWidget", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.zoomOut.setText(QtGui.QApplication.translate("chartWidget", "Zoom Out", None, QtGui.QApplication.UnicodeUTF8))
@@ -431,10 +436,10 @@ class Ui_chartWidget(object):
         self.label_longPeriod.setText(QtGui.QApplication.translate("chartWidget", "Long Period:", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.technicalIndicators), QtGui.QApplication.translate("chartWidget", "Technical Indicators", None, QtGui.QApplication.UnicodeUTF8))
         self.label_daysLeft.setText(QtGui.QApplication.translate("chartWidget", "Days Left", None, QtGui.QApplication.UnicodeUTF8))
-        self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
-        self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
         self.prevDay.setText(QtGui.QApplication.translate("chartWidget", "Prev Day", None, QtGui.QApplication.UnicodeUTF8))
         self.prev30.setText(QtGui.QApplication.translate("chartWidget", "Prev 30", None, QtGui.QApplication.UnicodeUTF8))
+        self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
+        self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":

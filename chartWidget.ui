@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>982</width>
-    <height>1056</height>
+    <width>905</width>
+    <height>948</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -310,7 +310,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="chartControls">
          <attribute name="title">
@@ -347,16 +347,16 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
-               <widget class="QPushButton" name="loadSymbol">
+               <widget class="QPushButton" name="newTab">
                 <property name="text">
-                 <string>Load</string>
+                 <string>New Tab</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="newTab">
+               <widget class="QPushButton" name="loadSymbol">
                 <property name="text">
-                 <string>New Tab</string>
+                 <string>Load</string>
                 </property>
                </widget>
               </item>
@@ -390,6 +390,19 @@
              <number>2</number>
             </property>
             <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
              <widget class="QPushButton" name="zoomIn">
               <property name="text">
                <string>Zoom In</string>
@@ -401,6 +414,9 @@
               <property name="text">
                <string>TextLabel</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
             <item>
@@ -409,6 +425,19 @@
                <string>Zoom Out</string>
               </property>
              </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>
@@ -756,9 +785,6 @@
          <property name="spacing">
           <number>2</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLCDNumber" name="daysLeft"/>
-         </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_daysLeft">
            <property name="text">
@@ -766,19 +792,8 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="nextDay">
-           <property name="text">
-            <string>Next Day</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QPushButton" name="next30">
-           <property name="text">
-            <string>Next 30</string>
-           </property>
-          </widget>
+         <item row="0" column="0">
+          <widget class="QLCDNumber" name="daysLeft"/>
          </item>
          <item row="2" column="0">
           <widget class="QPushButton" name="prevDay">
@@ -794,6 +809,20 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="next30">
+           <property name="text">
+            <string>Next 30</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="nextDay">
+           <property name="text">
+            <string>Next Day</string>
+           </property>
+          </widget>
+         </item>
         </layout>
         <zorder>label_daysLeft</zorder>
         <zorder>daysLeft</zorder>
@@ -801,7 +830,6 @@
         <zorder>prev30</zorder>
         <zorder>next30</zorder>
         <zorder>nextDay</zorder>
-        <zorder>tabWidget</zorder>
        </widget>
       </item>
      </layout>

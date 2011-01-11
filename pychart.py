@@ -35,6 +35,7 @@
 ## - Try:  INDEXDJX:.DJI
 ## - Start program and close first tab.  Or at any time close all tabs.
 ## - Buy stock in MSFT, then sell it, then open GE, then close MSFT tab.
+## - Press "New Tab" with nothing in the symbol box
 ##   
 ###############################################################################
 
@@ -260,13 +261,12 @@ class Scene(QtGui.QGraphicsScene):
 
 
 
-
 class ChartView(QtGui.QGraphicsView):
-  def __init__(self, scene, symbol):
+  def __init__(self, symbol):
     QtGui.QGraphicsView.__init__(self)
     
     self.symbol = symbol
-    self.scene = scene
+    self.scene = Scene()
     self.setScene(self.scene)
     self.data = Data(symbol)
     self.chartLength = 60
@@ -420,7 +420,7 @@ class Main(QtGui.QWidget):
     self.ui.setupUi(self)
 
     ## Create a new GraphicsScene and set GraphicsView (chart) to scene
-    chartViews.append(ChartView(Scene(), "msft"))
+    chartViews.append(ChartView("msft"))
     self.chartView = chartViews[0]
     self.ui.chartTabs.addTab(self.chartView, "msft")
 
@@ -484,7 +484,7 @@ class Main(QtGui.QWidget):
   def onNewTab(self):
     t = str(self.ui.symbolEntry.text())
     self.ui.symbolEntry.clear()
-    c = ChartView(Scene(), t)
+    c = ChartView(t)
     chartViews.append(c)
     self.ui.chartTabs.addTab(c, t)
 
