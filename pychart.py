@@ -346,19 +346,6 @@ class ChartView(QtGui.QGraphicsView):
       offset -= offsetmod
 
   def drawClose(self, day, length):
-    d = self.data.adjustData(day, length)
-    offsetmod = screen.width/len(d)
-    offset = screen.width-offsetmod
-    b = QtGui.QColor(50,50,50,250)
-    
-    for ii, today in enumerate(d):
-      body = self.scene.addRect(offset+offsetmod/4, screen.height-today[4], 2, 2, brush=b)
-      
-      p = self.data.data[day+ii]
-      body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
-      offset -= offsetmod
-
-  def drawClose(self, day, length):
     d = self.data.chartData(day, length)
     self.drawLine([ii[4] for ii in d])
 
