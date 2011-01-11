@@ -261,6 +261,16 @@ class Scene(QtGui.QGraphicsScene):
 
 
 
+#class ChartFrame(QtGui.QFrame):
+  #def __init__(self, symbol):
+    #QtGui.QFrame.__init__(self)
+    
+    #self.symbol = symbol
+    #self.chartView = ChartView(symbol)
+    #self.volumeChart = ChartView(symbol)
+    
+    
+
 class ChartView(QtGui.QGraphicsView):
   def __init__(self, symbol):
     QtGui.QGraphicsView.__init__(self)
@@ -308,16 +318,18 @@ class ChartView(QtGui.QGraphicsView):
       offset -= offsetmod
 
   def drawBar(self, day, length):
-    d = self.data.adjustData(day, length)
+    d = [ii[4] for ii in self.data.data[day:day+length]]
+    self.drawBars(d)
+
+  def drawBars(self, d, color="black"):
+    adjustedData = self.data.adjustPrices(d)
     offsetmod = screen.width/len(d)
     offset = screen.width-offsetmod
-    b = QtGui.QColor(50,50,50,250)
+    b = QtGui.QColor(color)
     
-    for ii, today in enumerate(d):
-      body = self.scene.addRect(offset+offsetmod, screen.height-today[2], offsetmod/2, screen.height+100, brush=b)
-      
-      p = self.data.data[day+ii]
-      body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+    for adjusted, real in zip(adjustedData, d):
+      body = self.scene.addRect(offset, screen.height-adjusted, offsetmod/2, screen.height+100, brush=b)
+      body.setToolTip(str(real))
       offset -= offsetmod
 
   def drawDot(self, day, length):
