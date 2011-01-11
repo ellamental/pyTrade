@@ -454,7 +454,7 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
     self.connect(self.ui.newTab, QtCore.SIGNAL("clicked()"), self.onNewTab)
-    self.connect(self.ui.chartTabs, QtCore.SIGNAL("currentChanged(QWidget *)"), self.onChangeTab)
+    self.connect(self.ui.chartTabs, QtCore.SIGNAL("currentChanged(int)"), self.onChangeTab)
     self.connect(self.ui.chartTabs, QtCore.SIGNAL("tabCloseRequested(int)"), self.onCloseTab)
     
     ## Maximize screen 
