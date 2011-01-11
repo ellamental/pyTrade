@@ -168,10 +168,6 @@ class Data():
   def loadSymbol(self, symbol):
     self.data = self.googDownload(symbol)
 
-  def adjustDataList(self, d):
-    mul = screen.height / (self.high - self.low)
-    return [(ii-self.low)*mul for ii in d]
-
   def forEachPeriod(self, fun, period, day, length, ohlc=4):
     d = self.data[day:day+length+period]
     return [fun([ii for ii in d[c:c+period]]) for c in range(length)]
@@ -290,6 +286,68 @@ class ChartView(QtGui.QGraphicsView):
     self.scene.setSceneRect(0,0,screen.width,screen.height)
     self.drawChart()
     
+  ## Basic Chart Styles (Bar, Dot, Line)
+  def drawBar(self, day, length):
+    d = [ii[4] for ii in self.data.data[day:day+length]]
+    self.drawBars(d)
+
+  def drawBars(self, d, color="black"):
+    adjustedData = self.data.adjustPrices(d)
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
+    b = QtGui.QColor(color)
+    for adjusted, real in zip(adjustedData, d):
+      body = self.scene.addRect(offset, screen.height-adjusted, offsetmod/2, screen.height+100, brush=b)
+      body.setToolTip(str(real))
+      offset -= offsetmod
+
+  def drawDot(self, day, length):
+    d = [ii[4] for ii in self.data.data[day:day+length]]
+    self.drawDots(d)
+    
+  def drawDots(self, d, color="black"):
+    adjustedData = self.data.adjustPrices(d)
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
+    b = QtGui.QColor(color)
+    for adjusted, real in zip(adjustedData, d):
+      body = self.scene.addRect(offset+offsetmod/4, screen.height-adjusted, 2, 2, brush=b)
+      body.setToolTip(str(real))
+      offset -= offsetmod
+
+  def drawClose(self, day, length):
+    d = self.data.chartData(day, length)
+    self.drawLine([ii[4] for ii in d])
+
+  def drawLine(self, d, color="black"):
+    """Used for moving averages, bollinger bands, etc"""
+    p = QtGui.QPen(QtGui.QColor(color), 2, QtCore.Qt.SolidLine)
+    d = self.data.adjustPrices(d)
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod-offsetmod
+    for ii in range(len(d))[1:]:
+      self.scene.addLine(offset+offsetmod/4, screen.height-d[ii], offset+offsetmod/4+offsetmod, screen.height-(d[ii-1]), p)
+      offset -= offsetmod
+      
+  ## Main Chart Styles (Candlestick, OHLC, HLC)
+  def drawCandlesticks(self, day, length):
+    d = self.data.adjustData(day, length)
+    offsetmod = screen.width/len(d)
+    offset = screen.width-offsetmod
+
+    for ii, today in enumerate(d):
+      if today[1] > today[4]:
+        b = QtGui.QColor("black")
+      else:
+        b = QtGui.QColor("white")
+
+      self.scene.addRect(offset+offsetmod/4, screen.height-today[2], 1, today[2]-today[3], brush=b)
+      b = self.scene.addRect(offset, screen.height-today[1], offsetmod/2, today[1]-today[4], brush=b)
+      
+      p = self.data.data[day+ii]
+      b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
+      offset -= offsetmod
+
   def drawOHLC(self, day, length):
     d = self.data.adjustData(day, length)
     offsetmod = screen.width/len(d)
@@ -317,65 +375,6 @@ class ChartView(QtGui.QGraphicsView):
       b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
       offset -= offsetmod
 
-  def drawBar(self, day, length):
-    d = [ii[4] for ii in self.data.data[day:day+length]]
-    self.drawBars(d)
-
-  def drawBars(self, d, color="black"):
-    adjustedData = self.data.adjustPrices(d)
-    offsetmod = screen.width/len(d)
-    offset = screen.width-offsetmod
-    b = QtGui.QColor(color)
-    
-    for adjusted, real in zip(adjustedData, d):
-      body = self.scene.addRect(offset, screen.height-adjusted, offsetmod/2, screen.height+100, brush=b)
-      body.setToolTip(str(real))
-      offset -= offsetmod
-
-  def drawDot(self, day, length):
-    d = self.data.adjustData(day, length)
-    offsetmod = screen.width/len(d)
-    offset = screen.width-offsetmod
-    b = QtGui.QColor(50,50,50,250)
-    
-    for ii, today in enumerate(d):
-      body = self.scene.addRect(offset+offsetmod/4, screen.height-today[4], 2, 2, brush=b)
-      
-      p = self.data.data[day+ii]
-      body.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
-      offset -= offsetmod
-
-  def drawClose(self, day, length):
-    d = self.data.chartData(day, length)
-    self.drawLine([ii[4] for ii in d])
-
-  def drawCandlesticks(self, day, length):
-    d = self.data.adjustData(day, length)
-    offsetmod = screen.width/len(d)
-    offset = screen.width-offsetmod
-
-    for ii, today in enumerate(d):
-      if today[1] > today[4]:
-        b = QtGui.QColor("black")
-      else:
-        b = QtGui.QColor("white")
-
-      self.scene.addRect(offset+offsetmod/4, screen.height-today[2], 1, today[2]-today[3], brush=b)
-      b = self.scene.addRect(offset, screen.height-today[1], offsetmod/2, today[1]-today[4], brush=b)
-      
-      p = self.data.data[day+ii]
-      b.setToolTip(" ".join(["Date:", p[0], "Open:", str(p[1]), "High:", str(p[2]), "Low:", str(p[3]), "Close", str(p[4]), "Volume:", str(p[5])]))  # We can use this to display price data
-      offset -= offsetmod
-
-  def drawLine(self, d, color="black"):
-    """Used for moving averages, bollinger bands, etc"""
-    p = QtGui.QPen(QtGui.QColor(color), 2, QtCore.Qt.SolidLine)
-    d = self.data.adjustDataList(d)
-    offsetmod = screen.width/len(d)
-    offset = screen.width-offsetmod-offsetmod
-    for ii in range(len(d))[1:]:
-      self.scene.addLine(offset+offsetmod/4, screen.height-d[ii], offset+offsetmod/4+offsetmod, screen.height-(d[ii-1]), p)
-      offset -= offsetmod
 
   def drawHorizontalLines(self, day, length):
     self.data.setHighLow(day, length)
