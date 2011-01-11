@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Thu Jan  6 07:12:38 2011
-#      by: PyQt4 UI code generator 4.7.2
+# Created: Mon Jan 10 18:29:32 2011
+#      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -292,16 +292,6 @@ class Ui_chartWidget(object):
         self.wma = QtGui.QPushButton(self.tab_4)
         self.wma.setGeometry(QtCore.QRect(170, 0, 110, 29))
         self.wma.setObjectName("wma")
-        self.shortPeriodColor = KColorButton(self.tab_4)
-        self.shortPeriodColor.setGeometry(QtCore.QRect(630, 20, 58, 27))
-        self.shortPeriodColor.setColor(QtGui.QColor(255, 0, 0))
-        self.shortPeriodColor.setDefaultColor(QtGui.QColor(0, 0, 0))
-        self.shortPeriodColor.setObjectName("shortPeriodColor")
-        self.longPeriodColor = KColorButton(self.tab_4)
-        self.longPeriodColor.setGeometry(QtCore.QRect(630, 60, 58, 27))
-        self.longPeriodColor.setColor(QtGui.QColor(0, 0, 255))
-        self.longPeriodColor.setDefaultColor(QtGui.QColor(255, 0, 0))
-        self.longPeriodColor.setObjectName("longPeriodColor")
         self.ema = QtGui.QPushButton(self.tab_4)
         self.ema.setGeometry(QtCore.QRect(170, 30, 110, 29))
         self.ema.setObjectName("ema")
@@ -334,7 +324,7 @@ class Ui_chartWidget(object):
 
         self.retranslateUi(chartWidget)
         self.chartTabs.setCurrentIndex(-1)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(chartWidget)
 
     def retranslateUi(self, chartWidget):
@@ -394,7 +384,6 @@ class Ui_chartWidget(object):
         self.next30.setText(QtGui.QApplication.translate("chartWidget", "Next 30", None, QtGui.QApplication.UnicodeUTF8))
         self.nextDay.setText(QtGui.QApplication.translate("chartWidget", "Next Day", None, QtGui.QApplication.UnicodeUTF8))
 
-from PyKDE4.kdeui import KColorButton
 
 if __name__ == "__main__":
     import sys

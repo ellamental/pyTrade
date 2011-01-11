@@ -637,40 +637,40 @@ class Main(QtGui.QWidget):
   def onSMA(self):
     days = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
+    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), "red")
 
   def onEMA(self):
     days = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.ema(days, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
+    self.chartView.drawLine(self.chartView.data.ema(days, time.currentDay, self.chartView.chartLength), "red")
 
   def onWMA(self):
     days = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.wma(days, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
+    self.chartView.drawLine(self.chartView.data.wma(days, time.currentDay, self.chartView.chartLength), "red")
 
   def onMACD(self):
     shortLength = int(self.ui.shortPeriod.text() or 10)
     longLength = int(self.ui.longPeriod.text() or 20)
     self.ui.shortPeriod.clear()
     self.ui.longPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength), self.ui.shortPeriodColor.color())
-    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength), self.ui.longPeriodColor.color())
+    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength), "red")
+    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength), "blue")
 
   def onBollingerBands(self):
     l = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
     d = self.chartView.data.bollingerBands(l, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], self.ui.shortPeriodColor.color())
+    self.chartView.drawLine(d[0], "red")
     self.chartView.drawLine(d[1], "blue")
-    self.chartView.drawLine(d[2], self.ui.longPeriodColor.color())
+    self.chartView.drawLine(d[2], "blue")
    
   def onDonchianChannel(self):
     p = int(self.ui.shortPeriod.text() or 10)
     self.ui.shortPeriod.clear()
     d = self.chartView.data.donchianChannel(p, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], self.ui.shortPeriodColor.color())
-    self.chartView.drawLine(d[1], self.ui.longPeriodColor.color())
+    self.chartView.drawLine(d[0], "red")
+    self.chartView.drawLine(d[1], "blue")
 
 
 if __name__ == "__main__":

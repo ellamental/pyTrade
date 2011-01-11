@@ -308,7 +308,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="chartControls">
          <attribute name="title">
@@ -888,54 +888,6 @@
            <string>wma</string>
           </property>
          </widget>
-         <widget class="KColorButton" name="shortPeriodColor">
-          <property name="geometry">
-           <rect>
-            <x>630</x>
-            <y>20</y>
-            <width>58</width>
-            <height>27</height>
-           </rect>
-          </property>
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="defaultColor">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-         </widget>
-         <widget class="KColorButton" name="longPeriodColor">
-          <property name="geometry">
-           <rect>
-            <x>630</x>
-            <y>60</y>
-            <width>58</width>
-            <height>27</height>
-           </rect>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="defaultColor">
-           <color>
-            <red>255</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-         </widget>
          <widget class="QPushButton" name="ema">
           <property name="geometry">
            <rect>
@@ -1048,13 +1000,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KColorButton</class>
-   <extends>QPushButton</extends>
-   <header>kcolorbutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
