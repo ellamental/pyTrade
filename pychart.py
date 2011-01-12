@@ -58,7 +58,10 @@ import math
 ##  Buy/Sell, Stop/Limit, Account Balance, Percentage Gain/Loss, etc.
 ###############################################################################
 
-class Account():
+#class Transaction:
+  
+
+class Account:
   def __init__(self):
     self.initialBalance = 10000
     self.balance = 10000
@@ -133,7 +136,7 @@ class Account():
 ##    Rename some of the methods to make more clear
 ###############################################################################
 
-class Data():
+class Data:
   def __init__(self, symbol):
     self.symbol = symbol
     self.data = self.googDownload(symbol)
@@ -209,7 +212,7 @@ class Data():
 ##  Time
 ###############################################################################
 
-class Time():
+class Time:
   def __init__(self):
     self.currentDay = 1
 
@@ -219,7 +222,7 @@ class Time():
 ##  Screen
 ###############################################################################
 
-class Screen():
+class Screen:
   def __init__(self):
     self.width = 1024
     self.height = 860
@@ -255,16 +258,6 @@ class Scene(QtGui.QGraphicsScene):
     epy = event.scenePos().y()
     self.newLine.setLine(epx, epy, self.newLineX, self.newLineY)
 
-
-
-#class ChartFrame(QtGui.QFrame):
-  #def __init__(self, symbol):
-    #QtGui.QFrame.__init__(self)
-    
-    #self.symbol = symbol
-    #self.chartView = ChartView(symbol)
-    #self.volumeChart = ChartView(symbol)
-    
     
 
 class ChartView(QtGui.QGraphicsView):
