@@ -20,8 +20,138 @@
    <item>
     <widget class="QTabWidget" name="chartTabs">
      <property name="currentIndex">
-      <number>-1</number>
+      <number>0</number>
      </property>
+     <property name="tabsClosable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="tab">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>Account</string>
+      </attribute>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>40</y>
+         <width>144</width>
+         <height>85</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
+        <property name="horizontalSpacing">
+         <number>2</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>2</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_portfolioValue">
+          <property name="text">
+           <string>Portfolio Value:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="showPortfolioValue">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_balance">
+          <property name="text">
+           <string>Balance:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="showBalance">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_profit">
+          <property name="text">
+           <string>Profit/Loss:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="showProfit">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_profitPercent">
+          <property name="text">
+           <string>Profit/Loss %:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="showProfitPercent">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="showPortfolio">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_portfolio">
+          <property name="text">
+           <string>Portfolio:</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>290</x>
+         <y>60</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>General Market</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listWidget">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>170</y>
+         <width>351</width>
+         <height>311</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Portfolio View</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
     </widget>
    </item>
    <item>
@@ -310,7 +440,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="chartControls">
          <attribute name="title">
@@ -378,70 +508,6 @@
            </layout>
           </item>
           <item>
-           <widget class="Line" name="line_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <property name="spacing">
-             <number>2</number>
-            </property>
-            <item>
-             <spacer name="verticalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QPushButton" name="zoomIn">
-              <property name="text">
-               <string>Zoom In</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="chartLength">
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="zoomOut">
-              <property name="text">
-               <string>Zoom Out</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
            <widget class="Line" name="line">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -454,6 +520,19 @@
              <number>2</number>
             </property>
             <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
              <widget class="QLabel" name="label">
               <property name="text">
                <string>Chart Style</string>
@@ -464,53 +543,77 @@
              </widget>
             </item>
             <item>
-             <layout class="QGridLayout" name="gridLayout">
-              <property name="spacing">
-               <number>2</number>
+             <widget class="QComboBox" name="chartStyle">
+              <item>
+               <property name="text">
+                <string>Candlestick</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>OHLC</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>HLC</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Bar</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Dot</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Line</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Chart Length</string>
               </property>
-              <item row="0" column="0">
-               <widget class="QPushButton" name="candlestick">
-                <property name="text">
-                 <string>Candlestick</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QPushButton" name="bar">
-                <property name="text">
-                 <string>Bar</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QPushButton" name="ohlc">
-                <property name="text">
-                 <string>OHLC</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QPushButton" name="dot">
-                <property name="text">
-                 <string>Dot</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QPushButton" name="hlc">
-                <property name="text">
-                 <string>HLC</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QPushButton" name="close">
-                <property name="text">
-                 <string>Close</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="chartLength">
+              <property name="minimum">
+               <number>10</number>
+              </property>
+              <property name="maximum">
+               <number>600</number>
+              </property>
+              <property name="singleStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>60</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>
@@ -562,86 +665,6 @@
              <enum>Qt::Vertical</enum>
             </property>
            </widget>
-          </item>
-          <item>
-           <layout class="QFormLayout" name="formLayout">
-            <property name="horizontalSpacing">
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing">
-             <number>2</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_portfolioValue">
-              <property name="text">
-               <string>Portfolio Value:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="showPortfolioValue">
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_balance">
-              <property name="text">
-               <string>Balance:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="showBalance">
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_profit">
-              <property name="text">
-               <string>Profit/Loss:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLabel" name="showProfit">
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_profitPercent">
-              <property name="text">
-               <string>Profit/Loss %:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QLabel" name="showProfitPercent">
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_portfolio">
-              <property name="text">
-               <string>Portfolio:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <widget class="QLabel" name="showPortfolio">
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
           <item>
            <spacer name="horizontalSpacer_6">

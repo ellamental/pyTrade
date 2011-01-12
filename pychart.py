@@ -466,8 +466,7 @@ class Main(QtGui.QWidget):
     self.ui.chartTabs.addTab(self.chartView, "msft")
 
     ## Connect buttons
-    self.connect(self.ui.zoomIn, QtCore.SIGNAL("clicked()"), self.onZoomIn)
-    self.connect(self.ui.zoomOut, QtCore.SIGNAL("clicked()"), self.onZoomOut)
+    self.connect(self.ui.chartLength, QtCore.SIGNAL("valueChanged(int)"), self.onZoomChart)
     self.connect(self.ui.nextDay, QtCore.SIGNAL("clicked()"), self.onNextDay)
     self.connect(self.ui.prevDay, QtCore.SIGNAL("clicked()"), self.onPrevDay)
     self.connect(self.ui.next30, QtCore.SIGNAL("clicked()"), self.onNext30)
@@ -484,12 +483,7 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.donchianChannel, QtCore.SIGNAL("clicked()"), self.onDonchianChannel)
 
     ## Chart Styles
-    self.connect(self.ui.candlestick, QtCore.SIGNAL("clicked()"), self.onCandlestick)
-    self.connect(self.ui.ohlc, QtCore.SIGNAL("clicked()"), self.onOHLC)
-    self.connect(self.ui.hlc, QtCore.SIGNAL("clicked()"), self.onHLC)
-    self.connect(self.ui.bar, QtCore.SIGNAL("clicked()"), self.onBar)
-    self.connect(self.ui.dot, QtCore.SIGNAL("clicked()"), self.onDot)
-    self.connect(self.ui.close, QtCore.SIGNAL("clicked()"), self.onClose)
+    self.connect(self.ui.chartStyle, QtCore.SIGNAL("currentIndexChanged(int)"), self.onChartStyleChange)
 
     ## Chart and Tab Controls
     self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
@@ -502,7 +496,7 @@ class Main(QtGui.QWidget):
     #self.setWindowState(QtCore.Qt.WindowMaximized)
     
     ## Defaults
-    self.ui.chartTabs.setTabsClosable(True)
+    #self.ui.chartTabs.setTabsClosable(True)
     self.update()
     
     
@@ -516,7 +510,6 @@ class Main(QtGui.QWidget):
   def update(self):
       self.updateAccounts()
       self.updateTime()
-      self.updateChartControls()
 
   #############################################################################
   ##  Mulit-Chart View and Symbol Loading
@@ -530,11 +523,11 @@ class Main(QtGui.QWidget):
     self.ui.chartTabs.addTab(c, t)
 
   def onCloseTab(self, num):
-    chartViews.pop(num)
+    chartViews.pop(num-1)
     self.ui.chartTabs.removeTab(num)
 
   def onChangeTab(self, x):
-    self.chartView = chartViews[self.ui.chartTabs.currentIndex()]
+    self.chartView = chartViews[self.ui.chartTabs.currentIndex()-1]
     self.chartView.drawChart()
     self.update()
     
@@ -549,41 +542,16 @@ class Main(QtGui.QWidget):
   ##  Zoom In/Out, Chart Style (ohlc, candlestick, etc), Normal/Log Scale, etc
   #############################################################################
   
-  def updateChartControls(self):
-      self.ui.chartLength.setText(str(self.chartView.chartLength))
+  def onZoomChart(self, i):
+    self.chartView.chartLength = i
+    self.chartView.drawChart()
+    #self.update()
 
-  def onZoomIn(self):
-    self.chartView.chartLength -= 10
-    self.chartView.drawChart()
-    self.update()
-    
-  def onZoomOut(self):
-    self.chartView.chartLength += 10
-    self.chartView.drawChart()
-    self.update()
-
-  def onCandlestick(self):
-    self.chartView.chartStyle = self.chartView.drawCandlesticks
-    self.chartView.drawChart()
-    
-  def onOHLC(self):
-    self.chartView.chartStyle = self.chartView.drawOHLC
-    self.chartView.drawChart()
-    
-  def onHLC(self):
-    self.chartView.chartStyle = self.chartView.drawHLC
-    self.chartView.drawChart()
-
-  def onBar(self):
-    self.chartView.chartStyle = self.chartView.drawBar
-    self.chartView.drawChart()
-
-  def onDot(self):
-    self.chartView.chartStyle = self.chartView.drawDot
-    self.chartView.drawChart()
-
-  def onClose(self):
-    self.chartView.chartStyle = self.chartView.drawClose
+  def onChartStyleChange(self, i):
+    choices = [self.chartView.drawCandlesticks, self.chartView.drawOHLC, 
+               self.chartView.drawHLC, self.chartView.drawBar,
+               self.chartView.drawDot, self.chartView.drawClose]
+    self.chartView.chartStyle = choices[i]
     self.chartView.drawChart()
 
 
