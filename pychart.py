@@ -58,17 +58,19 @@ import math
 ##  Buy/Sell, Stop/Limit, Account Balance, Percentage Gain/Loss, etc.
 ###############################################################################
 
-#class Transaction:
-  
-
-class Account:
-  def __init__(self):
-    self.initialBalance = 10000
-    self.balance = 10000
-    self.shares = 0
-    self.portfolio = {}
-    self.pendingBuys = {}
-    self.pendingSales = {}
+class Position:
+  def __init__(self, symbol, shares, price):
+    self.isOpen = True
+    self.symbol = symbol
+    self.shares = shares
+    self.price = price              ## The adjusted purchase price
+    self.log = [(shares, price)]
+    
+  def __repr__(self):
+    if self.isOpen:
+      return str(self.shares) + " @ " + str(self.price)
+    else:
+      return "$" + str(self.profit) + ' : ' + str(self.profitPercentage) + "%"
 
   def getPrice(self, symbol, ohlc=1):
     d = [ii.data for ii in chartViews if ii.symbol == symbol]
@@ -78,54 +80,95 @@ class Account:
       d = Data(symbol)
       return d.currentDay(time.currentDay)[ohlc].data[time.currentDay][1]
 
-  def buy(self, symbol, shares, stop):
-    if stop: stop = float(stop)
-    self.pendingBuys[symbol] = (shares, stop)
-  
-  def sell(self, symbol, shares, stop):
-    if stop: stop = float(stop)
-    self.pendingSales[symbol] = (shares, stop)
+  def addShares(self, shares, price):
+    self.price = (self.shares*self.price + shares*price) / (self.shares + shares)
+    self.shares += shares
+    self.log.append((shares, price))
+    
+  def sellShares(self, shares, price):
+    if self.shares - shares <= 0:
+      self.closePosition(shares, price)
+    else:
+      self.price += (shares / self.shares) * (self.price - price)
+      self.shares -= shares
+    self.log.append((-shares, price))
 
-  def buyShares(self, symbol, shares):
-    price = self.getPrice(symbol, 4)
-    maxshares = int(self.balance / price)
-    if not shares: shares = maxshares
-    elif int(shares) > maxshares: shares = maxshares
-    else: shares = int(shares)
-    self.balance -= shares*price
-    self.portfolio[symbol] = self.portfolio.get(symbol, 0) + shares
-    del self.pendingBuys[symbol]
+  def closePosition(self, shares, price):
+    self.isOpen = False
+    self.profit = (price - self.price) * shares
+    self.profitPercentage = ((price / self.price) - 1) * 100
 
-  def sellShares(self, symbol, shares):
-    price = self.getPrice(symbol, 4)
-    if not shares: shares = self.portfolio[symbol]
-    elif int(shares) > self.portfolio[symbol]: shares = self.portfolio[symbol]
-    else: shares = int(shares)
-    self.portfolio[symbol] -= shares
-    self.balance += shares * price
-    del self.pendingSales[symbol]
+
+  def value(self):
+    if self.isOpen:
+      return self.shares * self.getPrice(self.symbol)
+    else:
+      return 0
+
+
+
+class Account:
+  def __init__(self):
+    self.initialBalance = 10000
+    self.balance = self.initialBalance
+    self.portfolio = {}
+    
+  def getPrice(self, symbol, ohlc=1):
+    d = [ii.data for ii in chartViews if ii.symbol == symbol]
+    if d: 
+      return d[0].data[time.currentDay][ohlc]
+    else:
+      d = Data(symbol)
+      return d.currentDay(time.currentDay)[ohlc].data[time.currentDay][1]
+      
+  def addPosition(self, symbol, shares, price):
+    if symbol in self.portfolio:
+      positionList = self.portfolio[symbol]
+      mostRecentPosition = positionList[0]
+      if mostRecentPosition.isOpen:
+        mostRecentPosition.addShares(shares, price)
+      else:
+        self.portfolio[symbol].insert(0, Position(symbol, shares, price))
+    else:
+      self.portfolio[symbol] = [Position(symbol, shares, price)]
   
+  
+  def buy(self, symbol, shares):
+    price = self.getPrice(symbol)
+    if not shares or (price*int(shares)) > self.balance: 
+      shares = int(self.balance / price)-1
+    self.addPosition(symbol, int(shares), price)
+    self.balance -= price*int(shares)
+
+  def sell(self, symbol, shares):
+    price = self.getPrice(symbol)
+    if symbol in self.portfolio:
+      currentPosition = self.portfolio[symbol][0]
+      if currentPosition.isOpen:
+        if not shares or int(shares) > currentPosition.shares:
+          shares = currentPosition.shares
+        currentPosition.sellShares(int(shares), price)
+        self.balance += int(shares) * price
+    
+    
   def update(self):
-    for key, value in self.pendingSales.items():
-      p = self.getPrice(key, 3)
-      if p < value[1] or not value[1]:
-        self.sellShares(key, value[0])
-    for key, value in self.pendingBuys.items():
-      p = self.getPrice(key, 2)
-      if p > value[1] or not value[1]:
-        self.buyShares(key, value[0])
-
+    """This will be used for stop-loss, limit, etc orders"""
+    pass
+  
+  
   def portfolioValue(self):
-    v = self.balance
-    for key, item in self.portfolio.items():
-      v += item * self.getPrice(key, 4)
-    return v
-
+    pv = self.balance
+    for symbol, position in self.portfolio.items():
+      pv += position[0].value()
+    return pv
+    
+  
   def portfolioProfit(self):
-    value = self.portfolioValue()
-    dollars = value - self.initialBalance
-    percentage = int(((value/self.initialBalance) - 1)*100)
-    return (dollars, percentage)
+    return self.portfolioValue() - self.initialBalance
+    
+  def portfolioPercentage(self):
+    return int(((self.portfolioValue()/self.initialBalance) - 1) * 100)
+    
 
 
 ###############################################################################
@@ -597,21 +640,22 @@ class Main(QtGui.QWidget):
     self.ui.showPortfolio.setText(str(account.portfolio))
     self.ui.showPortfolioValue.setText(str(account.portfolioValue()))
     p = account.portfolioProfit()
-    c = "green" if p[0] >= 0 else "red"
-    self.ui.showProfit.setText(str(p[0]))
-    self.ui.showProfitPercent.setText(str(p[1])+"%")
+    pp = account.portfolioPercentage()
+    c = "green" if p >= 0 else "red"
+    self.ui.showProfit.setText(str(p))
+    self.ui.showProfitPercent.setText(str(pp)+"%")
     self.ui.showProfit.setStyleSheet("QLabel { color : " + c + ";}")
     self.ui.showProfitPercent.setStyleSheet("QLabel { color : " + c + ";}")
 
   def onBuy(self):
-    account.buy(self.chartView.symbol, self.ui.buyShares.text(), self.ui.buyStop.text())
+    account.buy(self.chartView.symbol, self.ui.buyShares.text())
     self.ui.buyShares.clear()
     # TODO: Add code in to view pending orders, this should be cleared
     #self.ui.buyStop.clear() 
     self.update()
   
   def onSell(self):
-    account.sell(self.chartView.symbol, self.ui.sellShares.text(), self.ui.sellStop.text())
+    account.sell(self.chartView.symbol, self.ui.sellShares.text())
     self.ui.sellShares.clear()
     # TODO: Add code in to view pending orders, this should be cleared
     #self.ui.sellStop.clear() 
