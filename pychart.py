@@ -72,7 +72,7 @@ class Position:
     else:
       return "$" + str(self.profit) + ' : ' + str(self.profitPercentage) + "%"
 
-  def getPrice(self, symbol, ohlc=1):
+  def getPrice(self, symbol, ohlc=4):
     d = [ii.data for ii in chartViews if ii.symbol == symbol]
     if d: 
       return d[0].data[time.currentDay][ohlc]
@@ -112,8 +112,9 @@ class Account:
     self.initialBalance = 10000
     self.balance = self.initialBalance
     self.portfolio = {}
+    self.queue = []
     
-  def getPrice(self, symbol, ohlc=1):
+  def getPrice(self, symbol, ohlc=4):
     d = [ii.data for ii in chartViews if ii.symbol == symbol]
     if d: 
       return d[0].data[time.currentDay][ohlc]
@@ -149,11 +150,17 @@ class Account:
           shares = currentPosition.shares
         currentPosition.sellShares(int(shares), price)
         self.balance += int(shares) * price
-    
-    
+  
+  def setStop(self, symbol, price, shares):
+    self.queue.append((symbol, price, shares))
+  
   def update(self):
     """This will be used for stop-loss, limit, etc orders"""
-    pass
+    for order in self.queue:
+      p = self.getPrice(order[0], ohlc=3)
+      if p < order[1]:
+        self.sell(order[0], order[2])
+        
   
   
   def portfolioValue(self):
@@ -655,7 +662,10 @@ class Main(QtGui.QWidget):
     self.update()
   
   def onSell(self):
-    account.sell(self.chartView.symbol, self.ui.sellShares.text())
+    if self.ui.stopLoss.text():
+      account.setStop(self.chartView.symbol, float(self.ui.stopLoss.text()), self.ui.sellShares.text())
+    else:
+      account.sell(self.chartView.symbol, self.ui.sellShares.text())
     self.ui.sellShares.clear()
     # TODO: Add code in to view pending orders, this should be cleared
     #self.ui.sellStop.clear() 

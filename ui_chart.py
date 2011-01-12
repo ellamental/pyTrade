@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'chartWidget.ui'
 #
-# Created: Wed Jan 12 14:42:05 2011
+# Created: Wed Jan 12 16:53:10 2011
 #      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -248,6 +248,9 @@ class Ui_chartWidget(object):
         self.sellShares = QtGui.QLineEdit(self.account)
         self.sellShares.setObjectName("sellShares")
         self.horizontalLayout_7.addWidget(self.sellShares)
+        self.stopLoss = QtGui.QLineEdit(self.account)
+        self.stopLoss.setObjectName("stopLoss")
+        self.horizontalLayout_7.addWidget(self.stopLoss)
         self.verticalLayout_5.addLayout(self.horizontalLayout_7)
         self.horizontalLayout_8.addLayout(self.verticalLayout_5)
         self.line_3 = QtGui.QFrame(self.account)

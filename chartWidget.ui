@@ -549,6 +549,9 @@
               <item>
                <widget class="QLineEdit" name="sellShares"/>
               </item>
+              <item>
+               <widget class="QLineEdit" name="stopLoss"/>
+              </item>
              </layout>
             </item>
            </layout>
