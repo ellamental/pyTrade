@@ -259,7 +259,7 @@ class Data:
   def donchianChannel(self, period, day, length):
     h = self.forEachPeriod(lambda x: max([ii[2] for ii in x]), period, day, length)
     l = self.forEachPeriod(lambda x: min([ii[3] for ii in x]), period, day, length)
-    return (l,h)
+    return (h, l)
 
 
 
@@ -679,23 +679,22 @@ class Main(QtGui.QWidget):
   def onAddIndicator(self):
     i = self.ui.newIndicator.currentIndex()
     if i == 0:
-      IndicatorWidget(self, "Simple Moving Average", self.drawSMA, [Line(self, "Period:", "spinbox")])
+      IndicatorWidget(self, "Simple Moving Average", self.drawSMA, [Line(self, "Period:")])
     elif i == 1:
-      IndicatorWidget(self, "Weighted Moving Average", self.drawWMA, [Line(self, "Period:", "spinbox")])
+      IndicatorWidget(self, "Weighted Moving Average", self.drawWMA, [Line(self, "Period:")])
     elif i == 2:
-      IndicatorWidget(self, "Exponential Moving Average", self.drawEMA, [Line(self, "Period:", "spinbox")])
+      IndicatorWidget(self, "Exponential Moving Average", self.drawEMA, [Line(self, "Period:")])
     elif i == 3:
-      IndicatorWidget(self, "Bollinger Bands", self.drawBollingerBands, [Line(self, "Top:"), Line(self, "SMA:", "spinbox"), Line(self, "Bottom:")])
+      IndicatorWidget(self, "Bollinger Bands", self.drawBollingerBands, [Line(self, "Top:", entryBox=False, defaultColor="green"), Line(self, "SMA:", defaultColor="blue"), Line(self, "Bottom:", entryBox=False, defaultColor="red")])
     elif i == 4:
-      IndicatorWidget(self, "Donchian Channel", self.drawDonchianChannel, [Line(self, "Top:", "spinbox"), Line(self, "Bottom")])
+      IndicatorWidget(self, "Donchian Channel", self.drawDonchianChannel, [Line(self, "Top:", defaultColor="green"), Line(self, "Bottom", entryBox=False, defaultColor="red")])
     self.update()
 
 
 
 ## TODO: add color defaults for line
-## TODO: make drawing entry or colorbox optional
 class Line(QtGui.QWidget):
-  def __init__(self, main, text, entryType=False):
+  def __init__(self, main, text, entryBox=True, colorBox=True, defaultColor="red"):
     self.main = main
     
     QtGui.QWidget.__init__(self)
@@ -703,27 +702,25 @@ class Line(QtGui.QWidget):
     
     self.label = QtGui.QLabel(self)
     self.label.setText("Period:")
-    
-    self.entry = QtGui.QSpinBox(self)
-    self.entry.setMinimum(1)
-    self.entry.setMaximum(99)
-    self.entry.setProperty("value", 10)
-    
-    self.colorbox = QtGui.QComboBox(self)
-    self.colorbox.addItem("red")
-    self.colorbox.addItem("green")
-    self.colorbox.addItem("blue")
-    self.colorbox.addItem("orange")
-    self.colorbox.addItem("yellow")
-    self.colorbox.addItem("gold")
-    self.colorbox.addItem("silver")
-    
     self.layout.addWidget(self.label)
-    self.layout.addWidget(self.entry)
-    self.layout.addWidget(self.colorbox)
     
-    self.connect(self.entry, QtCore.SIGNAL("valueChanged(int)"), self.onValueChange)
-    self.connect(self.colorbox, QtCore.SIGNAL("currentIndexChanged(int)"), self.onColorChange)
+    if entryBox:
+      self.entry = QtGui.QSpinBox(self)
+      self.entry.setMinimum(1)
+      self.entry.setMaximum(99)
+      self.entry.setProperty("value", 10)
+      self.connect(self.entry, QtCore.SIGNAL("valueChanged(int)"), self.onValueChange)
+      self.layout.addWidget(self.entry)
+
+    if colorBox:
+      self.colorbox = QtGui.QComboBox(self)
+      try: colors = ["red", "green", "blue", "orange", "yellow", "gold", "silver"].remove(defaultColor)
+      except: pass
+      colors = [defaultColor] + ["red", "green", "blue", "orange", "yellow", "gold", "silver"]
+      self.colorbox.addItems(colors)
+      self.connect(self.colorbox, QtCore.SIGNAL("currentIndexChanged(int)"), self.onColorChange)
+      self.layout.addWidget(self.colorbox)
+    
 
   def value(self): return self.entry.value()
   def color(self): return self.colorbox.currentText()
@@ -758,8 +755,8 @@ class IndicatorWidget(QtGui.QWidget):
     self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.onRemove)
     
     self.main.indicators.append([command]+self.lines)
-    self.main.ui.indicators.addItem(self, label)
-    self.main.ui.indicators.setCurrentIndex(self.main.ui.indicators.currentIndex()+1)
+    i = self.main.ui.indicators.addItem(self, label)
+    self.main.ui.indicators.setCurrentIndex(i)
 
   def onRemove(self):
     index = self.main.ui.indicators.currentIndex()
