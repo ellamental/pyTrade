@@ -439,6 +439,27 @@ class ChartView(QtGui.QGraphicsView):
       t.setPos(screen.width-30, screen.height-price)
     
 
+  def drawSMA(self, days, color="red"):
+    self.drawLine(self.data.sma(days, time.currentDay, self.chartLength), color)
+
+  def drawWMA(self, days, color="red"):
+    self.drawLine(self.data.wma(days, time.currentDay, self.chartLength), color)
+
+  def drawEMA(self, days, color="red"):
+    self.drawLine(self.data.ema(days, time.currentDay, self.chartLength), color)
+  
+  def drawBollingerBands(self, days, color="red"):
+    d = self.data.bollingerBands(days, time.currentDay, self.chartLength)
+    self.drawLine(d[0], color)
+    self.drawLine(d[1], color)
+    self.drawLine(d[2], color)
+   
+  def drawDonchianChannel(self, days, color="red"):
+    d = self.data.donchianChannel(days, time.currentDay, self.chartLength)
+    self.drawLine(d[0], "red")
+    self.drawLine(d[1], "blue")
+
+
   def drawChart(self):
     self.scene.clear()
     self.scene.update()
@@ -459,6 +480,8 @@ class Main(QtGui.QWidget):
     # This is always the same
     self.ui = Ui_chartWidget()
     self.ui.setupUi(self)
+    
+    self.indicators = []
 
     ## Create a new GraphicsScene and set GraphicsView (chart) to scene
     chartViews.append(ChartView("msft"))
@@ -475,18 +498,12 @@ class Main(QtGui.QWidget):
     self.connect(self.ui.sell, QtCore.SIGNAL("clicked()"), self.onSell)
     
     ## Indicators
-    self.connect(self.ui.sma, QtCore.SIGNAL("clicked()"), self.onSMA)
-    self.connect(self.ui.ema, QtCore.SIGNAL("clicked()"), self.onEMA)
-    self.connect(self.ui.wma, QtCore.SIGNAL("clicked()"), self.onWMA)
-    self.connect(self.ui.macd, QtCore.SIGNAL("clicked()"), self.onMACD)
-    self.connect(self.ui.bollingerBands, QtCore.SIGNAL("clicked()"), self.onBollingerBands)
-    self.connect(self.ui.donchianChannel, QtCore.SIGNAL("clicked()"), self.onDonchianChannel)
+    self.connect(self.ui.addIndicator, QtCore.SIGNAL("clicked()"), self.onAddIndicator)
 
     ## Chart Styles
     self.connect(self.ui.chartStyle, QtCore.SIGNAL("currentIndexChanged(int)"), self.onChartStyleChange)
 
     ## Chart and Tab Controls
-    self.connect(self.ui.loadSymbol, QtCore.SIGNAL("clicked()"), self.onLoadSymbol)
     self.connect(self.ui.symbolEntry, QtCore.SIGNAL("returnPressed()"), self.onNewTab)
     self.connect(self.ui.newTab, QtCore.SIGNAL("clicked()"), self.onNewTab)
     self.connect(self.ui.chartTabs, QtCore.SIGNAL("currentChanged(int)"), self.onChangeTab)
@@ -510,6 +527,9 @@ class Main(QtGui.QWidget):
   def update(self):
       self.updateAccounts()
       self.updateTime()
+      self.chartView.drawChart()
+      for ii in self.indicators:
+        apply(ii[0], ii[1:])
 
   #############################################################################
   ##  Mulit-Chart View and Symbol Loading
@@ -531,11 +551,6 @@ class Main(QtGui.QWidget):
     self.chartView.drawChart()
     self.update()
     
-  def onLoadSymbol(self):
-    self.chartView.data = Data(str(self.ui.symbolEntry.text()))
-    self.ui.symbolEntry.clear()
-    self.chartView.drawChart()
- 
 
   #############################################################################
   ##  Chart Controls
@@ -647,43 +662,100 @@ class Main(QtGui.QWidget):
   ##    Add "your stop loss" indicator that plots the stop loss price
   #############################################################################
 
-  def onSMA(self):
-    days = int(self.ui.shortPeriod.text() or 10)
-    self.ui.shortPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), "red")
+  def onAddIndicator(self):
+    i = self.ui.newIndicator.currentIndex()
+    #self.indicators += (i, options)
+    l = len(self.indicators)
+    if i == 0:
+      self.addSMA(l)
+    elif i == 1:
+      self.addWMA(l)
+    elif i == 2:
+      self.addEMA(l)
+    self.update()
 
-  def onEMA(self):
-    days = int(self.ui.shortPeriod.text() or 10)
-    self.ui.shortPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.ema(days, time.currentDay, self.chartView.chartLength), "red")
 
-  def onWMA(self):
-    days = int(self.ui.shortPeriod.text() or 10)
-    self.ui.shortPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.wma(days, time.currentDay, self.chartView.chartLength), "red")
+  def addSMA(self, i):
+    #self.indicators.append((self.chartView.drawSMA
+    indicator = IndicatorSMA(self, i)
+    self.indicators.append((self.chartView.drawSMA, indicator.spinBox.value(), indicator.comboBox.currentText()))
+    self.ui.indicators.addItem(indicator, "Simple Moving Average")
+    self.ui.indicators.setCurrentIndex(i+1)
 
-  def onMACD(self):
-    shortLength = int(self.ui.shortPeriod.text() or 10)
-    longLength = int(self.ui.longPeriod.text() or 20)
-    self.ui.shortPeriod.clear()
-    self.ui.longPeriod.clear()
-    self.chartView.drawLine(self.chartView.data.sma(shortLength, time.currentDay, self.chartView.chartLength), "red")
-    self.chartView.drawLine(self.chartView.data.sma(longLength, time.currentDay, self.chartView.chartLength), "blue")
 
-  def onBollingerBands(self):
-    l = int(self.ui.shortPeriod.text() or 10)
-    self.ui.shortPeriod.clear()
-    d = self.chartView.data.bollingerBands(l, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], "red")
-    self.chartView.drawLine(d[1], "blue")
-    self.chartView.drawLine(d[2], "blue")
-   
-  def onDonchianChannel(self):
-    p = int(self.ui.shortPeriod.text() or 10)
-    self.ui.shortPeriod.clear()
-    d = self.chartView.data.donchianChannel(p, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], "red")
-    self.chartView.drawLine(d[1], "blue")
+class IndicatorSMA(QtGui.QWidget):
+  def __init__(self, main, i):
+    self.main = main
+    self.i = i
+    
+    QtGui.QWidget.__init__(self)
+    self.setGeometry(QtCore.QRect(0, 0, 194, 598))
+    self.setObjectName("FirstPage")
+    
+    self.verticalLayout = QtGui.QVBoxLayout(self)
+    self.verticalLayout.setObjectName("verticalLayout")
+    
+    ## periodLayout
+    self.periodLayout = QtGui.QHBoxLayout()
+    self.periodLayout.setObjectName("periodLayout")
+    
+    self.periodLabel = QtGui.QLabel(self)
+    self.periodLabel.setObjectName("period_label")
+    self.periodLabel.setText("Period:")
+    self.periodLayout.addWidget(self.periodLabel)
+    
+    self.spinBox = QtGui.QSpinBox(self)
+    self.spinBox.setMinimum(1)
+    self.spinBox.setMaximum(99)
+    self.spinBox.setProperty("value", 10)
+    self.spinBox.setObjectName("spinBox")
+    self.periodLayout.addWidget(self.spinBox)
+    
+    ## colorLayout
+    self.colorLayout = QtGui.QHBoxLayout()
+    self.colorLayout.setObjectName("colorLayout")
+    
+    self.colorLabel = QtGui.QLabel(self)
+    self.colorLabel.setObjectName("colorLabel")
+    self.colorLabel.setText("Color:")
+    self.colorLayout.addWidget(self.colorLabel)
+    
+    self.comboBox = QtGui.QComboBox(self)
+    self.comboBox.setObjectName("comboBox")
+    self.comboBox.addItem("red")
+    self.comboBox.addItem("black")
+    self.comboBox.addItem("blue")
+    self.comboBox.addItem("orange")
+    self.comboBox.addItem("yellow")
+    self.comboBox.addItem("gold")
+    self.comboBox.addItem("silver")
+    self.colorLayout.addWidget(self.comboBox)
+    
+    self.removeButton = QtGui.QPushButton(self)
+    self.removeButton.setObjectName("removeButton")
+    self.removeButton.setText("Remove Indicator")
+    
+    self.spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+    
+    self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.remove)
+    self.connect(self.spinBox, QtCore.SIGNAL("valueChanged(int)"), self.update)
+    self.connect(self.comboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
+
+    self.verticalLayout.addLayout(self.periodLayout)
+    self.verticalLayout.addLayout(self.colorLayout)
+    self.verticalLayout.addWidget(self.removeButton)
+    self.verticalLayout.addItem(self.spacerItem)
+    
+    
+  def update(self):
+    self.main.indicators[self.i] = (self.main.chartView.drawSMA, self.spinBox.value(), self.comboBox.currentText())
+    self.main.update()
+    
+  def remove(self):
+    self.main.indicators.pop(self.i)
+    self.main.ui.indicators.removeItem(self.main.ui.indicators.currentIndex())
+    self.main.update()
+
 
 
 if __name__ == "__main__":
