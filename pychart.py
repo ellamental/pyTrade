@@ -667,26 +667,27 @@ class Main(QtGui.QWidget):
     #self.indicators += (i, options)
     l = len(self.indicators)
     if i == 0:
-      self.addSMA(l)
+      self.addSinglePeriod(l, self.chartView.drawSMA, "Simple Moving Average")
     elif i == 1:
-      self.addWMA(l)
+      self.addSinglePeriod(l, self.chartView.drawWMA, "Weighted Moving Average")
     elif i == 2:
-      self.addEMA(l)
+      self.addSinglePeriod(l, self.chartView.drawEMA, "Exponential Moving Average")
     self.update()
 
 
-  def addSMA(self, i):
+  def addSinglePeriod(self, i, command, label):
     #self.indicators.append((self.chartView.drawSMA
-    indicator = IndicatorSMA(self, i)
-    self.indicators.append((self.chartView.drawSMA, indicator.spinBox.value(), indicator.comboBox.currentText()))
-    self.ui.indicators.addItem(indicator, "Simple Moving Average")
+    indicator = IndicatorSinglePeriod(self, i, command)
+    self.indicators.append((command, indicator.period.value(), indicator.color.currentText()))
+    self.ui.indicators.addItem(indicator, label)
     self.ui.indicators.setCurrentIndex(i+1)
 
 
-class IndicatorSMA(QtGui.QWidget):
-  def __init__(self, main, i):
+class IndicatorSinglePeriod(QtGui.QWidget):
+  def __init__(self, main, i, command):
     self.main = main
     self.i = i
+    self.command = command
     
     QtGui.QWidget.__init__(self)
     self.setGeometry(QtCore.QRect(0, 0, 194, 598))
@@ -704,12 +705,12 @@ class IndicatorSMA(QtGui.QWidget):
     self.periodLabel.setText("Period:")
     self.periodLayout.addWidget(self.periodLabel)
     
-    self.spinBox = QtGui.QSpinBox(self)
-    self.spinBox.setMinimum(1)
-    self.spinBox.setMaximum(99)
-    self.spinBox.setProperty("value", 10)
-    self.spinBox.setObjectName("spinBox")
-    self.periodLayout.addWidget(self.spinBox)
+    self.period = QtGui.QSpinBox(self)
+    self.period.setMinimum(1)
+    self.period.setMaximum(99)
+    self.period.setProperty("value", 10)
+    self.period.setObjectName("period")
+    self.periodLayout.addWidget(self.period)
     
     ## colorLayout
     self.colorLayout = QtGui.QHBoxLayout()
@@ -720,16 +721,16 @@ class IndicatorSMA(QtGui.QWidget):
     self.colorLabel.setText("Color:")
     self.colorLayout.addWidget(self.colorLabel)
     
-    self.comboBox = QtGui.QComboBox(self)
-    self.comboBox.setObjectName("comboBox")
-    self.comboBox.addItem("red")
-    self.comboBox.addItem("black")
-    self.comboBox.addItem("blue")
-    self.comboBox.addItem("orange")
-    self.comboBox.addItem("yellow")
-    self.comboBox.addItem("gold")
-    self.comboBox.addItem("silver")
-    self.colorLayout.addWidget(self.comboBox)
+    self.color = QtGui.QComboBox(self)
+    self.color.setObjectName("color")
+    self.color.addItem("red")
+    self.color.addItem("black")
+    self.color.addItem("blue")
+    self.color.addItem("orange")
+    self.color.addItem("yellow")
+    self.color.addItem("gold")
+    self.color.addItem("silver")
+    self.colorLayout.addWidget(self.color)
     
     self.removeButton = QtGui.QPushButton(self)
     self.removeButton.setObjectName("removeButton")
@@ -738,8 +739,8 @@ class IndicatorSMA(QtGui.QWidget):
     self.spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
     
     self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.remove)
-    self.connect(self.spinBox, QtCore.SIGNAL("valueChanged(int)"), self.update)
-    self.connect(self.comboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
+    self.connect(self.period, QtCore.SIGNAL("valueChanged(int)"), self.update)
+    self.connect(self.color, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
 
     self.verticalLayout.addLayout(self.periodLayout)
     self.verticalLayout.addLayout(self.colorLayout)
@@ -748,12 +749,14 @@ class IndicatorSMA(QtGui.QWidget):
     
     
   def update(self):
-    self.main.indicators[self.i] = (self.main.chartView.drawSMA, self.spinBox.value(), self.comboBox.currentText())
+    index = self.main.ui.indicators.currentIndex() - 1
+    self.main.indicators[index] = (self.command, self.period.value(), self.color.currentText())
     self.main.update()
     
   def remove(self):
-    self.main.indicators.pop(self.i)
-    self.main.ui.indicators.removeItem(self.main.ui.indicators.currentIndex())
+    index = self.main.ui.indicators.currentIndex()
+    self.main.indicators.pop(index-1)
+    self.main.ui.indicators.removeItem(index)
     self.main.update()
 
 
