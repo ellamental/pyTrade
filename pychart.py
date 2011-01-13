@@ -509,6 +509,7 @@ class Main(QtGui.QWidget):
       self.updateAccounts()
       self.updateTime()
       self.chartView.drawChart()
+      self.updateIndicators()
       for ii in self.indicators:
         apply(ii[0], ii[1:])
 
@@ -645,25 +646,31 @@ class Main(QtGui.QWidget):
   ##  TODO:
   ##    Add "your stop loss" indicator that plots the stop loss price
   #############################################################################
-  def drawSMA(self, days, color="red"):
-    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), color)
+  def updateIndicators(self):
+    for ii in self.indicators:
+      apply(ii[0], ii[1:])
 
-  def drawWMA(self, days, color="red"):
-    self.chartView.drawLine(self.chartView.data.wma(days, time.currentDay, self.chartView.chartLength), color)
 
-  def drawEMA(self, days, color="red"):
-    self.chartView.drawLine(self.chartView.data.ema(days, time.currentDay, self.chartView.chartLength), color)
+  def drawSMA(self, line):
+    self.chartView.drawLine(self.chartView.data.sma(line.value(), time.currentDay, self.chartView.chartLength), line.color())
   
-  def drawBollingerBands(self, days, color1="green", color2="blue", color3="red"):
-    d = self.chartView.data.bollingerBands(days, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], color1)
-    self.chartView.drawLine(d[1], color2)
-    self.chartView.drawLine(d[2], color3)
-   
-  def drawDonchianChannel(self, days, color1="green", color2="red"):
+  def drawWMA(self, line):
+    self.chartView.drawLine(self.chartView.data.wma(line.value(), time.currentDay, self.chartView.chartLength), line.color())
+
+  def drawEMA(self, line):
+    self.chartView.drawLine(self.chartView.data.ema(line.value(), time.currentDay, self.chartView.chartLength), line.color())
+  
+  ## TODO: implement bollingerBand and donchianChannel chart control widgets
+  def drawBollingerBands(self, top, sma, bottom):
+    d = self.chartView.data.bollingerBands(sma.value(), time.currentDay, self.chartView.chartLength)
+    self.chartView.drawLine(d[0], top.color())
+    self.chartView.drawLine(d[1], sma.color())
+    self.chartView.drawLine(d[2], bottom.color())
+
+  def drawDonchianChannel(self, top, bottom):
     d = self.chartView.data.donchianChannel(days, time.currentDay, self.chartView.chartLength)
-    self.chartView.drawLine(d[0], color1)
-    self.chartView.drawLine(d[1], color2)
+    self.chartView.drawLine(d[0], top.color())
+    self.chartView.drawLine(d[1], bottom.color())
 
   def onAddIndicator(self):
     i = self.ui.newIndicator.currentIndex()
@@ -683,25 +690,11 @@ class Main(QtGui.QWidget):
 
 
   def addSinglePeriod(self, i, command, label):
-    #self.indicators.append((self.chartView.drawSMA
-    #indicator = IndicatorSinglePeriod(self, i, command)
     indicator = IndicatorWidget(self)
-    self.indicators.append([command, indicator.line.value(), indicator.line.color()])
+    self.indicators.append([command, indicator.line])
     self.ui.indicators.addItem(indicator, label)
     self.ui.indicators.setCurrentIndex(i+1)
     
-  def addSinglePeriodTwoLines(self, i, command, label):
-    indicator = IndicatorSinglePeriodTwoLines(self, i, command)
-    self.indicators.append([command, indicator.period.value(), indicator.color.currentText(), indicator.color2.currentText()])
-    self.ui.indicators.addItem(indicator, label)
-    self.ui.indicators.setCurrentIndex(i+1)
-
-  def addSinglePeriodThreeLines(self, i, command, label):
-    indicator = IndicatorSinglePeriodThreeLines(self, i, command)
-    self.indicators.append([command, indicator.period.value(), indicator.color.currentText(), indicator.color2.currentText(), indicator.color3.currentText()])
-    self.ui.indicators.addItem(indicator, label)
-    self.ui.indicators.setCurrentIndex(i+1)
-
 
 
 ## TODO:  Make a indicator-creator that will auto-generate this code
@@ -717,42 +710,46 @@ class Main(QtGui.QWidget):
  #(parameter, "Standard Deviation", spinbox))
 
 class Line(QtGui.QWidget):
-  valueChanged = QtCore.pyqtSignal(int)
-  colorChanged = QtCore.pyqtSignal((int, ), (QtCore.QString, ))
+  def __init__(self, main, text, entryType=False):
+    self.main = main
+    
+    QtGui.QWidget.__init__(self)
+    self.layout = QtGui.QHBoxLayout(self)
+    
+    self.label = QtGui.QLabel(self)
+    self.label.setText("Period:")
+    
+    self.entry = QtGui.QSpinBox(self)
+    self.entry.setMinimum(1)
+    self.entry.setMaximum(99)
+    self.entry.setProperty("value", 10)
+    
+    self.colorbox = QtGui.QComboBox(self)
+    self.colorbox.addItem("red")
+    self.colorbox.addItem("green")
+    self.colorbox.addItem("blue")
+    self.colorbox.addItem("orange")
+    self.colorbox.addItem("yellow")
+    self.colorbox.addItem("gold")
+    self.colorbox.addItem("silver")
+    
+    self.layout.addWidget(self.label)
+    self.layout.addWidget(self.entry)
+    self.layout.addWidget(self.colorbox)
+    
+    self.connect(self.entry, QtCore.SIGNAL("valueChanged(int)"), self.onValueChange)
+    self.connect(self.colorbox, QtCore.SIGNAL("currentIndexChanged(int)"), self.onColorChange)
 
-  def __init__(self, text, entryType=False):
-    if entryType == "spinbox":
-      QtGui.QWidget.__init__(self)
-      self.layout = QtGui.QHBoxLayout(self)
+  def value(self): return self.entry.value()
+  def color(self): return self.colorbox.currentText()
+  
+  def onValueChange(self, i):
+    self.main.update()
 
-      
-      self.label = QtGui.QLabel(self)
-      self.label.setText("Period:")
-      
-      self.spinbox = QtGui.QSpinBox(self)
-      self.spinbox.setMinimum(1)
-      self.spinbox.setMaximum(99)
-      self.spinbox.setProperty("value", 10)
-      
-      self.colorbox = QtGui.QComboBox(self)
-      self.colorbox.addItem("red")
-      self.colorbox.addItem("green")
-      self.colorbox.addItem("blue")
-      self.colorbox.addItem("orange")
-      self.colorbox.addItem("yellow")
-      self.colorbox.addItem("gold")
-      self.colorbox.addItem("silver")
-      
-      self.layout.addWidget(self.label)
-      self.layout.addWidget(self.spinbox)
-      self.layout.addWidget(self.colorbox)
-      
-      self.spinbox.valueChanged.connect(self.valueChanged)
-      self.colorbox.currentIndexChanged.connect(self.colorChanged)
+  def onColorChange(self, color):
+    self.main.update()
+    
 
-  def value(self): return self.spinbox.value()
-  def color(self): 
-    return self.colorbox.currentText()
 
 
 class IndicatorWidget(QtGui.QWidget):
@@ -762,7 +759,7 @@ class IndicatorWidget(QtGui.QWidget):
     QtGui.QWidget.__init__(self)
     self.layout = QtGui.QVBoxLayout(self)
     
-    self.line = Line("Period:", "spinbox")
+    self.line = Line(main, "Period:", "spinbox")
     
     self.removeButton = QtGui.QPushButton(self)
     self.removeButton.setText("Remove Indicator")
@@ -770,253 +767,15 @@ class IndicatorWidget(QtGui.QWidget):
     self.layout.addWidget(self.line)
     self.layout.addWidget(self.removeButton)
     
-    #self.connect(self.line.spinbox, QtCore.SIGNAL("valueChanged(int)"), self.onValueChanged)
-    self.connect(self.line, QtCore.SIGNAL("valueChanged(int)"), self.onValueChanged)
-    self.connect(self.line, QtCore.SIGNAL("colorChanged(int)"), self.onColorChange)
     self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.onRemove)
 
-  def onValueChanged(self, i):
-    index = self.main.ui.indicators.currentIndex() - 1
-    self.main.indicators[index][1] = self.line.value()
-    self.main.update()
-
-  def onColorChange(self, color):
-    index = self.main.ui.indicators.currentIndex() - 1
-    self.main.indicators[index][2] = self.line.color()
-    self.main.update()
-    
   def onRemove(self):
     index = self.main.ui.indicators.currentIndex()
     self.main.indicators.pop(index-1)
     self.main.ui.indicators.removeItem(index)
+    self.main.ui.indicators.setCurrentIndex(index - 1)
     self.main.update()
 
-
-
-class IndicatorSinglePeriodTwoLines(QtGui.QWidget):
-  def __init__(self, main, i, command):
-    self.main = main
-    self.i = i
-    self.command = command
-    
-    QtGui.QWidget.__init__(self)
-    self.setGeometry(QtCore.QRect(0, 0, 194, 598))
-    self.setObjectName("FirstPage")
-    
-    self.verticalLayout = QtGui.QVBoxLayout(self)
-    self.verticalLayout.setObjectName("verticalLayout")
-    
-    ## periodLayout
-    self.periodLayout = QtGui.QHBoxLayout()
-    self.periodLayout.setObjectName("periodLayout")
-    
-    self.periodLabel = QtGui.QLabel(self)
-    self.periodLabel.setObjectName("period_label")
-    self.periodLabel.setText("Period:")
-    self.periodLayout.addWidget(self.periodLabel)
-    
-    self.period = QtGui.QSpinBox(self)
-    self.period.setMinimum(1)
-    self.period.setMaximum(99)
-    self.period.setProperty("value", 10)
-    self.period.setObjectName("period")
-    self.periodLayout.addWidget(self.period)
-    
-    ## colorLayout
-    self.colorLayout = QtGui.QHBoxLayout()
-    self.colorLayout.setObjectName("colorLayout")
-    
-    self.colorLabel = QtGui.QLabel(self)
-    self.colorLabel.setObjectName("colorLabel")
-    self.colorLabel.setText("Color:")
-    self.colorLayout.addWidget(self.colorLabel)
-    
-    self.color = QtGui.QComboBox(self)
-    self.color.setObjectName("color")
-    self.color.addItem("red")
-    self.color.addItem("green")
-    self.color.addItem("blue")
-    self.color.addItem("orange")
-    self.color.addItem("yellow")
-    self.color.addItem("gold")
-    self.color.addItem("silver")
-    self.colorLayout.addWidget(self.color)
-    
-    ## colorLayout
-    self.color2Layout = QtGui.QHBoxLayout()
-    self.color2Layout.setObjectName("colorLayout")
-    
-    self.color2Label = QtGui.QLabel(self)
-    self.color2Label.setObjectName("colorLabel")
-    self.color2Label.setText("Color:")
-    self.color2Layout.addWidget(self.color2Label)
-    
-    self.color2 = QtGui.QComboBox(self)
-    self.color2.setObjectName("color2")
-    self.color2.addItem("red")
-    self.color2.addItem("green")
-    self.color2.addItem("blue")
-    self.color2.addItem("orange")
-    self.color2.addItem("yellow")
-    self.color2.addItem("gold")
-    self.color2.addItem("silver")
-    self.color2.setCurrentIndex(1)
-    self.color2Layout.addWidget(self.color2)
-
-
-    self.removeButton = QtGui.QPushButton(self)
-    self.removeButton.setObjectName("removeButton")
-    self.removeButton.setText("Remove Indicator")
-    
-    self.spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-    
-    self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.remove)
-    self.connect(self.period, QtCore.SIGNAL("valueChanged(int)"), self.update)
-    self.connect(self.color, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
-    self.connect(self.color2, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
-
-    self.verticalLayout.addLayout(self.periodLayout)
-    self.verticalLayout.addLayout(self.colorLayout)
-    self.verticalLayout.addLayout(self.color2Layout)
-    self.verticalLayout.addWidget(self.removeButton)
-    self.verticalLayout.addItem(self.spacerItem)
-    
-    
-  def update(self):
-    index = self.main.ui.indicators.currentIndex() - 1
-    self.main.indicators[index] = (self.command, self.period.value(), self.color.currentText(), self.color2.currentText())
-    self.main.update()
-    
-  def remove(self):
-    index = self.main.ui.indicators.currentIndex()
-    self.main.indicators.pop(index-1)
-    self.main.ui.indicators.removeItem(index)
-    self.main.update()
-
-
-
-class IndicatorSinglePeriodThreeLines(QtGui.QWidget):
-  def __init__(self, main, i, command):
-    self.main = main
-    self.i = i
-    self.command = command
-    
-    QtGui.QWidget.__init__(self)
-    self.setGeometry(QtCore.QRect(0, 0, 194, 598))
-    self.setObjectName("FirstPage")
-    
-    self.verticalLayout = QtGui.QVBoxLayout(self)
-    self.verticalLayout.setObjectName("verticalLayout")
-    
-    ## periodLayout
-    self.periodLayout = QtGui.QHBoxLayout()
-    self.periodLayout.setObjectName("periodLayout")
-    
-    self.periodLabel = QtGui.QLabel(self)
-    self.periodLabel.setObjectName("period_label")
-    self.periodLabel.setText("Period:")
-    self.periodLayout.addWidget(self.periodLabel)
-    
-    self.period = QtGui.QSpinBox(self)
-    self.period.setMinimum(1)
-    self.period.setMaximum(99)
-    self.period.setProperty("value", 10)
-    self.period.setObjectName("period")
-    self.periodLayout.addWidget(self.period)
-    
-    ## colorLayout
-    self.colorLayout = QtGui.QHBoxLayout()
-    self.colorLayout.setObjectName("colorLayout")
-    
-    self.colorLabel = QtGui.QLabel(self)
-    self.colorLabel.setObjectName("colorLabel")
-    self.colorLabel.setText("Color:")
-    self.colorLayout.addWidget(self.colorLabel)
-    
-    self.color = QtGui.QComboBox(self)
-    self.color.setObjectName("color")
-    self.color.addItem("red")
-    self.color.addItem("green")
-    self.color.addItem("blue")
-    self.color.addItem("orange")
-    self.color.addItem("yellow")
-    self.color.addItem("gold")
-    self.color.addItem("silver")
-    self.colorLayout.addWidget(self.color)
-    
-    ## colorLayout
-    self.color2Layout = QtGui.QHBoxLayout()
-    self.color2Layout.setObjectName("colorLayout")
-    
-    self.color2Label = QtGui.QLabel(self)
-    self.color2Label.setObjectName("colorLabel")
-    self.color2Label.setText("Color:")
-    self.color2Layout.addWidget(self.color2Label)
-    
-    self.color2 = QtGui.QComboBox(self)
-    self.color2.setObjectName("color2")
-    self.color2.addItem("red")
-    self.color2.addItem("green")
-    self.color2.addItem("blue")
-    self.color2.addItem("orange")
-    self.color2.addItem("yellow")
-    self.color2.addItem("gold")
-    self.color2.addItem("silver")
-    self.color2.setCurrentIndex(1)
-    self.color2Layout.addWidget(self.color2)
-
-    ## colorLayout
-    self.color3Layout = QtGui.QHBoxLayout()
-    self.color3Layout.setObjectName("colorLayout")
-    
-    self.color3Label = QtGui.QLabel(self)
-    self.color3Label.setObjectName("colorLabel")
-    self.color3Label.setText("Color:")
-    self.color3Layout.addWidget(self.color3Label)
-    
-    self.color3 = QtGui.QComboBox(self)
-    self.color3.setObjectName("color3")
-    self.color3.addItem("red")
-    self.color3.addItem("green")
-    self.color3.addItem("blue")
-    self.color3.addItem("orange")
-    self.color3.addItem("yellow")
-    self.color3.addItem("gold")
-    self.color3.addItem("silver")
-    self.color3.setCurrentIndex(2)
-    self.color3Layout.addWidget(self.color3)
-
-
-    self.removeButton = QtGui.QPushButton(self)
-    self.removeButton.setObjectName("removeButton")
-    self.removeButton.setText("Remove Indicator")
-    
-    self.spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-    
-    self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.remove)
-    self.connect(self.period, QtCore.SIGNAL("valueChanged(int)"), self.update)
-    self.connect(self.color, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
-    self.connect(self.color2, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
-    self.connect(self.color3, QtCore.SIGNAL("currentIndexChanged(int)"), self.update)
-
-    self.verticalLayout.addLayout(self.periodLayout)
-    self.verticalLayout.addLayout(self.colorLayout)
-    self.verticalLayout.addLayout(self.color2Layout)
-    self.verticalLayout.addLayout(self.color3Layout)
-    self.verticalLayout.addWidget(self.removeButton)
-    self.verticalLayout.addItem(self.spacerItem)
-    
-    
-  def update(self):
-    index = self.main.ui.indicators.currentIndex() - 1
-    self.main.indicators[index] = (self.command, self.period.value(), self.color.currentText(), self.color2.currentText(), self.color3.currentText())
-    self.main.update()
-    
-  def remove(self):
-    index = self.main.ui.indicators.currentIndex()
-    self.main.indicators.pop(index-1)
-    self.main.ui.indicators.removeItem(index)
-    self.main.update()
 
 
 
