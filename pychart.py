@@ -38,6 +38,9 @@
 ## - Press "New Tab" with nothing in the symbol box
 ## - Set indicator(s) then switch stocks, indicators are not persistent
 ##   This is because the command is specific to the chartView
+## - Turn on some indicators, then close all but account tab, then open new
+##   tab, indicators don't display until something is done to cause a program
+##   update()
 ##   
 ###############################################################################
 
@@ -646,6 +649,7 @@ class Main(QtGui.QWidget):
   ##  TODO:
   ##    Add "your stop loss" indicator that plots the stop loss price
   #############################################################################
+
   def updateIndicators(self):
     for ii in self.indicators:
       apply(ii[0], ii[1:])
@@ -660,7 +664,6 @@ class Main(QtGui.QWidget):
   def drawEMA(self, line):
     self.chartView.drawLine(self.chartView.data.ema(line.value(), time.currentDay, self.chartView.chartLength), line.color())
   
-  ## TODO: implement bollingerBand and donchianChannel chart control widgets
   def drawBollingerBands(self, top, sma, bottom):
     d = self.chartView.data.bollingerBands(sma.value(), time.currentDay, self.chartView.chartLength)
     self.chartView.drawLine(d[0], top.color())
@@ -668,47 +671,29 @@ class Main(QtGui.QWidget):
     self.chartView.drawLine(d[2], bottom.color())
 
   def drawDonchianChannel(self, top, bottom):
-    d = self.chartView.data.donchianChannel(days, time.currentDay, self.chartView.chartLength)
+    d = self.chartView.data.donchianChannel(top.value(), time.currentDay, self.chartView.chartLength)
     self.chartView.drawLine(d[0], top.color())
     self.chartView.drawLine(d[1], bottom.color())
 
+
   def onAddIndicator(self):
     i = self.ui.newIndicator.currentIndex()
-    #self.indicators += (i, options)
-    l = len(self.indicators)
     if i == 0:
-      self.addSinglePeriod(l, self.drawSMA, "Simple Moving Average")
+      IndicatorWidget(self, "Simple Moving Average", self.drawSMA, [Line(self, "Period:", "spinbox")])
     elif i == 1:
-      self.addSinglePeriod(l, self.drawWMA, "Weighted Moving Average")
+      IndicatorWidget(self, "Weighted Moving Average", self.drawWMA, [Line(self, "Period:", "spinbox")])
     elif i == 2:
-      self.addSinglePeriod(l, self.drawEMA, "Exponential Moving Average")
+      IndicatorWidget(self, "Exponential Moving Average", self.drawEMA, [Line(self, "Period:", "spinbox")])
     elif i == 3:
-      self.addSinglePeriodThreeLines(l, self.drawBollingerBands, "Bollinger Bands")
+      IndicatorWidget(self, "Bollinger Bands", self.drawBollingerBands, [Line(self, "Top:"), Line(self, "SMA:", "spinbox"), Line(self, "Bottom:")])
     elif i == 4:
-      self.addSinglePeriodTwoLines(l, self.drawDonchianChannel, "Donchian Channel")
+      IndicatorWidget(self, "Donchian Channel", self.drawDonchianChannel, [Line(self, "Top:", "spinbox"), Line(self, "Bottom")])
     self.update()
 
 
-  def addSinglePeriod(self, i, command, label):
-    indicator = IndicatorWidget(self)
-    self.indicators.append([command, indicator.line])
-    self.ui.indicators.addItem(indicator, label)
-    self.ui.indicators.setCurrentIndex(i+1)
-    
 
-
-## TODO:  Make a indicator-creator that will auto-generate this code
-## A single period, three line display (like bollinger bands) will display as...
-## Top Line:                   color |green|
-## Middle Line:  period |10|   color |blue |
-## Bottom Line:                color |red  |
-## |           Remove Indicator            |
-
-#((line, "Top Band", False),
- #(line, "SMA", spinbox),
- #(line, "Bottom Band", False)
- #(parameter, "Standard Deviation", spinbox))
-
+## TODO: add color defaults for line
+## TODO: make drawing entry or colorbox optional
 class Line(QtGui.QWidget):
   def __init__(self, main, text, entryType=False):
     self.main = main
@@ -751,23 +736,30 @@ class Line(QtGui.QWidget):
     
 
 
-
 class IndicatorWidget(QtGui.QWidget):
-  def __init__(self, main):
+  def __init__(self, main, label, command, lines):
     self.main = main
+    self.lines = lines
 
     QtGui.QWidget.__init__(self)
     self.layout = QtGui.QVBoxLayout(self)
     
-    self.line = Line(main, "Period:", "spinbox")
+    #self.line = Line(main, "Period:", "spinbox")
+    
+    for line in self.lines:
+      self.layout.addWidget(line)
     
     self.removeButton = QtGui.QPushButton(self)
     self.removeButton.setText("Remove Indicator")
 
-    self.layout.addWidget(self.line)
+    #self.layout.addWidget(self.line)
     self.layout.addWidget(self.removeButton)
     
     self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.onRemove)
+    
+    self.main.indicators.append([command]+self.lines)
+    self.main.ui.indicators.addItem(self, label)
+    self.main.ui.indicators.setCurrentIndex(self.main.ui.indicators.currentIndex()+1)
 
   def onRemove(self):
     index = self.main.ui.indicators.currentIndex()
