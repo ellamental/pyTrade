@@ -441,27 +441,6 @@ class ChartView(QtGui.QGraphicsView):
       t.setPos(screen.width-30, screen.height-price)
     
 
-  def drawSMA(self, days, color="red"):
-    self.drawLine(self.data.sma(days, time.currentDay, self.chartLength), color)
-
-  def drawWMA(self, days, color="red"):
-    self.drawLine(self.data.wma(days, time.currentDay, self.chartLength), color)
-
-  def drawEMA(self, days, color="red"):
-    self.drawLine(self.data.ema(days, time.currentDay, self.chartLength), color)
-  
-  def drawBollingerBands(self, days, color1="green", color2="blue", color3="red"):
-    d = self.data.bollingerBands(days, time.currentDay, self.chartLength)
-    self.drawLine(d[0], color1)
-    self.drawLine(d[1], color2)
-    self.drawLine(d[2], color3)
-   
-  def drawDonchianChannel(self, days, color1="green", color2="red"):
-    d = self.data.donchianChannel(days, time.currentDay, self.chartLength)
-    self.drawLine(d[0], color1)
-    self.drawLine(d[1], color2)
-
-
   def drawChart(self):
     self.scene.clear()
     self.scene.update()
@@ -666,21 +645,40 @@ class Main(QtGui.QWidget):
   ##  TODO:
   ##    Add "your stop loss" indicator that plots the stop loss price
   #############################################################################
+  def drawSMA(self, days, color="red"):
+    self.chartView.drawLine(self.chartView.data.sma(days, time.currentDay, self.chartView.chartLength), color)
+
+  def drawWMA(self, days, color="red"):
+    self.chartView.drawLine(self.chartView.data.wma(days, time.currentDay, self.chartView.chartLength), color)
+
+  def drawEMA(self, days, color="red"):
+    self.chartView.drawLine(self.chartView.data.ema(days, time.currentDay, self.chartView.chartLength), color)
+  
+  def drawBollingerBands(self, days, color1="green", color2="blue", color3="red"):
+    d = self.chartView.data.bollingerBands(days, time.currentDay, self.chartView.chartLength)
+    self.chartView.drawLine(d[0], color1)
+    self.chartView.drawLine(d[1], color2)
+    self.chartView.drawLine(d[2], color3)
+   
+  def drawDonchianChannel(self, days, color1="green", color2="red"):
+    d = self.chartView.data.donchianChannel(days, time.currentDay, self.chartView.chartLength)
+    self.chartView.drawLine(d[0], color1)
+    self.chartView.drawLine(d[1], color2)
 
   def onAddIndicator(self):
     i = self.ui.newIndicator.currentIndex()
     #self.indicators += (i, options)
     l = len(self.indicators)
     if i == 0:
-      self.addSinglePeriod(l, self.chartView.drawSMA, "Simple Moving Average")
+      self.addSinglePeriod(l, self.drawSMA, "Simple Moving Average")
     elif i == 1:
-      self.addSinglePeriod(l, self.chartView.drawWMA, "Weighted Moving Average")
+      self.addSinglePeriod(l, self.drawWMA, "Weighted Moving Average")
     elif i == 2:
-      self.addSinglePeriod(l, self.chartView.drawEMA, "Exponential Moving Average")
+      self.addSinglePeriod(l, self.drawEMA, "Exponential Moving Average")
     elif i == 3:
-      self.addSinglePeriodThreeLines(l, self.chartView.drawBollingerBands, "Bollinger Bands")
+      self.addSinglePeriodThreeLines(l, self.drawBollingerBands, "Bollinger Bands")
     elif i == 4:
-      self.addSinglePeriodTwoLines(l, self.chartView.drawDonchianChannel, "Donchian Channel")
+      self.addSinglePeriodTwoLines(l, self.drawDonchianChannel, "Donchian Channel")
     self.update()
 
 
@@ -711,6 +709,11 @@ class Main(QtGui.QWidget):
 ## Middle Line:  period |10|   color |blue |
 ## Bottom Line:                color |red  |
 ## |           Remove Indicator            |
+
+#((line, "Top Band", False),
+ #(line, "SMA", spinbox),
+ #(line, "Bottom Band", False)
+ #(parameter, "Standard Deviation", spinbox))
 
 class IndicatorSinglePeriod(QtGui.QWidget):
   def __init__(self, main, i, command):
