@@ -562,7 +562,7 @@ class Main(QtGui.QWidget):
   def onZoomChart(self, i):
     self.chartView.chartLength = i
     self.chartView.drawChart()
-    #self.update()
+    self.update()
 
   def onChartStyleChange(self, i):
     choices = [self.chartView.drawCandlesticks, self.chartView.drawOHLC, 
@@ -570,6 +570,7 @@ class Main(QtGui.QWidget):
                self.chartView.drawDot, self.chartView.drawClose]
     self.chartView.chartStyle = choices[i]
     self.chartView.drawChart()
+    self.update()
 
 
   #############################################################################
