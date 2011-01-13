@@ -530,7 +530,6 @@ class Main(QtGui.QWidget):
       self.updateAccounts()
       self.updateTime()
       self.chartView.drawChart()
-      print self.indicators
       for ii in self.indicators:
         apply(ii[0], ii[1:])
 
@@ -614,12 +613,14 @@ class Main(QtGui.QWidget):
         time.currentDay -=1
         self.update()
     self.chartView.drawChart()
+    self.update()
 
   def onPrev30(self):
     for ii in range(30):
       time.currentDay +=1
       self.update()
     self.chartView.drawChart()
+    self.update()
 
 
   #############################################################################
