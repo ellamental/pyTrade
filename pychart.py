@@ -21,15 +21,12 @@
 ## - Add compare, see: http://bigcharts.marketwatch.com/advchart/frames/frames.asp?symb=&time=&freq=
 ## - Add point and figure chart view
 ## - Add support for symbol lookup
-## - Allow persistent indicators and trendlines
+## - Switch from QToolBox to QListView for displaying active indicators
 ## 
 ## Accounts
 ## - Alert user that they have pending orders.
 ## - Allow user to specify when their order should go through, today's close 
 ##   or tomorrow's open or other.
-## - Add purchase price to portfolio.  Also if stock is already held, make 
-##   purchase price average of the two purchases.  Ex: if I own 100 shares of 
-##   msft @ 50 and buy 100 more @ 60, the portfolio should say 200 shares @ 55
 ##
 ## BUG:
 ## - Try:  INDEXDJX:.DJI
@@ -56,6 +53,8 @@ from ui_chart import Ui_chartWidget
 import numpy
 import math
 
+## for googDownload url 
+import datetime
 
 
 ###############################################################################
@@ -198,7 +197,9 @@ class Data:
     self.low, self.high = 0, 0
 
   def googDownload(self, symbol):
-    dat = urlopen("http://www.google.com/finance/historical?q="+symbol+"&startdate=Dec+30%2C+2000&enddate=Dec+31%2C+2010&num=30&output=csv").read()
+    today = datetime.datetime.today()
+    todayString = today.strftime("%b") + "+" + str(today.day) + "%2C+" + str(today.year)
+    dat = urlopen("http://www.google.com/finance/historical?q="+symbol+"&startdate=Dec+30%2C+2000&enddate="+todayString+"&num=30&output=csv").read()
     data = [ii.split(',') for ii in dat.split('\n')]
     return [[ii[0], float(ii[1]), float(ii[2]), float(ii[3]), float(ii[4]), int(ii[5])] for ii in data[1:-1]]
 
@@ -755,6 +756,8 @@ class IndicatorWidget(QtGui.QWidget):
     self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.onRemove)
     
     self.main.indicators.append([command]+self.lines)
+    self.main.ui.grid.setItem(len(self.main.indicators), 1, QtGui.QTableWidgetItem("hi"))
+#    self.main.ui.grid.setCellWidget(len(self.main.indicators), 1, self)
     i = self.main.ui.indicators.addItem(self, label)
     self.main.ui.indicators.setCurrentIndex(i)
 
@@ -781,3 +784,10 @@ if __name__ == "__main__":
   window.show()
 
   sys.exit(app.exec_())
+
+
+
+
+
+
+
