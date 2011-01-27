@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 ###############################################################################
 ## pyChart
 ## 
@@ -31,7 +31,7 @@
 ## BUG:
 ## - Try:  INDEXDJX:.DJI
 ## - Start program and close first tab.  Or at any time close all tabs.
-## - Buy stock in MSFT, then sell it, then open GE, then close MSFT tab.
+## - Buy stock in NOK, then sell it, then open GE, then close NOK tab.
 ## - Press "New Tab" with nothing in the symbol box
 ## - Set indicator(s) then switch stocks, indicators are not persistent
 ##   This is because the command is specific to the chartView
@@ -270,7 +270,7 @@ class Data:
 
 class Time:
   def __init__(self):
-    self.currentDay = 1
+    self.currentDay = 600
 
 
 
@@ -469,9 +469,9 @@ class Main(QtGui.QWidget):
     self.indicators = []
 
     ## Create a new GraphicsScene and set GraphicsView (chart) to scene
-    chartViews.append(ChartView("msft"))
+    chartViews.append(ChartView("nok"))
     self.chartView = chartViews[0]
-    self.ui.chartTabs.addTab(self.chartView, "msft")
+    self.ui.chartTabs.addTab(self.chartView, "nok")
 
     ## Connect buttons
     self.connect(self.ui.chartLength, QtCore.SIGNAL("valueChanged(int)"), self.onZoomChart)
@@ -756,8 +756,6 @@ class IndicatorWidget(QtGui.QWidget):
     self.connect(self.removeButton, QtCore.SIGNAL("clicked()"), self.onRemove)
     
     self.main.indicators.append([command]+self.lines)
-    self.main.ui.grid.setItem(len(self.main.indicators), 1, QtGui.QTableWidgetItem("hi"))
-#    self.main.ui.grid.setCellWidget(len(self.main.indicators), 1, self)
     i = self.main.ui.indicators.addItem(self, label)
     self.main.ui.indicators.setCurrentIndex(i)
 

@@ -1,76 +1,49 @@
 ###############################################################################
-## Readme, Notes and Documentation
+## pyTrade
 ###############################################################################
 
+pyTrade is a stock charting program and portfolio management tool.
+
+pyTrade provides a "Paper Trading Mode" to allow you to learn how to trade or 
+test new strategies.  The paper trading mode sends you back in time and lets 
+you buy or sell stocks.
+
+
+
+
+
 ###############################################################################
-## 
+## Install
+###############################################################################
+
+pyTrade requires PyQt4 and numpy
+
+Once the dependencies are installed, simply double click on pyTrade.py to get
+started.
+
+
+
+
+
+###############################################################################
+## Documentation
 ###############################################################################
 
 
 
 
+
+
+
 ###############################################################################
-## Technical Indicators And Their Equations
+## Files Included with pyTrade
 ###############################################################################
 
+** pyTrade.py
+The main program file.  Double click on this to launch the program.
 
-## On Chart Indicators
-#############################
+** ui_chart.py
+Auto-generated user interface file
 
-Accumulation Distribution
-AD = ((Close - Open) / (High - Low)) * Volume
-
-
-Bollinger Bands
-SMA = simple moving average
-high = SMA + standard_deviation(period)*2
-middle = SMA
-low = SMA - standard_deviation(period)*2
-
-
-Donchian Channel
-high = max(period_highs)
-low = min(period_lows)
-
-
-Simple Moving Average
-SMA = sum(period)/period
-
-
-Adaptive Moving Average
-
-
-Darvas Box
-
-
-Elastic Volume Weighted Moving Average
-
-
-Indicator Weighted Average
-
-
-Zig Zag Indicator
-
-
-
-
-
-
-## Off Chart Indicators
-############################
-
-RSI
-
-
-Accumulation/Distribution
-
-
-Balance of Power
-(CL - OP) / (HI - LO) 
-
-
-
-
-
-
-
+** chartWidget.ui
+QtDesigner ui file
