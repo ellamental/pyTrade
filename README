@@ -8,6 +8,8 @@ pyTrade provides a "Paper Trading Mode" to allow you to learn how to trade or
 test new strategies.  The paper trading mode sends you back in time and lets 
 you buy or sell stocks.
 
+pyTrade is currently pre-alpha software so expect bugs and changes.
+
 
 
 
@@ -16,7 +18,7 @@ you buy or sell stocks.
 ## Install
 ###############################################################################
 
-pyTrade requires PyQt4 and numpy
+pyTrade requires PyQt4 and numpy.
 
 Once the dependencies are installed, simply double click on pyTrade.py to get
 started.
@@ -29,7 +31,7 @@ started.
 ## Documentation
 ###############################################################################
 
-
+There is very little documentation on pyTrade at the moment.  
 
 
 

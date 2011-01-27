@@ -1,9 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ###############################################################################
-## pyChart
-## 
+## pyTrade
 ## A charting/paper trading program written in Python and Qt
+## 
+## Copyright (C) 2010, 2011 Jack Trades (jacktradespublic@gmail.com)
+##
+## This file is part of pyTrade
+##
+## pyTrade is free software: you can redistribute it and/or
+## modify it under the terms of the GNU Affero General Public
+## License version 3 as published by the Free Software Foundation.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+## GNU Affero General Public License version 3 for more details.
+##
+## You should have received a copy of the GNU Affero General Public
+## License version 3 along with this program. If not, see
+## <http://www.gnu.org/licenses/>.
+## 
+## 
+###############################################################################
 ## 
 ## 
 ## To produce a python module from QTDesigner:
